@@ -33,4 +33,122 @@
         input, select { border: 1px solid var(--border); padding: 12px; font-size: 1rem; font-family: inherit; background: #f8fafc; border-radius: 4px; }
 
         /* Performance Cards */
-        .grid-cards { display: grid; grid-template-columns: 1fr 1fr
+        .grid-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
+        .card { background: white; border: 1px solid var(--border); padding: 25px; border-top: 4px solid var(--saber-red); }
+        .card-h { font-family: 'Oswald', sans-serif; font-size: 1.2rem; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; color: var(--saber-navy); }
+
+        .metric-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
+        .metric-row:last-child { border: none; }
+        .val { font-weight: 900; font-size: 1.1rem; color: var(--saber-navy); }
+        .unit { font-size: 0.7rem; color: #94a3b8; margin-left: 5px; }
+
+        /* Pacing Table */
+        .split-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+        .split-table th { text-align: left; color: #94a3b8; border-bottom: 1px solid #eee; padding: 8px; }
+        .split-table td { padding: 12px 8px; border-bottom: 1px solid #f1f5f9; font-weight: 700; }
+
+        footer { position: fixed; bottom: 0; width: 100%; background: white; border-top: 2px solid var(--saber-red); padding: 25px; box-sizing: border-box; text-align: center; z-index: 100; }
+        .btn-main { background: var(--saber-navy); color: white; border: none; padding: 18px 50px; font-family: 'Oswald', sans-serif; text-transform: uppercase; cursor: pointer; letter-spacing: 2px; width: 100%; max-width: 400px; }
+
+        @media (max-width: 700px) { .assessment-bay, .grid-cards { grid-template-columns: 1fr; } .hero h1 { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+
+<div id="capture-zone">
+    <header>
+        <div class="squadron-id">HSM-77 Saberhawks</div>
+        <h1>Performance Plan</h1>
+        <p>A mission-critical resource for NAF Atsugi. Precision targets for the 7-lap outdoor circuit and 1.0% treadmill standard.</p>
+    </header>
+
+    <div class="container">
+        <div class="assessment-bay">
+            <div class="field"><label>Age Group</label><select id="age" onchange="calc()"><option value="20">20-24</option><option value="25">25-29</option><option value="30">30-34</option></select></div>
+            <div class="field"><label>Sex</label><select id="sex" onchange="calc()"><option value="male">Male</option><option value="female">Female</option></select></div>
+            <div class="field"><label>Target Tier</label><select id="tier" onchange="calc()"><option value="out">Outstanding</option><option value="exc">Excellent</option></select></div>
+        </div>
+
+        <div class="grid-cards">
+            <div class="card">
+                <div class="card-h">1.5M Pacing (NAF Atsugi)</div>
+                <div class="metric-row"><span>Total Time</span> <span class="val" id="t-run">-</span></div>
+                <div class="metric-row"><span>Lap Target</span> <span class="val" style="color:var(--saber-red)" id="t-split">-</span><span class="unit">/lap</span></div>
+                <div class="metric-row"><span>Treadmill</span> <span class="val">1.0% Incline</span></div>
+                
+                <table class="split-table">
+                    <thead><tr><th>Lap</th><th>Accumulated Time</th></tr></thead>
+                    <tbody id="split-body"></tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <div class="card-h">Muscular Standards</div>
+                <div class="metric-row"><span>Push-ups</span> <span class="val" id="t-push">-</span><span class="unit">Reps</span></div>
+                <div class="metric-row"><span>Forearm Plank</span> <span class="val" id="t-plank">-</span><span class="unit">Min</span></div>
+                <div style="margin-top:20px; font-size: 0.75rem; color: #64748b; line-height: 1.6;">
+                    <strong>Operational Note:</strong> PRT graders at NAF Atsugi enforce strict form for Rep-1 validation. Indoor training must be conducted at manual 1.0% grade to match outdoor resistance.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <button class="btn-main" onclick="exportPDF()">Export Performance Plan</button>
+</footer>
+
+<script>
+    const db = {
+        "20": {
+            male: { out: { p: 80, pl: "3:15", r: "9:15", s: 79 }, exc: { p: 70, pl: "3:00", r: "10:30", s: 90 } },
+            female: { out: { p: 51, pl: "3:15", r: "11:45", s: 100 }, exc: { p: 45, pl: "3:00", r: "13:15", s: 113 } }
+        },
+        "25": {
+            male: { out: { p: 77, pl: "3:10", r: "9:30", s: 81 }, exc: { p: 67, pl: "2:54", r: "10:45", s: 92 } },
+            female: { out: { p: 48, pl: "3:10", r: "12:00", s: 103 }, exc: { p: 42, pl: "2:54", r: "13:30", s: 116 } }
+        },
+        "30": {
+            male: { out: { p: 74, pl: "3:05", r: "9:45", s: 83 }, exc: { p: 64, pl: "2:48", r: "11:00", s: 94 } },
+            female: { out: { p: 45, pl: "3:05", r: "12:15", s: 105 }, exc: { p: 39, pl: "2:48", r: "13:45", s: 118 } }
+        }
+    };
+
+    function calc() {
+        const a = document.getElementById('age').value;
+        const s = document.getElementById('sex').value;
+        const g = document.getElementById('tier').value;
+        const t = db[a][s][g];
+
+        document.getElementById('t-run').innerText = t.r;
+        document.getElementById('t-push').innerText = t.p;
+        document.getElementById('t-plank').innerText = t.pl;
+        
+        let min = Math.floor(t.s / 60);
+        let sec = t.s % 60;
+        document.getElementById('t-split').innerText = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+
+        let splitHtml = "";
+        for(let i=1; i<=7; i++) {
+            let totalSec = t.s * i;
+            let m = Math.floor(totalSec / 60);
+            let sc = totalSec % 60;
+            splitHtml += `<tr><td>Lap ${i}</td><td>${m}:${sc < 10 ? '0' : ''}${sc}</td></tr>`;
+        }
+        document.getElementById('split-body').innerHTML = splitHtml;
+    }
+
+    function exportPDF() {
+        const element = document.getElementById('capture-zone');
+        html2pdf().from(element).set({
+            margin: 0,
+            filename: 'Saberhawk_Strategy.pdf',
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        }).save();
+    }
+
+    calc();
+</script>
+</body>
+</html>

@@ -26,7 +26,7 @@
         label { font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px; }
         input, select { background: #f8fafc; border: 1px solid var(--border); padding: 14px; border-radius: 8px; font-size: 1rem; font-family: inherit; }
 
-        /* Results & Plan (Hidden by default) */
+        /* Results & Plan */
         #results-area { display: none; margin-top: 40px; animation: fadeIn 0.6s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -41,113 +41,123 @@
 
         /* Training Table */
         .plan-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.85rem; }
-        .plan-table th { text-align: left; padding: 10px; background: #f8fafc; color: #94a3b8; text-transform: uppercase; font-size: 0.7rem; border-bottom: 2px solid var(--border); }
         .plan-table td { padding: 12px 10px; border-bottom: 1px solid #f1f5f9; }
         .day-label { font-weight: 800; color: var(--navy); width: 80px; }
+
+        /* Hidden Technical PDF Content */
+        #pdf-technical-specs { display: none; margin-top: 30px; padding: 20px; background: #f8fafc; border: 1px dashed var(--border); border-radius: 8px; }
+        #pdf-technical-specs h3 { font-family: 'Oswald', sans-serif; font-size: 1rem; color: var(--navy); text-transform: uppercase; margin-top: 0; }
 
         footer { position: fixed; bottom: 0; width: 100%; background: var(--white); border-top: 1px solid var(--border); padding: 25px; box-sizing: border-box; text-align: center; z-index: 100; }
         .btn-action { background: var(--navy); color: white; border: none; padding: 18px 60px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 1rem; text-transform: uppercase; cursor: pointer; letter-spacing: 2px; }
 
         @media (max-width: 700px) { .grid-3, .grid-cards { grid-template-columns: 1fr; } }
+        @media print { #pdf-technical-specs { display: block !important; } footer { display: none; } }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="squadron-id">HSM 77 Saberhawks</div>
-    <h1>PHYSICAL READINESS TRAINING</h1>
-    <p>Strategic performance monitoring and lap-pacing intelligence for HSM 77.</p>
-</header>
+<div id="capture-area">
+    <header>
+        <div class="squadron-id">HSM 77 Saberhawks</div>
+        <h1>PHYSICAL READINESS TRAINING</h1>
+        <p>Strategic performance monitoring and goal-gap analysis for HSM 77 personnel.</p>
+    </header>
 
-<div class="container">
-    <div class="assessment-card">
-        <span class="section-tag">01 / Command Personnel Assessment</span>
-        <div class="grid-3">
-            <div class="field"><label>Age</label><select id="age"><option value="20">20-24</option><option value="25">25-29</option><option value="30">30-34</option></select></div>
-            <div class="field"><label>Sex</label><select id="sex"><option value="male">Male</option><option value="female">Female</option></select></div>
-            <div class="field"><label>Current Capacity</label><select id="cap"><option value="low">< 15 min run</option><option value="mid">15-30 min run</option><option value="high">30+ min run</option></select></div>
+    <div class="container">
+        <div class="assessment-card">
+            <span class="section-tag">01 / Command Personnel Assessment</span>
+            <div class="grid-3">
+                <div class="field"><label>Age</label><select id="age"><option value="20">20-24</option><option value="25">25-29</option><option value="30">30-34</option></select></div>
+                <div class="field"><label>Sex</label><select id="sex"><option value="male">Male</option><option value="female">Female</option></select></div>
+                <div class="field"><label>Base Capacity</label><select id="cap"><option value="low">Initial (Build Base)</option><option value="mid">Steady (Maintenance)</option><option value="high">Elite (Peak Performance)</option></select></div>
+            </div>
+            <div class="grid-3">
+                <div class="field"><label>Est. 1.5M Run</label><input type="text" id="curRun" placeholder="e.g. 13:00"></div>
+                <div class="field"><label>Est. Max Push-ups</label><input type="number" id="curPush" placeholder="Current Max"></div>
+                <div class="field"><label>Est. Max Plank</label><input type="text" id="curPlank" placeholder="e.g. 2:00"></div>
+            </div>
+            <div class="grid-3">
+                <div class="field"><label>Goal Run Time</label><input type="text" id="goalRun" placeholder="Target"></div>
+                <div class="field"><label>Goal Push-ups</label><input type="number" id="goalPush" placeholder="Target"></div>
+                <div class="field"><label>Goal Plank</label><input type="text" id="goalPlank" placeholder="Target"></div>
+            </div>
+            <button class="btn-action" style="width: 100%; margin-top: 20px;" onclick="generatePlan()">Generate Strategic Plan</button>
         </div>
-        <div class="grid-3">
-            <div class="field"><label>Estimated 1.5M</label><input type="text" id="curRun" placeholder="e.g. 12:30"></div>
-            <div class="field"><label>Max Push-ups</label><input type="number" id="curPush" placeholder="Current Max"></div>
-            <div class="field"><label>Max Plank</label><input type="text" id="curPlank" placeholder="e.g. 2:15"></div>
-        </div>
-        <div class="grid-3">
-            <div class="field"><label>Goal Run</label><input type="text" id="goalRun" placeholder="Target Time"></div>
-            <div class="field"><label>Goal Push-ups</label><input type="number" id="goalPush" placeholder="Target Reps"></div>
-            <div class="field"><label>Goal Plank</label><input type="text" id="goalPlank" placeholder="Target Time"></div>
-        </div>
-        <button class="btn-action" style="width: 100%; margin-top: 20px;" onclick="generatePlan()">Generate Strategic Plan</button>
-    </div>
 
-    <div id="results-area">
-        <div class="grid-cards">
-            <div class="card">
-                <div class="card-h">Performance Gaps</div>
-                <div class="stat-row">
-                    <span>Run Improvement</span>
-                    <div><span class="val" id="run-res">-</span><br><span class="points-stake" id="run-pts">+0 PTS AT STAKE</span></div>
+        <div id="results-area">
+            <div class="grid-cards">
+                <div class="card">
+                    <div class="card-h">Goal Gap Analysis</div>
+                    <div class="stat-row"><span>Target Run</span> <div><span class="val" id="res-run">-</span><br><span class="points-stake">+12-15 PTS POTENTIAL</span></div></div>
+                    <div class="stat-row"><span>Target Push-ups</span> <div><span class="val" id="res-push">-</span><br><span class="points-stake">+8-10 PTS POTENTIAL</span></div></div>
+                    <div class="stat-row"><span>Target Plank</span> <span class="val" id="res-plank">-</span></div>
                 </div>
-                <div class="stat-row">
-                    <span>Push-up Gap</span>
-                    <div><span class="val" id="push-res">-</span><br><span class="points-stake" id="push-pts">+0 PTS AT STAKE</span></div>
-                </div>
-                <div class="stat-row">
-                    <span>Atsugi Lap Goal</span>
-                    <span class="val" id="lap-res" style="color:var(--red)">-</span>
+
+                <div class="card">
+                    <div class="card-h">5-Day Training Matrix</div>
+                    <table class="plan-table"><tbody id="plan-body"></tbody></table>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-h">4-Week Training Matrix</div>
-                <table class="plan-table">
-                    <thead><tr><th>Day</th><th>Focus Workout</th></tr></thead>
-                    <tbody id="plan-body"></tbody>
-                </table>
+            <div id="pdf-technical-specs">
+                <h3>Operational Technical Standards (NAF Atsugi)</h3>
+                <p><b>1. Track Calibration:</b> The outdoor track requires exactly 7.0 laps for 1.5 miles. Target lap split: <span id="pdf-split">--:--</span>.</p>
+                <p><b>2. Treadmill Conversion:</b> Set treadmill to 1.0% incline to simulate outdoor resistance. Minimum speed for goal: <span id="pdf-mph">--</span> MPH.</p>
+                <p><b>3. Form Protocol:</b> Push-ups must break 90 degrees. Planks must maintain a straight line from head to heels.</p>
             </div>
         </div>
     </div>
 </div>
 
+<footer><button class="btn-action" onclick="exportPDF()">Export Tactical PDF</button></footer>
+
 <script>
     function generatePlan() {
         const goalRun = document.getElementById('goalRun').value;
-        const goalPush = parseInt(document.getElementById('goalPush').value);
-        const goalPlank = document.getElementById('goalPlank').value;
         const cap = document.getElementById('cap').value;
 
-        // Mock Scoring Logic (Approximate Navy Points)
-        document.getElementById('run-res').innerText = goalRun;
-        document.getElementById('push-res').innerText = goalPush + " Reps";
-        document.getElementById('run-pts').innerText = "+15 PTS POTENTIAL";
-        document.getElementById('push-pts').innerText = "+10 PTS POTENTIAL";
+        document.getElementById('res-run').innerText = goalRun;
+        document.getElementById('res-push').innerText = document.getElementById('goalPush').value + " Reps";
+        document.getElementById('res-plank').innerText = document.getElementById('goalPlank').value;
 
-        // Atsugi Lap Logic
+        // Technical Math for PDF
         const timeParts = goalRun.split(':');
         if(timeParts.length === 2) {
             const totalSec = (parseInt(timeParts[0]) * 60) + parseInt(timeParts[1]);
             const lapSec = Math.floor(totalSec / 7);
-            document.getElementById('lap-res').innerText = Math.floor(lapSec/60) + ":" + (lapSec%60 < 10 ? '0':'') + (lapSec%60) + " / LAP";
+            const mph = (1.5 / (totalSec / 3600)).toFixed(1);
+            
+            document.getElementById('pdf-split').innerText = Math.floor(lapSec/60) + ":" + (lapSec%60 < 10 ? '0':'') + (lapSec%60);
+            document.getElementById('pdf-mph').innerText = mph;
         }
 
-        // 5-Day Training Table Generation
-        const training = {
-            low: ["Intervals: 2min Run / 1min Walk (Total 20m)", "Upper Body: 4 Sets Max Push-ups", "Sprints: 4x200m @ Atsugi Goal Pace", "Core: 3x Max Plank Holds", "Endurance: 30min Steady Walk/Run"],
-            mid: ["Threshold: 3x800m @ Goal Pace", "Strength: Push-up Burnouts (5 Sets)", "Speed: 6x400m @ Atsugi Split", "Plank: 4:00 Total Accumulation", "Tempo: 20min Run @ 1.0% Incline"],
-            high: ["Speed: 8x400m @ Split - 5sec", "Volume: 100 Push-ups for Time", "Pacing: 2 Miles @ Goal Pace", "Core: Weighted Plank Holds", "Long: 45min Steady State Run"]
+        const plans = {
+            low: ["Intervals: 90s Jog / 60s Walk (25m)", "Strength: 4 Sets Max Push-ups", "Speed: 4x200m at Split Pace", "Core: 3x Max Plank (90s Rest)", "Endurance: 35m Active Recovery"],
+            mid: ["Threshold: 3x800m at Goal Pace", "Strength: 5 Sets Max Push-ups", "Speed: 6x400m at Lap Split", "Core: 4:00 Total Plank Build", "Tempo: 25m Run (1.0% Incline)"],
+            high: ["Speed: 8x400m at Split - 3sec", "Volume: 100 Push-ups for Time", "Pacing: 2 Miles Steady Goal Pace", "Core: Weighted Plank Sets", "Long: 50m Aerobic Base Run"]
         };
 
-        let tableHtml = "";
+        let html = "";
         const days = ["MON", "TUE", "WED", "THU", "FRI"];
-        days.forEach((day, i) => {
-            tableHtml += `<tr><td class="day-label">${day}</td><td>${training[cap][i]}</td></tr>`;
-        });
-        document.getElementById('plan-body').innerHTML = tableHtml;
+        days.forEach((d, i) => { html += `<tr><td class="day-label">${d}</td><td>${plans[cap][i]}</td></tr>`; });
+        document.getElementById('plan-body').innerHTML = html;
 
         document.getElementById('results-area').style.display = 'block';
-        window.scrollTo({ top: document.getElementById('results-area').offsetTop - 20, behavior: 'smooth' });
+        window.scrollTo({ top: document.getElementById('results-area').offsetTop, behavior: 'smooth' });
+    }
+
+    function exportPDF() {
+        const element = document.getElementById('capture-area');
+        const opt = {
+            margin: 0.2,
+            filename: 'HSM77_Tactical_Plan.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
     }
 </script>
-
 </body>
 </html>

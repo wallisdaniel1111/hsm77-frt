@@ -2,188 +2,164 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HSM-77 PRT Planner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSM-77 Tactical PRT Planner</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        :root { --navy: #001220; --gold: #c5a059; --red: #ff4d00; --bg: #f9f9fb; --white: #ffffff; --border: #e2e8f0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #1a202c; margin: 0; padding-bottom: 120px; }
+        :root { --navy: #001220; --gold: #c5a059; --red: #ff4d00; --bg: #f9f9fb; --border: #cbd5e1; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: #0f172a; margin: 0; padding-bottom: 100px; }
 
-        header { background: var(--navy); color: white; padding: 60px 20px; text-align: left; border-bottom: 8px solid var(--red); }
-        .squadron-id { font-family: 'Oswald', sans-serif; color: var(--gold); letter-spacing: 4px; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 5px; }
-        header h1 { font-family: 'Oswald', sans-serif; font-size: 2.8rem; margin: 0; text-transform: uppercase; line-height: 0.9; }
-        header p { opacity: 0.8; font-size: 1rem; margin-top: 15px; max-width: 600px; line-height: 1.4; }
-
+        /* UI Styling */
+        header { background: var(--navy); color: white; padding: 60px 20px; border-bottom: 8px solid var(--red); }
+        .squadron { font-family: 'Oswald', sans-serif; color: var(--gold); letter-spacing: 3px; font-size: 0.8rem; text-transform: uppercase; }
+        header h1 { font-family: 'Oswald', sans-serif; font-size: 2.8rem; margin: 0; text-transform: uppercase; }
         .container { max-width: 850px; margin: auto; padding: 20px; }
-
-        .assessment-card { background: var(--white); border-radius: 12px; padding: 35px; margin-top: -50px; box-shadow: 0 15px 40px rgba(0,0,0,0.12); border: 1px solid var(--border); }
-        .section-tag { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 25px; display: block; border-left: 3px solid var(--red); padding-left: 10px; }
+        .assessment-card { background: white; border-radius: 12px; padding: 30px; margin-top: -50px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
         
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
         .field { display: flex; flex-direction: column; }
-        label { font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px; }
-        input, select { background: #f8fafc; border: 1px solid var(--border); padding: 14px; border-radius: 8px; font-size: 1rem; font-family: inherit; }
-
-        #results-area { display: none; margin-top: 40px; animation: fadeIn 0.6s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .grid-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .card { background: var(--white); border-radius: 16px; padding: 30px; border: 1px solid var(--border); position: relative; }
-        .card::before { content: ""; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--red); border-radius: 16px 0 0 16px; }
-        .card-h { font-family: 'Oswald', sans-serif; font-size: 1.3rem; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; color: var(--navy); }
+        label { font-size: 0.65rem; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 5px; }
+        input, select { padding: 12px; border: 1px solid #e2e8f0; border-radius: 6px; font-family: inherit; font-size: 1rem; }
         
-        .stat-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; align-items: center; }
-        .val { font-weight: 800; font-size: 1.15rem; color: var(--navy); text-align: right; }
+        #results-area { display: none; margin-top: 30px; }
+        .card { background: white; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 20px; }
+        .card-h { font-family: 'Oswald', sans-serif; text-transform: uppercase; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 15px; color: var(--navy); }
+        .stat-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f8fafc; font-weight: 700; }
+        
+        /* PDF Specific Styling (Hidden on Screen) */
+        #pdf-template { display: none; padding: 40px; background: white; color: black; }
+        .pdf-header { border-bottom: 4px solid black; padding-bottom: 10px; margin-bottom: 20px; text-transform: uppercase; }
+        .pdf-section { border: 1px solid black; margin-bottom: 15px; padding: 15px; }
+        .pdf-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid black; margin-top: 10px; padding-top: 10px; }
 
-        .pacing-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
-        .pacing-table th { text-align: left; color: #94a3b8; border-bottom: 1px solid #eee; padding: 8px; font-size: 0.7rem; text-transform: uppercase; }
-        .pacing-table td { padding: 8px; border-bottom: 1px solid #f8f9fa; font-weight: 700; }
-
-        .plan-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.85rem; }
-        .plan-table td { padding: 12px 10px; border-bottom: 1px solid #f1f5f9; }
-        .day-label { font-weight: 800; color: var(--navy); width: 80px; }
-
-        footer { position: fixed; bottom: 0; width: 100%; background: var(--white); border-top: 1px solid var(--border); padding: 25px; box-sizing: border-box; text-align: center; z-index: 100; }
-        .btn-action { background: var(--navy); color: white; border: none; padding: 18px 60px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 1rem; text-transform: uppercase; cursor: pointer; letter-spacing: 2px; }
-
-        @media (max-width: 700px) { .grid-3, .grid-cards { grid-template-columns: 1fr; } }
+        footer { position: fixed; bottom: 0; width: 100%; background: white; padding: 20px; border-top: 1px solid #e2e8f0; text-align: center; }
+        .btn { background: var(--navy); color: white; border: none; padding: 15px 40px; border-radius: 8px; font-family: 'Oswald', sans-serif; text-transform: uppercase; cursor: pointer; font-size: 1rem; }
     </style>
 </head>
 <body>
 
-<div id="capture-area">
+<div id="ui-container">
     <header>
-        <div class="squadron-id">HSM 77 Saberhawks</div>
-        <h1>PHYSICAL READINESS TRAINING</h1>
-        <p>Strategic performance monitoring and lap-pacing intelligence for HSM 77.</p>
+        <div class="squadron">HSM-77 Saberhawks</div>
+        <h1>Performance Planner</h1>
     </header>
 
     <div class="container">
         <div class="assessment-card">
-            <span class="section-tag">01 / Command Personnel Assessment</span>
-            <div class="grid-3">
-                <div class="field"><label>Age</label><select id="age"><option value="20">20-24</option><option value="25">25-29</option><option value="30">30-34</option></select></div>
-                <div class="field"><label>Sex</label><select id="sex"><option value="male">Male</option><option value="female">Female</option></select></div>
-                <div class="field">
-                    <label>Run Capacity (Comfortable)</label>
-                    <select id="runCap">
-                        <option value="15">15 Minutes</option>
-                        <option value="30">30 Minutes</option>
-                        <option value="45">45 Minutes</option>
-                        <option value="60">60 Minutes+</option>
-                    </select>
-                </div>
+            <div class="grid">
+                <div class="field"><label>Biological Sex</label><select id="sex"><option value="male">Male</option><option value="female">Female</option></select></div>
+                <div class="field"><label>Run Capacity</label><select id="runCap">
+                    <option value="15">15 Min (Initial)</option>
+                    <option value="30">30 Min (Steady)</option>
+                    <option value="45">45 Min (Endurance)</option>
+                    <option value="60">60 Min (Elite)</option>
+                </select></div>
+                <div class="field"><label>Current 1.5M</label><input type="text" id="curRun" placeholder="e.g. 13:00"></div>
             </div>
-            <div class="grid-3">
-                <div class="field"><label>Est. 1.5M Run</label><input type="text" id="curRun" placeholder="e.g. 12:30"></div>
-                <div class="field"><label>Est. Max Push-ups</label><input type="number" id="curPush" placeholder="Current Max"></div>
-                <div class="field"><label>Est. Max Plank</label><input type="text" id="curPlank" placeholder="e.g. 2:15"></div>
+            <div class="grid">
+                <div class="field"><label>Goal 1.5M</label><input type="text" id="goalRun" placeholder="e.g. 10:30"></div>
+                <div class="field"><label>Goal Push-ups</label><input type="number" id="goalPush"></div>
+                <div class="field"><label>Goal Plank</label><input type="text" id="goalPlank"></div>
             </div>
-            <div class="grid-3">
-                <div class="field"><label>Goal Run Time</label><input type="text" id="goalRun" placeholder="Target Time"></div>
-                <div class="field"><label>Goal Push-ups</label><input type="number" id="goalPush" placeholder="Target Reps"></div>
-                <div class="field"><label>Goal Plank</label><input type="text" id="goalPlank" placeholder="Target Time"></div>
-            </div>
-            <button class="btn-action" style="width: 100%; margin-top: 20px;" onclick="generatePlan()">Generate Strategic Plan</button>
+            <button class="btn" style="width:100%" onclick="process()">Generate Strategic Plan</button>
         </div>
 
         <div id="results-area">
-            <div class="grid-cards">
-                <div class="card">
-                    <div class="card-h">Performance Analysis</div>
-                    <div class="stat-row"><span>Pace/Lap (NAFA Track)</span><span class="val" id="res-split" style="color:var(--red)">-</span></div>
-                    <div class="stat-row"><span>Treadmill (1.0% Incline)</span><span class="val" id="res-treadmill">-</span></div>
-                    
-                    <table class="pacing-table">
-                        <thead><tr><th>Lap</th><th>Accumulated</th></tr></thead>
-                        <tbody id="lap-body"></tbody>
-                    </table>
-                </div>
-
-                <div class="card">
-                    <div class="card-h">5-Day Training Matrix</div>
-                    <table class="plan-table"><tbody id="plan-body"></tbody></table>
-                </div>
+            <div class="card">
+                <div class="card-h">Performance Analysis</div>
+                <div class="stat-row"><span>NAFA Pace/Lap</span> <span id="res-lap" style="color:var(--red)">--:--</span></div>
+                <div class="stat-row"><span>Treadmill Option (1.0%)</span> <span id="res-tread">-- MPH</span></div>
+                <div id="points-stake" style="font-size: 0.8rem; color: #64748b; margin-top: 10px;"></div>
             </div>
+            <div id="weekly-preview"></div>
         </div>
     </div>
 </div>
 
-<footer><button class="btn-action" onclick="exportPDF()">Export Tactical PDF</button></footer>
+<footer>
+    <button class="btn" onclick="exportTacticalPDF()">Export High-Res Tactical PDF</button>
+</footer>
+
+<div id="pdf-template">
+    <div class="pdf-header">
+        <div style="font-weight: 900; font-size: 1.5rem;">HSM-77 Performance SOP</div>
+        <div style="font-size: 0.8rem;">Strategic PRT Training & Pacing Intelligence</div>
+    </div>
+    
+    <div class="pdf-section">
+        <div style="font-weight: 800; font-size: 0.7rem; text-transform: uppercase;">Atsugi Operational Targets</div>
+        <div class="pdf-grid">
+            <div>Goal Run: <br><strong id="p-run"></strong></div>
+            <div>Lap Split: <br><strong id="p-lap"></strong></div>
+            <div>Treadmill: <br><strong id="p-tread"></strong></div>
+        </div>
+    </div>
+
+    <div id="p-plan-content"></div>
+</div>
 
 <script>
-    function generatePlan() {
+    function process() {
         const goalRun = document.getElementById('goalRun').value;
         const cap = parseInt(document.getElementById('runCap').value);
-
-        const timeParts = goalRun.split(':');
-        if(timeParts.length === 2) {
-            const totalSec = (parseInt(timeParts[0]) * 60) + parseInt(timeParts[1]);
-            const lapSec = totalSec / 7;
-            const mph = (1.5 / (totalSec / 3600)).toFixed(1);
-            
-            document.getElementById('res-split').innerText = Math.floor(lapSec/60) + ":" + (Math.round(lapSec%60) < 10 ? '0':'') + Math.round(lapSec%60) + " / LAP";
-            document.getElementById('res-treadmill').innerText = mph + " MPH";
-
-            let lapHtml = "";
-            for(let i=1; i<=7; i++) {
-                let acc = Math.round(lapSec * i);
-                lapHtml += `<tr><td>Lap ${i}</td><td>${Math.floor(acc/60)}:${acc%60 < 10 ? '0':''}${acc%60}</td></tr>`;
-            }
-            document.getElementById('lap-body').innerHTML = lapHtml;
-        }
-
-        // Periodized Training Logic based on 15m intervals
-        let mon, tue, wed, thu, fri;
         
-        if (cap <= 15) {
-            mon = "Intervals: 90s Jog / 60s Walk (25m Total)";
-            tue = "Strength: 4 Sets Max Push-ups / 3x60s Plank";
-            wed = "Track: 4x200m at Split Pace (Full Recovery)";
-            thu = "Active Recovery: 30m Power Walk (1.0% Incline)";
-            fri = "Endurance: 20m Continuous Slow Jog";
-        } else if (cap <= 30) {
-            mon = "Threshold: 3x800m at Goal Pace (2m Recovery)";
-            tue = "Strength: 5 Sets Max Push-ups / 3x90s Plank";
-            wed = "Speed: 6x400m at Lap Split Pace (90s Recovery)";
-            thu = "Tempo: 25m Steady Run @ 1.0% Incline";
-            fri = "Core/Mobility: 4:00 Total Plank Accumulation";
-        } else if (cap <= 45) {
-            mon = "Speed: 8x400m at Split - 3sec (75s Recovery)";
-            tue = "Power: 100 Push-ups for Time / 4x2m Plank";
-            wed = "Pacing: 2 Miles Steady at Goal Pace + 5%";
-            thu = "Aerobic Base: 40m Continuous Run (Easy)";
-            fri = "Threshold: 2x1600m at Goal Pace (3m Recovery)";
-        } else {
-            mon = "Speed: 10x400m at Split - 5sec (60s Recovery)";
-            tue = "Elite Strength: Weighted Plank Sets / Pyramids";
-            wed = "Overload: 3 Miles Steady at Goal Pace";
-            thu = "Aerobic Base: 60m Continuous Run (Zone 2)";
-            fri = "Simulation: 1 Mile Time Trial (Max Effort)";
+        // Split Calculation
+        const t = goalRun.split(':');
+        const totalSec = (parseInt(t[0]) * 60) + parseInt(t[1]);
+        const lapSec = totalSec / 7;
+        const mph = (1.5 / (totalSec / 3600)).toFixed(1);
+        
+        const lapStr = Math.floor(lapSec/60) + ":" + (Math.round(lapSec%60) < 10 ? '0':'') + Math.round(lapSec%60);
+        
+        // Update UI
+        document.getElementById('res-lap').innerText = lapStr + " / LAP";
+        document.getElementById('res-tread').innerText = mph + " MPH";
+        
+        // Update PDF Template Data
+        document.getElementById('p-run').innerText = goalRun;
+        document.getElementById('p-lap').innerText = lapStr;
+        document.getElementById('p-tread').innerText = mph + " MPH @ 1.0%";
+
+        // Generate 4-Week Physiological Programming
+        const microCycle = generateMicroCycle(cap, lapStr);
+        let planHtml = "";
+        
+        for(let w=1; w<=4; w++) {
+            planHtml += `
+                <div style="margin-top:20px; border-bottom: 2px solid #eee; padding-bottom:10px;">
+                    <strong style="text-transform:uppercase; font-size: 0.9rem;">Week ${w}: ${getPhase(w)}</strong>
+                    <div style="font-size:0.8rem; margin-top:5px; line-height:1.4;">${microCycle}</div>
+                </div>`;
         }
-
-        const planBody = `
-            <tr><td class="day-label">MON</td><td>${mon}</td></tr>
-            <tr><td class="day-label">TUE</td><td>${tue}</td></tr>
-            <tr><td class="day-label">WED</td><td>${wed}</td></tr>
-            <tr><td class="day-label">THU</td><td>${thu}</td></tr>
-            <tr><td class="day-label">FRI</td><td>${fri}</td></tr>
-        `;
-        document.getElementById('plan-body').innerHTML = planBody;
-
+        document.getElementById('p-plan-content').innerHTML = planHtml;
         document.getElementById('results-area').style.display = 'block';
-        window.scrollTo({ top: document.getElementById('results-area').offsetTop - 20, behavior: 'smooth' });
     }
 
-    function exportPDF() {
-        const element = document.getElementById('capture-area');
-        html2pdf().from(element).set({
-            margin: 0,
+    function getPhase(w) {
+        const phases = ["Base Accumulation", "Threshold Extension", "Peak Intensity", "Taper & Supercompensation"];
+        return phases[w-1];
+    }
+
+    function generateMicroCycle(cap, lap) {
+        if (cap <= 15) return "<strong>MON:</strong> 4x400m Intervals @ ${lap} pace (2m rest).<br><strong>TUE:</strong> 4x12 Push-ups (Lockout Focus) + 2x1m Plank.<br><strong>WED:</strong> 25m Steady Jog (Zone 2).<br><strong>THU:</strong> Active Recovery Incline Walk (1.0%).<br><strong>FRI:</strong> 1-mile continuous @ 95% Goal Pace.";
+        if (cap <= 30) return "<strong>MON:</strong> 6x400m Intervals @ ${lap} pace (90s rest).<br><strong>TUE:</strong> EMOM 10m: 12 Push-ups (Speed focus).<br><strong>WED:</strong> 35m Aerobic Base Run.<br><strong>THU:</strong> 3x800m Threshold @ Goal Pace + 5s.<br><strong>FRI:</strong> 10x200m Sprints (Neuromuscular recruitment).";
+        return "<strong>MON:</strong> 8x400m Intervals @ ${lap} - 2s (60s rest).<br><strong>TUE:</strong> Volume Strength: 100 Reps total (Min sets).<br><strong>WED:</strong> 45m Recovery Run.<br><strong>THU:</strong> 4x800m Pace Extension @ Goal Pace.<br><strong>FRI:</strong> 2-mile Negative Split Run (Finish @ Goal Pace).";
+    }
+
+    function exportTacticalPDF() {
+        const element = document.getElementById('pdf-template');
+        element.style.display = 'block'; // Temporarily show for capture
+        const opt = {
+            margin: 0.5,
             filename: 'HSM77_Tactical_Plan.pdf',
-            html2canvas: { scale: 2 },
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 3 },
             jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-        }).save();
+        };
+        html2pdf().set(opt).from(element).save().then(() => {
+            element.style.display = 'none';
+        });
     }
 </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Saberhawk Performance Resource</title>
+    <title>Saberhawk PRT Resource</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
@@ -19,7 +19,7 @@
 
         .container { max-width: 850px; margin: auto; padding: 20px; }
 
-        /* Assessment Card (Red Bull Style) */
+        /* Assessment Card */
         .assessment-card { background: var(--white); border-radius: 12px; padding: 35px; margin-top: -50px; box-shadow: 0 15px 40px rgba(0,0,0,0.12); border: 1px solid var(--border); }
         .section-tag { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 25px; display: block; border-left: 3px solid var(--red); padding-left: 10px; }
         
@@ -43,4 +43,129 @@
         /* Pacing Table */
         .pacing-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.85rem; }
         .pacing-table th { text-align: left; color: #94a3b8; border-bottom: 1px solid #eee; padding: 8px; font-size: 0.7rem; text-transform: uppercase; }
-        .pacing-table td { padding: 12px 8px; border-bottom: 1px solid #f8f9fa; font-weight: 7
+        .pacing-table td { padding: 12px 8px; border-bottom: 1px solid #f8f9fa; font-weight: 700; }
+
+        footer { position: fixed; bottom: 0; width: 100%; background: var(--white); border-top: 1px solid var(--border); padding: 25px; box-sizing: border-box; display: flex; justify-content: center; z-index: 100; box-shadow: 0 -10px 20px rgba(0,0,0,0.05); }
+        .btn-action { background: var(--navy); color: white; border: none; padding: 18px 50px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 1rem; text-transform: uppercase; cursor: pointer; letter-spacing: 2px; width: 100%; max-width: 500px; transition: 0.3s; }
+        .btn-action:hover { background: var(--red); transform: translateY(-2px); }
+
+        @media (max-width: 700px) { .grid-3, .grid-cards { grid-template-columns: 1fr; } header h1 { font-size: 2rem; } }
+    </style>
+</head>
+<body>
+
+<div id="export-container">
+    <header>
+        <div class="squadron-id">HSM 77 Saberhawks</div>
+        <h1>PHYSICAL READINESS TRAINING</h1>
+        <p>Strategic performance monitoring and lap-pacing intelligence for HSM 77. Precision targets for the 7-lap outdoor circuit and 1.0% treadmill standard.</p>
+    </header>
+
+    <div class="container">
+        <div class="assessment-card">
+            <span class="section-tag">01 / Assessment & Goal Strategy</span>
+            <div class="grid-3">
+                <div class="field"><label>Age Group</label><select id="age" onchange="runAnalysis()"><option value="20">20-24</option><option value="25">25-29</option><option value="30">30-34</option><option value="35">35-39</option></select></div>
+                <div class="field"><label>Biological Sex</label><select id="sex" onchange="runAnalysis()"><option value="male">Male</option><option value="female">Female</option></select></div>
+                <div class="field"><label>Target Tier</label><select id="goal" onchange="runAnalysis()"><option value="out">Outstanding</option><option value="exc">Excellent</option></select></div>
+            </div>
+            <div class="grid-3">
+                <div class="field"><label>Current 1.5M</label><input type="text" id="curRun" placeholder="12:00" oninput="runAnalysis()"></div>
+                <div class="field"><label>Current Push-ups</label><input type="number" id="curPush" placeholder="45" oninput="runAnalysis()"></div>
+                <div class="field"><label>Current Plank</label><input type="text" id="curPlank" placeholder="2:30" oninput="runAnalysis()"></div>
+            </div>
+        </div>
+
+        <div class="grid-cards">
+            <div class="card">
+                <div class="card-h">1.5M Pacing (Atsugi)</div>
+                <div class="stat-row"><span>Target Time</span> <span class="val" id="res-run">-</span></div>
+                <div class="stat-row"><span>Lap Split</span> <span class="val" style="color:var(--red)" id="res-split">-</span></div>
+                <div class="stat-row"><span>Treadmill</span> <span class="val">1.0% Incline</span></div>
+                
+                <table class="pacing-table">
+                    <thead><tr><th>Lap</th><th>Accumulated</th></tr></thead>
+                    <tbody id="lap-body"></tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <div class="card-h">Muscular Analysis <span id="push-status" class="delta"></span></div>
+                <div class="stat-row"><span>Push-up Goal</span> <span class="val" id="res-push">-</span></div>
+                <div class="stat-row"><span>Plank Goal</span> <span class="val" id="res-plank">-</span></div>
+                <div style="margin-top: 30px; font-size: 0.75rem; color: #64748b; line-height: 1.6; border-top: 1px solid #f1f5f9; padding-top: 20px;">
+                    <strong>Operational Note:</strong> PRT graders at NAF Atsugi enforce strict form for Rep-1 validation. Indoor training must be conducted at manual 1.0% grade to match outdoor resistance.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <button class="btn-action" onclick="exportPDF()">Export Tactical Plan</button>
+</footer>
+
+<script>
+    const data = {
+        "20": {
+            male: { out: { p: 80, pl: "3:15", r: "9:15", s: 79 }, exc: { p: 70, pl: "3:00", r: "10:30", s: 90 } },
+            female: { out: { p: 51, pl: "3:15", r: "11:45", s: 100 }, exc: { p: 45, pl: "3:00", r: "13:15", s: 113 } }
+        },
+        "25": {
+            male: { out: { p: 77, pl: "3:10", r: "9:30", s: 81 }, exc: { p: 67, pl: "2:54", r: "10:45", s: 92 } },
+            female: { out: { p: 48, pl: "3:10", r: "12:00", s: 103 }, exc: { p: 42, pl: "2:54", r: "13:30", s: 116 } }
+        },
+        "30": {
+            male: { out: { p: 74, pl: "3:05", r: "9:45", s: 83 }, exc: { p: 64, pl: "2:48", r: "11:00", s: 94 } },
+            female: { out: { p: 45, pl: "3:05", r: "12:15", s: 105 }, exc: { p: 39, pl: "2:48", r: "13:45", s: 118 } }
+        },
+        "35": {
+            male: { out: { p: 71, pl: "3:00", r: "10:00", s: 85 }, exc: { p: 61, pl: "2:42", r: "11:15", s: 96 } },
+            female: { out: { p: 42, pl: "3:00", r: "12:30", s: 107 }, exc: { p: 36, pl: "2:42", r: "14:00", s: 120 } }
+        }
+    };
+
+    function runAnalysis() {
+        const a = document.getElementById('age').value;
+        const s = document.getElementById('sex').value;
+        const g = document.getElementById('goal').value;
+        const t = data[a][s][g];
+
+        document.getElementById('res-run').innerText = t.r;
+        document.getElementById('res-push').innerText = t.p + " Reps";
+        document.getElementById('res-plank').innerText = t.pl;
+        
+        let m = Math.floor(t.s / 60);
+        let sc = t.s % 60;
+        document.getElementById('res-split').innerText = `${m}:${sc < 10 ? '0' : ''}${sc} / lap`;
+
+        let laps = "";
+        for(let i=1; i<=7; i++) {
+            let total = t.s * i;
+            let lm = Math.floor(total / 60);
+            let ls = total % 60;
+            laps += `<tr><td>Lap ${i}</td><td>${lm}:${ls < 10 ? '0' : ''}${ls}</td></tr>`;
+        }
+        document.getElementById('lap-body').innerHTML = laps;
+
+        const curP = parseInt(document.getElementById('curPush').value) || 0;
+        if(curP > 0) {
+            let d = t.p - curP;
+            document.getElementById('push-status').innerText = d > 0 ? `+${d} Reps Needed` : "Target Met";
+        }
+    }
+
+    function exportPDF() {
+        const element = document.getElementById('export-container');
+        html2pdf().from(element).set({
+            margin: 0,
+            filename: 'HSM77_PRT_Strategy.pdf',
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        }).save();
+    }
+
+    runAnalysis();
+</script>
+</body>
+</html>

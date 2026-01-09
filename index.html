@@ -2,187 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HSM-77 Fitness Readiness Tool</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saberhawk PRT Training Plan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        :root { --navy: #002147; --orange: #ff6600; --grey: #2c2c2c; --white: #ffffff; --insta: #E1306C; --msg: #0084FF; }
-        body { font-family: -apple-system, system-ui, sans-serif; background-color: var(--navy); color: var(--white); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { width: 100%; max-width: 400px; }
-        h1 { color: var(--orange); text-align: center; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        .motto { text-align: center; font-style: italic; font-size: 0.8rem; margin-bottom: 20px; opacity: 0.8; }
-        .card { background: var(--grey); padding: 20px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .btn { background: var(--orange); color: white; border: none; padding: 15px; border-radius: 8px; width: 100%; font-weight: bold; font-size: 1.1rem; cursor: pointer; margin-top: 10px; text-transform: uppercase; }
-        .hub-select { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .hub-btn { background: #444; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; border: 2px solid transparent; font-size: 0.9rem; }
-        .hub-btn.active { border-color: var(--orange); background: #555; }
-        .timer-display { font-size: 5rem; text-align: center; margin: 10px 0; font-weight: bold; font-variant-numeric: tabular-nums; }
-        .alert-box { border: 2px solid var(--orange); padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-weight: bold; }
-        .hidden { display: none; }
-        label { font-size: 0.8rem; text-transform: uppercase; opacity: 0.7; }
-        select { width: 100%; padding: 12px; margin: 8px 0 15px 0; border-radius: 6px; border: none; background: #eee; font-size: 1rem; }
-        #report-capture { padding: 20px; border-radius: 12px; background: var(--navy); border: 2px solid var(--orange); text-align: center; }
-    </style>
-</head>
-<body>
+        :root { --navy: #001220; --orange: #ff4d00; --text: #37352f; --bg: #ffffff; --light-grey: #f7f7f5; }
+        
+        body { font-family: 'Inter', sans-serif; background: #fdfdfd; color: var(--text); margin: 0; padding: 0; }
+        
+        /* Red Bull Inspired Hero */
+        .hero { background: var(--navy); color: white; padding: 40px 20px; text-align: center; border-bottom: 5px solid var(--orange); }
+        .hero h1 { font-family: 'Oswald', sans-serif; font-size: 2.2rem; text-transform: uppercase; margin: 0; letter-spacing: 1.5px; }
+        .hero p { opacity: 0.8; font-size: 0.9rem; margin-top: 10px; text-transform: uppercase; letter-spacing: 1px; }
 
-<div class="container" id="setup-screen">
-    <h1>HSM-77 FRT</h1>
-    <p class="motto">Vigila Et Percute</p>
-    <div class="card">
-        <label>Age Bracket</label>
-        <select id="age">
-            <option value="17">17-19</option><option value="20" selected>20-24</option>
-            <option value="25">25-29</option><option value="30">30-34</option>
-            <option value="35">35-39</option><option value="40">40-44</option>
-        </select>
-        <label>Gender</label>
-        <select id="gender"><option value="male">Male</option><option value="female">Female</option></select>
-        <label>Target Tier</label>
-        <select id="tier"><option value="out">Outstanding</option><option value="exc" selected>Excellent</option><option value="good">Good</option></select>
-        <label>Training Hub</label>
-        <div class="hub-select">
-            <div class="hub-btn active" onclick="setHub('track')" id="btn-track">🏟️ ATSUGI TRACK<br><small>7 Laps</small></div>
-            <div class="hub-btn" onclick="setHub('gym')" id="btn-gym">🏋️ GYM<br><small>1.0% Incline</small></div>
-        </div>
-    </div>
-    <button class="btn" onclick="startSession()">COMMENCE MISSION</button>
-</div>
+        .container { max-width: 750px; margin: auto; padding: 30px 20px; }
 
-<div class="container hidden" id="workout-screen">
-    <h1 id="event-name">Push-ups</h1>
-    <div class="card">
-        <div class="timer-display" id="timer">02:00</div>
-        <p id="target-msg" style="text-align: center; font-weight: bold; color: var(--orange);"></p>
-    </div>
-    <button class="btn" id="action-btn" onclick="handleTimer()">START TIMER</button>
-    <button class="btn" id="lap-btn" style="display:none; background: #28a745;" onclick="recordLap()">TAP LAP (<span id="lap-count">0</span>/7)</button>
-</div>
+        /* Notion-Style Navigation */
+        .nav-bar { display: flex; gap: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 30px; }
+        .nav-item { font-size: 0.85rem; font-weight: 600; cursor: pointer; color: #666; transition: 0.2s; }
+        .nav-item:hover { color: var(--orange); }
 
-<div class="container hidden" id="report-screen">
-    <div id="report-capture">
-        <h1>Mission Report</h1>
-        <p class="motto">HSM-77 Saberhawks</p>
-        <div id="results-data"></div>
-    </div>
-    <button class="btn" style="background:var(--msg);" onclick="shareMessenger()">Share to Messenger</button>
-    <button class="btn" style="background:var(--insta);" onclick="copyInsta()">Copy for Instagram</button>
-    <button class="btn" style="background:#555;" onclick="saveImage()">Save as Image</button>
-    <button class="btn" style="margin-top:20px; background:none; border:1px solid #777;" onclick="location.reload()">Reset Mission</button>
-</div>
+        /* Content Blocks */
+        .callout { background: var(--light-grey); border-left: 4px solid var(--orange); padding: 20px; border-radius: 4px; margin-bottom: 30px; }
+        .callout strong { color: var(--navy); display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.8rem; }
 
-<script>
-    let currentHub = 'track';
-    let currentStep = 0; // 0:Pushups, 1:Plank, 2:Rest, 3:Run
-    let timerInterval;
-    let timeLeft = 120;
-    let laps = 0;
+        /* Professional Data Tables */
+        h2 { font-family: 'Oswald', sans-serif; font-size: 1.2rem; text-transform: uppercase; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-bottom: 15px; }
+        .table-wrap { overflow-x: auto; margin-bottom: 40px; border-radius: 8px; border: 1px solid #eee; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; background: white; }
+        th { text-align: left; background: var(--light-grey); padding: 12px; font-weight: 600; color: #555; border-bottom: 1px solid #eee; }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
+        .highlight { color: var(--orange); font-weight: 700; }
 
-    const data = {
-        "20": { 
-            male: { out: { push: 80, run: "9:15", mph: 9.8, split: "1:19" }, exc: { push: 70, run: "10:30", mph: 8.6, split: "1:30" } },
-            female: { out: { push: 51, run: "11:45", mph: 7.7, split: "1:40" }, exc: { push: 45, run: "13:15", mph: 6.8, split: "1:53" } }
-        },
-        "25": { 
-            male: { out: { push: 77, run: "9:30", mph: 9.5, split: "1:21" }, exc: { push: 67, run: "10:45", mph: 8.4, split: "1:32" } },
-            female: { out: { push: 48, run: "12:00", mph: 7.5, split: "1:42" }, exc: { push: 42, run: "13:30", mph: 6.7, split: "1:55" } }
-        }
-    };
-
-    function setHub(h) {
-        currentHub = h;
-        document.getElementById('btn-track').classList.toggle('active', h==='track');
-        document.getElementById('btn-gym').classList.toggle('active', h==='gym');
-    }
-
-    function startSession() {
-        document.getElementById('setup-screen').classList.add('hidden');
-        document.getElementById('workout-screen').classList.remove('hidden');
-        loadStep();
-    }
-
-    function loadStep() {
-        clearInterval(timerInterval); timerInterval = null;
-        const age = document.getElementById('age').value;
-        const gen = document.getElementById('gender').value;
-        const tier = document.getElementById('tier').value;
-        const goals = data[age] ? data[age][gen][tier] : data["20"][gen][tier];
-
-        if(currentStep === 0) {
-            updateUI("Push-ups", "02:00", `Target: ${goals.push} Reps`, 120);
-        } else if (currentStep === 1) {
-            updateUI("Plank", "03:00", "Hold Form", 180);
-        } else if (currentStep === 2) {
-            updateUI("Rest Transition", "05:00", "Hydrate & Move to Start", 300);
-        } else {
-            document.getElementById('event-name').innerText = "1.5 Mile Run";
-            document.getElementById('timer').innerText = goals.run;
-            if(currentHub === 'track') {
-                document.getElementById('lap-btn').style.display = 'block';
-                document.getElementById('action-btn').style.display = 'none';
-                document.getElementById('target-msg').innerText = `Target: ${goals.split} / Lap`;
-            } else {
-                document.getElementById('target-msg').innerText = `Speed: ${goals.mph} MPH @ 1.0%`;
-                document.getElementById('action-btn').innerText = "Finish Mission";
-            }
-        }
-    }
-
-    function updateUI(n, t, m, s) {
-        document.getElementById('event-name').innerText = n;
-        document.getElementById('timer').innerText = t;
-        document.getElementById('target-msg').innerText = m;
-        timeLeft = s;
-    }
-
-    function handleTimer() {
-        if (currentStep === 3 && currentHub === 'gym') return finalize();
-        if (timerInterval) {
-            clearInterval(timerInterval); timerInterval = null;
-            document.getElementById('action-btn').innerText = "Resume";
-        } else {
-            document.getElementById('action-btn').innerText = "Pause";
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                let m = Math.floor(timeLeft/60); let s = timeLeft%60;
-                document.getElementById('timer').innerText = `${m}:${s<10?'0':''}${s}`;
-                if(timeLeft<=0) { currentStep++; loadStep(); }
-            }, 1000);
-        }
-    }
-
-    function recordLap() {
-        laps++; document.getElementById('lap-count').innerText = laps;
-        if(laps >= 7) finalize();
-    }
-
-    function finalize() {
-        document.getElementById('workout-screen').classList.add('hidden');
-        document.getElementById('report-screen').classList.remove('hidden');
-        document.getElementById('results-data').innerHTML = `
-            <p><b>Status:</b> Ready for Monday</p>
-            <p><b>Hub:</b> ${currentHub.toUpperCase()}</p>
-            <p><b>Atsugi Laps:</b> 7/7 Complete</p>
-        `;
-    }
-
-    function shareMessenger() {
-        window.location.href = "fb-messenger://share?link=" + encodeURIComponent(window.location.href);
-    }
-
-    function copyInsta() {
-        navigator.clipboard.writeText("🦅 HSM-77 Saberhawk FRT Complete. Mission Ready for Monday.");
-        alert("Text copied! Paste into IG.");
-    }
-
-    function saveImage() {
-        html2canvas(document.querySelector("#report-capture")).then(canvas => {
-            let link = document.createElement('a');
-            link.download = 'HSM77-Report.png';
-            link.href = canvas.toDataURL();
-            link.click();
-        });
-    }
-</script>
-</body>
-</html>
+        /* Action Footer for Mobile */
+        .footer-actions { position: fixed; bottom:

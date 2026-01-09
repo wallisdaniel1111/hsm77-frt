@@ -2,124 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saberhawk PRT Training Plan</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Saberhawk PRT Focus Plan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --navy: #001220; --orange: #ff4d00; --text: #1a1a1a; --grey: #f4f4f4; }
-        
-        body { font-family: 'Inter', sans-serif; background: #ffffff; color: var(--text); margin: 0; padding: 0; line-height: 1.5; }
-        
-        /* Hero Section */
-        .hero { background: var(--navy); color: white; padding: 40px 20px; text-align: center; border-bottom: 5px solid var(--orange); }
-        .hero h1 { font-family: 'Oswald', sans-serif; font-size: 2rem; text-transform: uppercase; margin: 0; letter-spacing: 1px; }
-        .hero p { opacity: 0.8; font-size: 0.9rem; margin-top: 5px; }
+        :root { --navy: #0a1118; --gold: #c5a059; --card-bg: #16212c; --text-main: #e6edf3; --text-dim: #8b949e; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--navy); color: var(--text-main); margin: 0; padding-bottom: 100px; }
 
-        .container { max-width: 700px; margin: auto; padding: 20px; }
+        header { background: #000; padding: 25px 20px; text-align: center; border-bottom: 4px solid var(--gold); }
+        header h1 { font-family: 'Oswald', sans-serif; margin: 0; font-size: 1.6rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
 
-        /* Callout Box */
-        .notice { background: var(--grey); border-left: 5px solid var(--orange); padding: 20px; border-radius: 4px; margin-bottom: 30px; }
-        .notice h2 { font-size: 0.8rem; text-transform: uppercase; margin: 0 0 5px 0; color: var(--orange); }
+        .container { max-width: 600px; margin: auto; padding: 15px; }
 
-        /* Table Design */
-        h3 { font-family: 'Oswald', sans-serif; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 30px; text-transform: uppercase; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 0.9rem; }
-        th { text-align: left; background: #eee; padding: 10px; border: 1px solid #ddd; }
-        td { padding: 12px 10px; border: 1px solid #ddd; }
-        .highlight { font-weight: bold; color: var(--orange); }
+        /* Focus Filters */
+        .filter-label { font-size: 0.7rem; font-weight: bold; color: var(--gold); text-transform: uppercase; margin: 15px 0 5px 5px; display: block; }
+        .filter-group { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: none; }
+        .chip { background: var(--card-bg); border: 1px solid #23303e; color: var(--text-dim); padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+        .chip.active { background: var(--gold); color: #000; border-color: var(--gold); }
 
-        /* Floating Button */
-        .print-btn { 
-            position: fixed; bottom: 20px; right: 20px; 
-            background: var(--orange); color: white; border: none; 
-            padding: 15px 25px; border-radius: 50px; 
-            font-family: 'Oswald', sans-serif; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            text-transform: uppercase;
-        }
+        /* Interface Cards */
+        .card { background: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #23303e; transition: transform 0.3s ease; }
+        .card-header { color: var(--gold); font-family: 'Oswald', sans-serif; font-size: 1.1rem; text-transform: uppercase; margin-bottom: 15px; border-bottom: 1px solid #23303e; padding-bottom: 10px; }
 
-        @media print { 
-            .print-btn { display: none; } 
-            .hero { background: white !important; color: black !important; border-bottom: 2px solid black; }
-            body { padding: 0; }
-        }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        td { padding: 12px 5px; border-bottom: 1px solid #1c2936; }
+        .val { font-weight: 700; color: #fff; text-align: right; }
+        .split { color: var(--gold); font-size: 0.75rem; font-weight: normal; }
+
+        /* Modality Content */
+        .modality { display: none; }
+        .modality.visible { display: block; animation: fadeIn 0.4s ease forwards; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        footer { position: fixed; bottom: 0; width: 100%; background: #000; padding: 20px; box-sizing: border-box; display: flex; gap: 10px; border-top: 1px solid #23303e; }
+        .btn { flex: 1; padding: 15px; border-radius: 8px; border: none; font-family: 'Oswald', sans-serif; text-transform: uppercase; cursor: pointer; font-size: 0.9rem; }
+        .btn-gold { background: var(--gold); color: #000; }
     </style>
 </head>
 <body>
 
-    <section class="hero">
-        <h1>Saberhawk PRT Training Plan</h1>
-        <p>NAF Atsugi Local Standards</p>
-    </section>
+<header>
+    <h1>Saberhawk Training Plan</h1>
+</header>
 
-    <div class="container">
-        <div class="notice">
-            <h2>⚠️ Atsugi Calibration</h2>
-            The outdoor track is <strong>7 laps</strong> for 1.5 miles. Treadmills must be set to <strong>1.0% incline</strong>.
-        </div>
-
-        <h3>Target Standards (Ages 20-29)</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Tier</th>
-                    <th>Push-ups (M/F)</th>
-                    <th>Plank</th>
-                    <th>1.5m Run (Lap Split)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Outstanding</td>
-                    <td>80 / 51</td>
-                    <td>3:15</td>
-                    <td class="highlight">9:15 (1:19/lap)</td>
-                </tr>
-                <tr>
-                    <td>Excellent</td>
-                    <td>70 / 45</td>
-                    <td>3:00</td>
-                    <td class="highlight">10:30 (1:30/lap)</td>
-                </tr>
-                <tr>
-                    <td>Good</td>
-                    <td>47 / 21</td>
-                    <td>2:10</td>
-                    <td class="highlight">12:00 (1:42/lap)</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h3>Weekly Mission Schedule</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Day</th>
-                    <th>Focus</th>
-                    <th>Metric</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Mon/Wed</td>
-                    <td>Strength & Core</td>
-                    <td>3x Max Sets (Push-ups/Plank)</td>
-                </tr>
-                <tr>
-                    <td>Tue/Thu</td>
-                    <td>Atsugi Track</td>
-                    <td>7 Laps (Focus on Split Pacing)</td>
-                </tr>
-                <tr>
-                    <td>Friday</td>
-                    <td>Gym Hub</td>
-                    <td>30 min Steady State @ 1.0%</td>
-                </tr>
-            </tbody>
-        </table>
+<div class="container">
+    <span class="filter-label">Select Focus Area</span>
+    <div class="filter-group">
+        <div class="chip active" onclick="filterFocus('all', this)">Full PRT</div>
+        <div class="chip" onclick="filterFocus('push', this)">Push-ups</div>
+        <div class="chip" onclick="filterFocus('plank', this)">Plank</div>
+        <div class="chip" onclick="filterFocus('run', this)">1.5M Run</div>
     </div>
 
-    <button class="print-btn" onclick="window.print()">Download / Print Plan</button>
+    <div id="push" class="modality visible">
+        <div class="card">
+            <div class="card-header">Push-up Targets (Age 20-29)</div>
+            <table>
+                <tr><td>Outstanding</td><td class="val">80 Reps</td></tr>
+                <tr><td>Excellent</td><td class="val">70 Reps</td></tr>
+                <tr><td>Monday Goal</td><td class="val" style="color:var(--gold)">75 Reps</td></tr>
+            </table>
+        </div>
+    </div>
 
-</body>
-</html>
+    <div id="plank" class="modality visible">
+        <div class="card">
+            <div class="card-header">Plank Endurance</div>
+            <table>
+                <tr><td>Outstanding</td><td class="val">3:15</td></tr>
+                <tr><td>Excellent</td><td class="val">3:00</td></tr>
+                <tr><td>Training Hold</td><td class="val" style="color:var(--gold)">3:30</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="run" class="modality visible">
+        <div class="card">
+            <div class="card-header">1.5M Run (Atsugi 7-Lap)</div>
+            <table>
+                <tr>
+                    <td>Outstanding (9:15)</td>
+                    <td class="val"><span class="split">Target Split:</span> 1:19/lap</td>
+                </tr>
+                <tr>
+                    <td>Excellent (10:30)</td>
+                    <td class="val"><span class="split">Target Split:</span> 1:30/lap</td>
+                </tr>
+            </table>
+        </div>
+        <div class="card" style="background: rgba(197, 160, 89,

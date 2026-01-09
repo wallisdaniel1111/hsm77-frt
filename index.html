@@ -17,7 +17,6 @@
 
         .container { max-width: 850px; margin: auto; padding: 20px; }
 
-        /* Assessment Card */
         .assessment-card { background: var(--white); border-radius: 12px; padding: 35px; margin-top: -50px; box-shadow: 0 15px 40px rgba(0,0,0,0.12); border: 1px solid var(--border); }
         .section-tag { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #64748b; margin-bottom: 25px; display: block; border-left: 3px solid var(--red); padding-left: 10px; }
         
@@ -26,7 +25,6 @@
         label { font-size: 0.65rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px; }
         input, select { background: #f8fafc; border: 1px solid var(--border); padding: 14px; border-radius: 8px; font-size: 1rem; font-family: inherit; }
 
-        /* Results & Plan */
         #results-area { display: none; margin-top: 40px; animation: fadeIn 0.6s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -35,24 +33,22 @@
         .card::before { content: ""; position: absolute; top: 0; left: 0; width: 6px; height: 100%; background: var(--red); border-radius: 16px 0 0 16px; }
         .card-h { font-family: 'Oswald', sans-serif; font-size: 1.3rem; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; padding-bottom: 15px; color: var(--navy); }
         
-        .stat-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #f1f5f9; }
-        .val { font-weight: 800; font-size: 1.15rem; color: var(--navy); }
-        .points-stake { color: var(--red); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+        .stat-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; align-items: center; }
+        .val { font-weight: 800; font-size: 1.15rem; color: var(--navy); text-align: right; }
 
-        /* Training Table */
+        /* Pacing Table Style */
+        .pacing-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+        .pacing-table th { text-align: left; color: #94a3b8; border-bottom: 1px solid #eee; padding: 8px; font-size: 0.7rem; text-transform: uppercase; }
+        .pacing-table td { padding: 8px; border-bottom: 1px solid #f8f9fa; font-weight: 700; }
+
         .plan-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.85rem; }
         .plan-table td { padding: 12px 10px; border-bottom: 1px solid #f1f5f9; }
         .day-label { font-weight: 800; color: var(--navy); width: 80px; }
-
-        /* Hidden Technical PDF Content */
-        #pdf-technical-specs { display: none; margin-top: 30px; padding: 20px; background: #f8fafc; border: 1px dashed var(--border); border-radius: 8px; }
-        #pdf-technical-specs h3 { font-family: 'Oswald', sans-serif; font-size: 1rem; color: var(--navy); text-transform: uppercase; margin-top: 0; }
 
         footer { position: fixed; bottom: 0; width: 100%; background: var(--white); border-top: 1px solid var(--border); padding: 25px; box-sizing: border-box; text-align: center; z-index: 100; }
         .btn-action { background: var(--navy); color: white; border: none; padding: 18px 60px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 1rem; text-transform: uppercase; cursor: pointer; letter-spacing: 2px; }
 
         @media (max-width: 700px) { .grid-3, .grid-cards { grid-template-columns: 1fr; } }
-        @media print { #pdf-technical-specs { display: block !important; } footer { display: none; } }
     </style>
 </head>
 <body>
@@ -61,7 +57,7 @@
     <header>
         <div class="squadron-id">HSM 77 Saberhawks</div>
         <h1>PHYSICAL READINESS TRAINING</h1>
-        <p>Strategic performance monitoring and goal-gap analysis for HSM 77 personnel.</p>
+        <p>Strategic performance monitoring and lap-pacing intelligence for HSM 77.</p>
     </header>
 
     <div class="container">
@@ -73,14 +69,14 @@
                 <div class="field"><label>Base Capacity</label><select id="cap"><option value="low">Initial (Build Base)</option><option value="mid">Steady (Maintenance)</option><option value="high">Elite (Peak Performance)</option></select></div>
             </div>
             <div class="grid-3">
-                <div class="field"><label>Est. 1.5M Run</label><input type="text" id="curRun" placeholder="e.g. 13:00"></div>
+                <div class="field"><label>Est. 1.5M Run</label><input type="text" id="curRun" placeholder="e.g. 12:30"></div>
                 <div class="field"><label>Est. Max Push-ups</label><input type="number" id="curPush" placeholder="Current Max"></div>
-                <div class="field"><label>Est. Max Plank</label><input type="text" id="curPlank" placeholder="e.g. 2:00"></div>
+                <div class="field"><label>Est. Max Plank</label><input type="text" id="curPlank" placeholder="e.g. 2:15"></div>
             </div>
             <div class="grid-3">
-                <div class="field"><label>Goal Run Time</label><input type="text" id="goalRun" placeholder="Target"></div>
-                <div class="field"><label>Goal Push-ups</label><input type="number" id="goalPush" placeholder="Target"></div>
-                <div class="field"><label>Goal Plank</label><input type="text" id="goalPlank" placeholder="Target"></div>
+                <div class="field"><label>Goal Run Time</label><input type="text" id="goalRun" placeholder="Target Time"></div>
+                <div class="field"><label>Goal Push-ups</label><input type="number" id="goalPush" placeholder="Target Reps"></div>
+                <div class="field"><label>Goal Plank</label><input type="text" id="goalPlank" placeholder="Target Time"></div>
             </div>
             <button class="btn-action" style="width: 100%; margin-top: 20px;" onclick="generatePlan()">Generate Strategic Plan</button>
         </div>
@@ -88,23 +84,20 @@
         <div id="results-area">
             <div class="grid-cards">
                 <div class="card">
-                    <div class="card-h">Goal Gap Analysis</div>
-                    <div class="stat-row"><span>Target Run</span> <div><span class="val" id="res-run">-</span><br><span class="points-stake">+12-15 PTS POTENTIAL</span></div></div>
-                    <div class="stat-row"><span>Target Push-ups</span> <div><span class="val" id="res-push">-</span><br><span class="points-stake">+8-10 PTS POTENTIAL</span></div></div>
-                    <div class="stat-row"><span>Target Plank</span> <span class="val" id="res-plank">-</span></div>
+                    <div class="card-h">Performance Analysis</div>
+                    <div class="stat-row"><span>Pace/Lap (NAFA Track)</span><span class="val" id="res-split" style="color:var(--red)">-</span></div>
+                    <div class="stat-row"><span>Treadmill (1.0% Incline)</span><span class="val" id="res-treadmill">-</span></div>
+                    
+                    <table class="pacing-table">
+                        <thead><tr><th>Lap</th><th>Accumulated</th></tr></thead>
+                        <tbody id="lap-body"></tbody>
+                    </table>
                 </div>
 
                 <div class="card">
                     <div class="card-h">5-Day Training Matrix</div>
                     <table class="plan-table"><tbody id="plan-body"></tbody></table>
                 </div>
-            </div>
-
-            <div id="pdf-technical-specs">
-                <h3>Operational Technical Standards (NAF Atsugi)</h3>
-                <p><b>1. Track Calibration:</b> The outdoor track requires exactly 7.0 laps for 1.5 miles. Target lap split: <span id="pdf-split">--:--</span>.</p>
-                <p><b>2. Treadmill Conversion:</b> Set treadmill to 1.0% incline to simulate outdoor resistance. Minimum speed for goal: <span id="pdf-mph">--</span> MPH.</p>
-                <p><b>3. Form Protocol:</b> Push-ups must break 90 degrees. Planks must maintain a straight line from head to heels.</p>
             </div>
         </div>
     </div>
@@ -117,19 +110,21 @@
         const goalRun = document.getElementById('goalRun').value;
         const cap = document.getElementById('cap').value;
 
-        document.getElementById('res-run').innerText = goalRun;
-        document.getElementById('res-push').innerText = document.getElementById('goalPush').value + " Reps";
-        document.getElementById('res-plank').innerText = document.getElementById('goalPlank').value;
-
-        // Technical Math for PDF
         const timeParts = goalRun.split(':');
         if(timeParts.length === 2) {
             const totalSec = (parseInt(timeParts[0]) * 60) + parseInt(timeParts[1]);
-            const lapSec = Math.floor(totalSec / 7);
+            const lapSec = totalSec / 7;
             const mph = (1.5 / (totalSec / 3600)).toFixed(1);
             
-            document.getElementById('pdf-split').innerText = Math.floor(lapSec/60) + ":" + (lapSec%60 < 10 ? '0':'') + (lapSec%60);
-            document.getElementById('pdf-mph').innerText = mph;
+            document.getElementById('res-split').innerText = Math.floor(lapSec/60) + ":" + (Math.round(lapSec%60) < 10 ? '0':'') + Math.round(lapSec%60) + " / LAP";
+            document.getElementById('res-treadmill').innerText = mph + " MPH";
+
+            let lapHtml = "";
+            for(let i=1; i<=7; i++) {
+                let acc = Math.round(lapSec * i);
+                lapHtml += `<tr><td>Lap ${i}</td><td>${Math.floor(acc/60)}:${acc%60 < 10 ? '0':''}${acc%60}</td></tr>`;
+            }
+            document.getElementById('lap-body').innerHTML = lapHtml;
         }
 
         const plans = {
@@ -144,20 +139,11 @@
         document.getElementById('plan-body').innerHTML = html;
 
         document.getElementById('results-area').style.display = 'block';
-        window.scrollTo({ top: document.getElementById('results-area').offsetTop, behavior: 'smooth' });
+        window.scrollTo({ top: document.getElementById('results-area').offsetTop - 20, behavior: 'smooth' });
     }
 
     function exportPDF() {
         const element = document.getElementById('capture-area');
-        const opt = {
-            margin: 0.2,
+        html2pdf().from(element).set({
+            margin: 0,
             filename: 'HSM77_Tactical_Plan.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-        };
-        html2pdf().set(opt).from(element).save();
-    }
-</script>
-</body>
-</html>

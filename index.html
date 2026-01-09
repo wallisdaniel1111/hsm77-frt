@@ -36,7 +36,6 @@
         .stat-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; align-items: center; }
         .val { font-weight: 800; font-size: 1.15rem; color: var(--navy); text-align: right; }
 
-        /* Pacing Table Style */
         .pacing-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
         .pacing-table th { text-align: left; color: #94a3b8; border-bottom: 1px solid #eee; padding: 8px; font-size: 0.7rem; text-transform: uppercase; }
         .pacing-table td { padding: 8px; border-bottom: 1px solid #f8f9fa; font-weight: 700; }
@@ -66,7 +65,15 @@
             <div class="grid-3">
                 <div class="field"><label>Age</label><select id="age"><option value="20">20-24</option><option value="25">25-29</option><option value="30">30-34</option></select></div>
                 <div class="field"><label>Sex</label><select id="sex"><option value="male">Male</option><option value="female">Female</option></select></div>
-                <div class="field"><label>Base Capacity</label><select id="cap"><option value="low">Initial (Build Base)</option><option value="mid">Steady (Maintenance)</option><option value="high">Elite (Peak Performance)</option></select></div>
+                <div class="field">
+                    <label>Run Capacity (Comfortable)</label>
+                    <select id="runCap">
+                        <option value="15">15 Minutes</option>
+                        <option value="30">30 Minutes</option>
+                        <option value="45">45 Minutes</option>
+                        <option value="60">60 Minutes+</option>
+                    </select>
+                </div>
             </div>
             <div class="grid-3">
                 <div class="field"><label>Est. 1.5M Run</label><input type="text" id="curRun" placeholder="e.g. 12:30"></div>
@@ -108,7 +115,7 @@
 <script>
     function generatePlan() {
         const goalRun = document.getElementById('goalRun').value;
-        const cap = document.getElementById('cap').value;
+        const cap = parseInt(document.getElementById('runCap').value);
 
         const timeParts = goalRun.split(':');
         if(timeParts.length === 2) {
@@ -127,16 +134,43 @@
             document.getElementById('lap-body').innerHTML = lapHtml;
         }
 
-        const plans = {
-            low: ["Intervals: 90s Jog / 60s Walk (25m)", "Strength: 4 Sets Max Push-ups", "Speed: 4x200m at Split Pace", "Core: 3x Max Plank (90s Rest)", "Endurance: 35m Active Recovery"],
-            mid: ["Threshold: 3x800m at Goal Pace", "Strength: 5 Sets Max Push-ups", "Speed: 6x400m at Lap Split", "Core: 4:00 Total Plank Build", "Tempo: 25m Run (1.0% Incline)"],
-            high: ["Speed: 8x400m at Split - 3sec", "Volume: 100 Push-ups for Time", "Pacing: 2 Miles Steady Goal Pace", "Core: Weighted Plank Sets", "Long: 50m Aerobic Base Run"]
-        };
+        // Periodized Training Logic based on 15m intervals
+        let mon, tue, wed, thu, fri;
+        
+        if (cap <= 15) {
+            mon = "Intervals: 90s Jog / 60s Walk (25m Total)";
+            tue = "Strength: 4 Sets Max Push-ups / 3x60s Plank";
+            wed = "Track: 4x200m at Split Pace (Full Recovery)";
+            thu = "Active Recovery: 30m Power Walk (1.0% Incline)";
+            fri = "Endurance: 20m Continuous Slow Jog";
+        } else if (cap <= 30) {
+            mon = "Threshold: 3x800m at Goal Pace (2m Recovery)";
+            tue = "Strength: 5 Sets Max Push-ups / 3x90s Plank";
+            wed = "Speed: 6x400m at Lap Split Pace (90s Recovery)";
+            thu = "Tempo: 25m Steady Run @ 1.0% Incline";
+            fri = "Core/Mobility: 4:00 Total Plank Accumulation";
+        } else if (cap <= 45) {
+            mon = "Speed: 8x400m at Split - 3sec (75s Recovery)";
+            tue = "Power: 100 Push-ups for Time / 4x2m Plank";
+            wed = "Pacing: 2 Miles Steady at Goal Pace + 5%";
+            thu = "Aerobic Base: 40m Continuous Run (Easy)";
+            fri = "Threshold: 2x1600m at Goal Pace (3m Recovery)";
+        } else {
+            mon = "Speed: 10x400m at Split - 5sec (60s Recovery)";
+            tue = "Elite Strength: Weighted Plank Sets / Pyramids";
+            wed = "Overload: 3 Miles Steady at Goal Pace";
+            thu = "Aerobic Base: 60m Continuous Run (Zone 2)";
+            fri = "Simulation: 1 Mile Time Trial (Max Effort)";
+        }
 
-        let html = "";
-        const days = ["MON", "TUE", "WED", "THU", "FRI"];
-        days.forEach((d, i) => { html += `<tr><td class="day-label">${d}</td><td>${plans[cap][i]}</td></tr>`; });
-        document.getElementById('plan-body').innerHTML = html;
+        const planBody = `
+            <tr><td class="day-label">MON</td><td>${mon}</td></tr>
+            <tr><td class="day-label">TUE</td><td>${tue}</td></tr>
+            <tr><td class="day-label">WED</td><td>${wed}</td></tr>
+            <tr><td class="day-label">THU</td><td>${thu}</td></tr>
+            <tr><td class="day-label">FRI</td><td>${fri}</td></tr>
+        `;
+        document.getElementById('plan-body').innerHTML = planBody;
 
         document.getElementById('results-area').style.display = 'block';
         window.scrollTo({ top: document.getElementById('results-area').offsetTop - 20, behavior: 'smooth' });
@@ -147,3 +181,10 @@
         html2pdf().from(element).set({
             margin: 0,
             filename: 'HSM77_Tactical_Plan.pdf',
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        }).save();
+    }
+</script>
+</body>
+</html>

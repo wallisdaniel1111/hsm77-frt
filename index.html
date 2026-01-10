@@ -160,7 +160,7 @@
     </div>
 </div>
 
-<div id="how-it-works" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('how-it-works')">✕</div><h2 style="text-align:center;">THE LOGIC</h2><p>Daniel Wallis professional framework. McEwen Model readiness auditing.</p><button class="btn-primary" onclick="toggleModal('how-it-works')">Return Home</button></div></div>
+<div id="how-it-works" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('how-it-works')">✕</div><h2 style="text-align:center;">THE LOGIC</h2><p>Daniel Wallis framework. McEwen Model readiness auditing.</p><button class="btn-primary" onclick="toggleModal('how-it-works')">Return Home</button></div></div>
 <div id="roadmap-modal" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div><h2 style="text-align:center;">6-WEEK ROADMAP</h2><div class="timeline-step"><h4>WEEK 1: ADAPTATION</h4><p>Neural Priming.</p></div><button class="btn-primary" onclick="toggleModal('roadmap-modal')">Return Home</button></div></div>
 
 <footer>&copy; 2026 SABERHAWKS77</footer>
@@ -203,7 +203,11 @@
         document.getElementById('out-run-vol').innerText = "4 x 800m Repeats";
         
         if (currentMode === 'track') {
-            document.getElementById('out-run-pace').innerText="82s / Repeat";
+            const lapTime = 82; // Baseline for example
+            const totalRepeatTime = lapTime * 2;
+            const minutes = Math.floor(totalRepeatTime / 60);
+            const seconds = totalRepeatTime % 60;
+            document.getElementById('out-run-pace').innerHTML = `${lapTime}s / lap <br><small style="font-size:14px; color:#86868b;">Total: ${minutes}:${seconds.toString().padStart(2, '0')}</small>`;
             document.getElementById('run-label').innerText = "3. Run (800m Repeats)";
         } else {
             document.getElementById('out-run-pace').innerText="11.2 mph @ 1.0%";

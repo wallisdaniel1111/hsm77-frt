@@ -60,9 +60,6 @@
         .toggle-btn { flex: 1; padding: 8px; border: none; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; background: none; color: var(--text-secondary); }
         .toggle-btn.active { background: white; color: var(--apple-blue); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-        .timeline-step { border-left: 2px solid var(--apple-blue); padding: 0 0 25px 20px; position: relative; margin-left: 10px; }
-        .timeline-step::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; background: var(--apple-blue); border-radius: 50%; }
-
         #output-section { grid-column: 1 / -1; display: none; border-top: 4px solid var(--apple-blue); margin-top: 10px; }
         footer { grid-column: 1 / -1; text-align: center; padding: 40px; font-size: 11px; color: var(--text-secondary); }
     </style>
@@ -161,24 +158,25 @@
 </div>
 
 <div id="how-it-works" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('how-it-works')">✕</div><h2 style="text-align:center;">THE LOGIC</h2><p>Daniel Wallis framework. McEwen Model readiness auditing.</p><button class="btn-primary" onclick="toggleModal('how-it-works')">Return Home</button></div></div>
-<div id="roadmap-modal" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div><h2 style="text-align:center;">6-WEEK ROADMAP</h2><div class="timeline-step"><h4>WEEK 1: ADAPTATION</h4><p>Neural Priming.</p></div><button class="btn-primary" onclick="toggleModal('roadmap-modal')">Return Home</button></div></div>
+<div id="roadmap-modal" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div><h2 style="text-align:center;">6-WEEK ROADMAP</h2><p>Adaptive progression model.</p><button class="btn-primary" onclick="toggleModal('roadmap-modal')">Return Home</button></div></div>
 
 <footer>&copy; 2026 SABERHAWKS77</footer>
 
 <script>
-    let currentMode = 'track';
+    let currentRunMode = 'track';
     window.onload = async () => { loadData(); await fetchWeather(); };
     async function fetchWeather() { try { const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.45&longitude=139.45&current=temperature_2m,wind_speed_10m"); const d = await res.json(); document.getElementById('temp-val').innerText = d.current.temperature_2m + '°C'; document.getElementById('wind-val').innerText = d.current.wind_speed_10m; } catch(e) {} }
-    function handleUpdate() { calculateProjection(); saveData(); }
-    function resetToHome() { document.querySelectorAll('.modal').forEach(x => x.style.display = 'none'); window.scrollTo({top:0, behavior:'smooth'}); }
     
     function setRunMode(mode) {
-        currentMode = mode;
+        currentRunMode = mode;
         document.getElementById('track-btn').classList.toggle('active', mode === 'track');
         document.getElementById('tread-btn').classList.toggle('active', mode === 'treadmill');
         if(document.getElementById('output-section').style.display === 'block') generateDaily();
     }
 
+    function handleUpdate() { calculateProjection(); saveData(); }
+    function resetToHome() { document.querySelectorAll('.modal').forEach(x => x.style.display = 'none'); window.scrollTo({top:0, behavior:'smooth'}); }
+    
     function calculateProjection() {
         const curR = document.getElementById('curRun').value; const curP = parseInt(document.getElementById('curPush').value);
         const sDate = document.getElementById('startDate').value; const mult = parseFloat(document.getElementById('aerobicBase').value);
@@ -202,12 +200,12 @@
         document.getElementById('out-push').innerText="52";
         document.getElementById('out-run-vol').innerText = "4 x 800m Repeats";
         
-        if (currentMode === 'track') {
-            const lapTime = 82; // Baseline for example
-            const totalRepeatTime = lapTime * 2;
-            const minutes = Math.floor(totalRepeatTime / 60);
-            const seconds = totalRepeatTime % 60;
-            document.getElementById('out-run-pace').innerHTML = `${lapTime}s / lap <br><small style="font-size:14px; color:#86868b;">Total: ${minutes}:${seconds.toString().padStart(2, '0')}</small>`;
+        if (currentRunMode === 'track') {
+            const lapTime = 82; 
+            const totalSec = lapTime * 2;
+            const min = Math.floor(totalSec / 60);
+            const sec = totalSec % 60;
+            document.getElementById('out-run-pace').innerHTML = `${lapTime}s / lap <br><small style="font-size:14px; color:#86868b;">Total: ${min}:${sec.toString().padStart(2, '0')}</small>`;
             document.getElementById('run-label').innerText = "3. Run (800m Repeats)";
         } else {
             document.getElementById('out-run-pace').innerText="11.2 mph @ 1.0%";
@@ -216,16 +214,20 @@
     }
 
     function saveData() { 
-        const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, s: document.getElementById('startDate').value, a: document.getElementById('aerobicBase').value }; 
-        localStorage.setItem('saberhawks_stable_v1', JSON.stringify(d)); 
+        const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, s: document.getElementById('startDate').value, a: document.getElementById('aerobicBase').value, gR: document.getElementById('goalRun').value, gP: document.getElementById('goalPush').value, gPl: document.getElementById('goalPlank').value, cPl: document.getElementById('curPlank').value }; 
+        localStorage.setItem('saberhawks_permanent_v1', JSON.stringify(d)); 
     }
     function loadData() { 
-        const s = JSON.parse(localStorage.getItem('saberhawks_stable_v1')); 
+        const s = JSON.parse(localStorage.getItem('saberhawks_permanent_v1')); 
         if (s) { 
             document.getElementById('curRun').value = s.r || ""; 
             document.getElementById('curPush').value = s.p || ""; 
             document.getElementById('startDate').value = s.s || ""; 
             document.getElementById('aerobicBase').value = s.a || "1.0";
+            document.getElementById('goalRun').value = s.gR || "";
+            document.getElementById('goalPush').value = s.gP || "";
+            document.getElementById('goalPlank').value = s.gPl || "";
+            document.getElementById('curPlank').value = s.cPl || "";
             calculateProjection(); 
         } 
     }

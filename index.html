@@ -189,7 +189,6 @@
             let pR = rS * (1 - (0.08 * mult));
             document.getElementById('proj-run').innerText = `${Math.floor(pR/60)}:${Math.floor(pR%60).toString().padStart(2,'0')}`;
             document.getElementById('proj-push').innerText = Math.round(curP * (1 + (0.12 * mult)));
-            document.getElementById('proj-plank').innerText = "CALC...";
         }
     }
     function generateDaily() {

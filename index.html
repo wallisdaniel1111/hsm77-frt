@@ -246,10 +246,10 @@
     }
     function saveData() {
         const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, a: document.getElementById('aerobicBase').value, s: document.getElementById('startDate').value };
-        localStorage.setItem('saber_v1_16', JSON.stringify(d));
+        localStorage.setItem('saber_v1_17', JSON.stringify(d));
     }
     function loadData() {
-        const s = JSON.parse(localStorage.getItem('saber_v1_16'));
+        const s = JSON.parse(localStorage.getItem('saber_v1_17'));
         if (s) { Object.keys(s).forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k]; }); calculateProjection(); }
     }
     function saveLogEntry() {

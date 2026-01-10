@@ -176,11 +176,9 @@
         if (sDate) { 
             const diff = Math.floor((new Date() - new Date(sDate)) / 86400000) + 1; 
             document.getElementById('day-label').innerText = `CURRENTLY: DAY ${Math.max(1, diff)}`;
-            
             const progress = Math.min(100, Math.max(0, (diff / 42) * 100));
             document.getElementById('p-container').style.display = 'block';
             document.getElementById('progress-fill').style.width = progress + '%';
-            
             const pLabel = document.getElementById('phase-label');
             pLabel.style.display = 'block';
             if(diff <= 7) pLabel.innerText = "Phase: Adaptation";
@@ -200,7 +198,6 @@
             let lS = (parseInt(curL.split(':')[0])*60) + parseInt(curL.split(':')[1]);
             let pL = lS * (1 + (0.15 * mult));
             document.getElementById('proj-plank').innerText = `${Math.floor(pL/60)}:${Math.floor(pL%60).toString().padStart(2,'0')}s`;
-
             if(goalR.includes(':')) {
                 let gS = (parseInt(goalR.split(':')[0])*60)+parseInt(goalR.split(':')[1]);
                 let def = ((pR - gS) / gS * 100).toFixed(1);
@@ -224,11 +221,11 @@
 
     function saveData() {
         const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, l: document.getElementById('curPlank').value, a: document.getElementById('aerobicBase').value, s: document.getElementById('startDate').value, gr: document.getElementById('goalRun').value, gp: document.getElementById('goalPush').value, gl: document.getElementById('goalPlank').value };
-        localStorage.setItem('saber_v1_10', JSON.stringify(d));
+        localStorage.setItem('saber_v1_11', JSON.stringify(d));
     }
 
     function loadData() {
-        const s = JSON.parse(localStorage.getItem('saber_v1_10'));
+        const s = JSON.parse(localStorage.getItem('saber_v1_11'));
         if (s) {
             document.getElementById('curRun').value = s.r; document.getElementById('curPush').value = s.p; document.getElementById('curPlank').value = s.l; document.getElementById('aerobicBase').value = s.a; document.getElementById('startDate').value = s.s; document.getElementById('goalRun').value = s.gr; document.getElementById('goalPush').value = s.gp; document.getElementById('goalPlank').value = s.gl;
             calculateProjection();
@@ -250,7 +247,13 @@
     function exportCSV() {
         const logs = JSON.parse(localStorage.getItem('saberhawks_logs') || '[]');
         let csv = "Date,Notes\n"; logs.forEach(l => { csv += `"${l.date}","${l.text.replace(/"/g, '""')}"\n`; });
-        const blob = new Blob([csv], { type: 'text/csv' }); const url = window.URL.createObjectURL(blob); const a = document.createElement('a'); a.setAttribute('href', url); a.setAttribute('download', 'saber_training_history.csv'); a.click();
+        const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csv);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "saber_training_history.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }

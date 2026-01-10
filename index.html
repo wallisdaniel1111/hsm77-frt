@@ -3,127 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SABERHAWKS77 | PRT Training Intelligence</title>
+    <title>SABERHAWKS77</title>
+    
     <style>
-        :root { --apple-gray: #F5F5F7; --apple-blue: #007AFF; --text-main: #1D1D1F; --text-secondary: #86868B; --apple-red: #FF3B30; }
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--apple-gray); margin: 0; -webkit-font-smoothing: antialiased; }
-        header { padding: 40px 20px; text-align: center; }
-        header h1 { font-size: 32px; font-weight: 700; margin: 0; text-transform: uppercase; }
-        .nav-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
-        .tab-link { font-size: 11px; font-weight: 700; color: var(--apple-blue); text-transform: uppercase; cursor: pointer; text-decoration: none; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 0 16px 60px; display: grid; gap: 20px; }
-        .card { background: white; border-radius: 24px; padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); }
+        :root {
+            --apple-bg: #F5F5F7;
+            --apple-card: #FFFFFF;
+            --apple-blue: #007AFF;
+            --apple-text: #1D1D1F;
+            --apple-secondary: #86868B;
+            --apple-border: #D2D2D7;
+            --apple-red: #FF3B30;
+            --apple-green: #34C759;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+            background-color: var(--apple-bg);
+            color: var(--apple-text);
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header { padding: 48px 20px 10px; text-align: center; }
+        header h1 { font-size: 40px; font-weight: 700; letter-spacing: -1.2px; margin: 0; text-transform: uppercase; }
+        header p { font-size: 17px; font-weight: 400; margin-top: 8px; opacity: 0.8; }
+
+        .nav-tabs { display: flex; justify-content: center; gap: 24px; margin: 24px 0 32px; flex-wrap: wrap; }
+        .tab-link { font-size: 13px; font-weight: 600; color: var(--apple-blue); cursor: pointer; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px 80px; display: grid; gap: 24px; }
+        .card { background: var(--apple-card); border-radius: 32px; padding: 40px; box-shadow: 0 8px 40px rgba(0,0,0,0.04); }
         .span-2 { grid-column: span 1; }
-        @media (min-width: 768px) { .span-2 { grid-column: span 2; } .container { grid-template-columns: repeat(3, 1fr); } }
-        label { font-size: 9px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block; margin-bottom: 5px; }
-        input, select, textarea { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #D2D2D7; background: #FBFBFD; font-size: 16px; margin-bottom: 12px; box-sizing: border-box; }
-        .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; cursor: pointer; width: 100%; }
-        .target-box { background: var(--apple-gray); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 10px; }
-        .stat-val { font-size: 28px; font-weight: 700; color: var(--apple-blue); }
-        .rest-tag { font-size: 10px; font-weight: 800; color: var(--apple-red); background: rgba(255,59,48,0.1); padding: 4px 10px; border-radius: 10px; margin-top: 5px; display: inline-block; }
-        .trajectory-card { background: #FBFBFD; border-top: 4px solid var(--apple-blue); padding: 24px; border-radius: 24px; margin-top: 10px; }
-        .trajectory-val { font-size: 28px; font-weight: 800; color: #1D1D1F; text-transform: uppercase; margin: 10px 0; }
-        .evidence-quote { padding: 16px 24px; border-left: 2px solid #D2D2D7; margin-top: 20px; }
-        .evidence-quote p { font-style: italic; font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 0 0 8px; }
-        .evidence-quote a { font-size: 11px; font-weight: 600; color: var(--apple-blue); text-decoration: none; text-transform: uppercase; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; padding: 40px 20px; box-sizing: border-box; }
-        .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold; }
-        .section-box { border-left: 3px solid var(--apple-blue); background: #FBFBFD; padding: 20px; border-radius: 0 16px 16px 0; margin-bottom: 25px; }
+        @media (min-width: 768px) { .container { grid-template-columns: repeat(3, 1fr); } .span-2 { grid-column: span 2; } }
+
+        /* Apple Readiness Ring UI */
+        .ring-container { position: relative; width: 140px; height: 140px; margin: 20px auto; }
+        .ring-svg { transform: rotate(-90deg); width: 140px; height: 140px; }
+        .ring-circle-bg { fill: none; stroke: #F2F2F7; stroke-width: 12; }
+        .ring-circle-fg { fill: none; stroke: var(--apple-blue); stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease; }
+        .ring-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 28px; font-weight: 700; }
+
+        label { font-size: 10px; font-weight: 700; color: var(--apple-secondary); text-transform: uppercase; display: block; margin-bottom: 8px; letter-spacing: 0.5px; }
+        input, select, textarea { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid var(--apple-border); background: #FBFBFD; font-size: 17px; margin-bottom: 16px; box-sizing: border-box; }
+        .btn-blue { background: var(--apple-blue); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 17px; font-weight: 600; cursor: pointer; width: 100%; transition: transform 0.1s; }
+        .btn-blue:active { transform: scale(0.98); }
+        .btn-gray { background: #E5E5EA; color: var(--apple-text); border: none; padding: 18px; border-radius: 16px; font-size: 17px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 12px; }
+
+        .target-box { background: var(--apple-bg); border-radius: 24px; padding: 24px; text-align: center; margin-bottom: 12px; }
+        .stat-val { font-size: 36px; font-weight: 700; color: var(--apple-blue); margin: 4px 0; }
+        .rest-pill { font-size: 11px; font-weight: 800; color: var(--apple-red); background: rgba(255,59,48,0.1); padding: 4px 14px; border-radius: 20px; display: inline-block; text-transform: uppercase; }
+
+        .run-card { border: 2.5px solid var(--apple-blue); border-radius: 28px; padding: 32px; text-align: center; margin-top: 16px; }
+
+        /* Trajectory & Evidence Anchor */
+        .trajectory-box { border-top: 4px solid var(--apple-blue); padding-top: 24px; margin-top: 32px; }
+        .traj-val { font-size: 32px; font-weight: 800; text-transform: uppercase; margin: 8px 0; }
+        .evidence-quote { padding: 32px 0; border-top: 1px solid var(--apple-border); margin-top: 40px; }
+        .evidence-quote p { font-style: italic; font-size: 15px; color: var(--apple-secondary); line-height: 1.6; }
+        .evidence-quote a { font-size: 12px; font-weight: 700; color: var(--apple-blue); text-decoration: none; text-transform: uppercase; }
+
+        /* Modal Elements */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #FFF; z-index: 10000; overflow-y: auto; }
+        .modal-content { max-width: 650px; margin: 0 auto; padding: 80px 24px; position: relative; }
+        .close-x { position: absolute; top: 30px; right: 30px; font-size: 28px; cursor: pointer; }
+        .apple-info-card { background: #F2F2F7; border-radius: 24px; padding: 32px; margin-bottom: 24px; border-left: 5px solid var(--apple-blue); }
+        
+        footer { text-align: center; padding: 60px 20px; font-size: 13px; color: var(--apple-secondary); font-weight: 500; }
     </style>
 </head>
 <body>
 
-<header><h1>SABERHAWKS77</h1><p>PRT Training Intelligence</p></header>
+<header>
+    <h1>SABERHAWKS77</h1>
+    <p>PRT Training Intelligence</p>
+</header>
 
-<div class="nav-tabs">
-    <span class="tab-link" onclick="toggleModal('how-it-works')">Methodology</span>
-    <span class="tab-link" onclick="toggleModal('roadmap-modal')">Roadmap</span>
-    <span class="tab-link" onclick="toggleModal('log-page')">Log & Export</span>
+<nav class="nav-tabs">
+    <span class="tab-link" onclick="toggleM('logic')">Methodology</span>
+    <span class="tab-link" onclick="toggleM('roadmap')">Roadmap</span>
+    <span class="tab-link" onclick="toggleM('log')">Log & Export</span>
     <a href="https://www.mapmyrun.com/" target="_blank" class="tab-link">MapMyRun ↗</a>
-</div>
+</nav>
 
 <div class="container">
     <div class="card span-2">
         <h2>Physiological Calibration</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
             <div>
                 <h3>Baselines</h3>
-                <div style="display: flex; gap: 10px;"><input type="number" id="age" placeholder="Age"><select id="sex"><option value="m">Male</option><option value="f">Female</option></select></div>
-                <label>1.5Mi Run</label><input type="text" id="curRun" placeholder="MM:SS">
-                <label>Push-ups (2mins)</label><input type="number" id="curPush">
-                <label>Plank (MM:SS)</label><input type="text" id="curPlank">
+                <div style="display: flex; gap: 12px;"><input type="number" id="age" placeholder="Age"><select id="sex"><option value="m">Male</option><option value="f">Female</option></select></div>
+                <label>1.5Mi Run Baseline</label><input type="text" id="curRun" placeholder="MM:SS">
+                <label>Push-ups (2m)</label><input type="number" id="curPush">
+                <label>Plank (MM:SS)</label><input type="text" id="curPlank" placeholder="MM:SS">
                 <label>Continuous Run Capacity</label><select id="ab"><option value="0.7">15m</option><option value="1.0" selected>30m</option><option value="1.3">45m+</option></select>
             </div>
             <div>
                 <h3>6-Week Goal</h3>
                 <label>Goal 1.5Mi</label><input type="text" id="goalRun" placeholder="MM:SS">
                 <label>Goal Push-ups</label><input type="number" id="goalPush">
-                <label>Goal Plank</label><input type="text" id="goalPlank">
+                <label>Goal Plank</label><input type="text" id="goalPlank" placeholder="MM:SS">
                 <label>Start Date</label><input type="date" id="startDate">
-                <button class="btn-primary" onclick="generateDaily()">Generate Plan</button>
+                <button class="btn-blue" onclick="gen()">Generate Plan</button>
             </div>
         </div>
     </div>
 
-    <div id="output-section" class="span-2" style="display:none;">
+    <div class="card">
+        <h3>Stress Calibration</h3>
+        <label>Sleep Status</label>
+        <select id="sleep" onchange="ring()"><option value="1">Restored (8h+)</option><option value="0.8" selected>Average (6-7h)</option><option value="0.5">Deprived (<5h)</option></select>
+        <label>Muscle Soreness</label>
+        <select id="sore" onchange="ring()"><option value="1">Fresh</option><option value="0.7">Moderate</option><option value="0.4">Significant</option></select>
+        <label>Life Stress Score</label>
+        <select id="stress" onchange="ring()"><option value="1">Low</option><option value="0.7">Moderate</option><option value="0.3">High (Hazardous)</option></select>
+        
+        <div class="ring-container">
+            <svg class="ring-svg"><circle class="ring-circle-bg" cx="70" cy="70" r="60"/><circle id="ring-fg" class="ring-circle-fg" cx="70" cy="70" r="60" style="stroke-dasharray: 377; stroke-dashoffset: 75;"/></svg>
+            <div id="ring-val" class="ring-text">80%</div>
+        </div>
+        <p style="font-size:11px; text-align:center; color:var(--apple-secondary); font-weight:700;">READINESS INDEX</p>
+    </div>
+
+    <div id="output" class="span-2" style="display:none;">
         <div class="card">
             <h2>Today's Prescription</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-                <div class="target-box"><label>1. Plank</label><div id="out-plank" class="stat-val">--</div><div class="rest-tag">60s REST</div></div>
-                <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">--</div><div class="rest-tag">120s REST</div></div>
-                <div class="target-box" style="border: 2px solid var(--apple-blue);"><label>3. Run (800m)</label><div id="out-pace" class="stat-val">82s/lap</div><div style="font-size:12px; font-weight:600; margin:5px 0;">Total: 2:44</div><div style="font-size:10px; font-weight:800; border:1px solid #ddd; padding:4px; border-radius:8px;">90S INTERVAL REST</div></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="target-box"><label>1. Plank</label><div class="stat-val" id="out-plank">--</div><div class="rest-pill">60s Rest</div></div>
+                <div class="target-box"><label>2. Push-ups</label><div class="stat-val" id="out-push">--</div><div class="rest-pill">120s Rest</div></div>
             </div>
+            <div class="run-card">
+                <label>3. Run (800m Repeats)</label>
+                <div class="stat-val">82s / lap</div>
+                <div style="font-weight:700; margin:8px 0; font-size:18px;">Total Repeat: 2:44</div>
+                <div style="font-size:11px; font-weight:800; border:1px solid var(--apple-border); padding:6px 16px; border-radius:12px; display:inline-block;">90S INTERVAL REST</div>
+            </div>
+
             <div class="evidence-quote">
                 <p>Concurrent strength and endurance training improves running economy by enhancing musculotendinous stiffness, allowing for higher force production with lower oxygen consumption.</p>
-                <a href="https://pubmed.ncbi.nlm.nih.gov/29043072/" target="_blank">Source: Blagrove et al. (2018) ↗</a>
+                <a href="https://pubmed.ncbi.nlm.nih.gov/29043072/" target="_blank">SOURCE: BLAGROVE ET AL. (2018) ↗</a>
             </div>
-        </div>
-        <div class="trajectory-card">
-            <h3>Tier Trajectory</h3>
-            <div id="traj-val" class="trajectory-val">PROJECTED: --</div>
-            <p style="font-size:13px; color:var(--text-secondary);">Fatigue is currently masking performance. Week 6 taper will reveal peak scores.</p>
+
+            <div class="trajectory-box">
+                <label>Tier Trajectory</label>
+                <div class="traj-val">PROJECTED: <span id="traj-val-out">--</span></div>
+                <p style="font-size: 15px; color: var(--apple-secondary); line-height: 1.5;">Fatigue is currently masking performance. Week 6 taper will reveal peak scores.</p>
+            </div>
         </div>
     </div>
 </div>
 
-<div id="log-page" class="modal"><div class="close-x" onclick="toggleModal('log-page')">✕</div><div class="modal-header">PERFORMANCE LOG & EXPORT</div><textarea id="log-input" placeholder="Notes..." style="height:300px;"></textarea><button class="btn-primary" onclick="saveLog()">Save Entry</button><button class="btn-primary" style="background:#E5E5EA; color:#1D1D1F; margin-top:10px;" onclick="window.print()">Export Log</button><div id="log-display"></div></div>
+<div id="logic" class="modal"><div class="modal-content">
+    <div class="close-x" onclick="toggleM('logic')">✕</div>
+    <h2 style="text-align:center; margin-bottom:48px;">THE LOGIC BEHIND THE PLAN</h2>
+    <div class="apple-info-card"><label>BACKGROUND</label><p style="font-size:17px; line-height:1.6;"><strong>SABERHAWKS77</strong> is built upon the professional framework of <strong>Daniel Wallis</strong>, a multiple NZ representative, ALL-NAVY team member, and former NIKE Professional athlete.</p></div>
+    <p><strong>The Allostatic Advantage:</strong> Utilizing the McEwen Model.</p>
+    <div class="apple-info-card" style="background:#F0F7FF;"><label>THE PHYSIOLOGY OF THE TAPER</label><ul style="line-height:2;"><li>Mitochondrial Enzyme Peak</li><li>Glycogen Supercompensation</li><li>Hematological Recovery</li></ul></div>
+    <button class="btn-blue" onclick="toggleM('logic')">Return Home</button>
+</div></div>
 
-<div id="how-it-works" class="modal">
-    <div class="close-x" onclick="toggleModal('how-it-works')">✕</div><div class="modal-header">THE LOGIC BEHIND THE PLAN</div>
-    <div class="section-box"><span class="section-title">BACKGROUND</span><p><strong>SABERHAWKS77</strong> is built upon the professional framework of <strong>Daniel Wallis</strong>, a multiple New Zealand representative and ALL-NAVY team member. This program translates elite-level championship preparation into a scalable protocol for the Navy PRT.</p></div>
-    <p><strong>The Allostatic Advantage:</strong> Utilizing the McEwen Model of Allostatic Load to audit readiness.</p>
-    <p><strong>Environmental Intelligence:</strong> Applying Astrand-Ryhming thermal corrections for NAF Atsugi.</p>
-    <p><strong>The Sequence Science:</strong> <ul><li>Plank First: Proximal Stiffness</li><li>Push-ups: Lactate Shuttling</li><li>Run: Metabolic Loading</li></ul></p>
-    <div class="section-box" style="background:#F0F7FF; border:1px solid #D0E5FF; border-left:3px solid var(--apple-blue);"><span class="section-title">THE PHYSIOLOGY OF THE TAPER</span><ul><li>Mitochondrial Enzyme Peak</li><li>Glycogen Supercompensation</li><li>Hematological Recovery</li></ul></div>
-</div>
+<div id="roadmap" class="modal"><div class="modal-content">
+    <div class="close-x" onclick="toggleM('roadmap')">✕</div>
+    <h2 style="text-align:center; margin-bottom:48px;">6-WEEK ROADMAP</h2>
+    <div class="apple-info-card"><label>Week 1: Adaptation</label><p>Neural Priming. Teaching the brain goal pace rhythm.</p></div>
+    <div class="apple-info-card"><label>Week 6: Absorption</label><p>The Taper. Shedding fatigue to reveal Day 42 Peak.</p></div>
+    <button class="btn-blue" onclick="toggleM('roadmap')">Return Home</button>
+</div></div>
 
-<div id="roadmap-modal" class="modal">
-    <div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div><div class="modal-header">6-WEEK TACTICAL ROADMAP</div>
-    <div class="section-box"><span class="section-title">WEEK 1: ADAPTATION</span><p>Neural Priming. Teaching the brain goal pace rhythm.</p></div>
-    <div class="section-box"><span class="section-title">WEEK 2: LOADING</span><p>Structural Stress. Building mitochondrial density.</p></div>
-    <div class="section-box"><span class="section-title">WEEK 3: DEVELOPMENT</span><p>Threshold Expansion.</p></div>
-    <div class="section-box"><span class="section-title">WEEK 4: OVERREACHING</span><p>Peak Load. Maximum growth stimulus.</p></div>
-    <div class="section-box"><span class="section-title">WEEK 5: REALIZATION</span><p>Intensity Maintenance.</p></div>
-    <div class="section-box"><span class="section-title">WEEK 6: ABSORPTION</span><p>The Taper. Shedding fatigue to reveal Day 42 Peak.</p></div>
-</div>
-
-<footer>&copy; 2026 SABERHAWKS77 | DANIEL WALLIS, BA</footer>
+<div id="log" class="modal"><div class="modal-content">
+    <div class="close-x" onclick="toggleM('log')">✕</div>
+    <h2 style="text-align:center;">PERFORMANCE LOG</h2>
+    <textarea id="log-in" placeholder="Notes..." style="height:380px;"></textarea>
+    <button class="btn-blue" onclick="save()">Save Entry</button>
+    <button class="btn-gray" onclick="window.print()">Export Log</button>
+    <div id="log-out" style="margin-top:32px;"></div>
+</div></div>
 
 <script>
-    function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
-    function resetToHome() { document.querySelectorAll('.modal').forEach(x => x.style.display = 'none'); }
-    function generateDaily() { 
-        document.getElementById('output-section').style.display = 'block'; 
+    function toggleM(id) { document.getElementById(id).style.display = (document.getElementById(id).style.display==='block')?'none':'block'; }
+    function ring() {
+        const score = (parseFloat(document.getElementById('sleep').value) + parseFloat(document.getElementById('sore').value) + parseFloat(document.getElementById('stress').value)) / 3;
+        document.getElementById('ring-val').innerText = Math.round(score * 100) + "%";
+        document.getElementById('ring-fg').style.strokeDashoffset = 377 - (377 * score);
+        document.getElementById('ring-fg').style.stroke = score > 0.8 ? '#34C759' : score > 0.5 ? '#007AFF' : '#FF3B30';
+    }
+    function gen() {
+        document.getElementById('output').style.display = 'block';
         const g = document.getElementById('goalRun').value;
         if(g && g.includes(':')){
             let s = (parseInt(g.split(':')[0])*60)+parseInt(g.split(':')[1]);
-            let t = s < 630 ? "OUTSTANDING" : s < 720 ? "EXCELLENT" : s < 840 ? "GOOD" : "SATISFACTORY";
-            document.getElementById('traj-val').innerText = `PROJECTED: ${t}`;
+            document.getElementById('traj-val-out').innerText = s < 630 ? "OUTSTANDING" : s < 720 ? "EXCELLENT" : "GOOD";
         }
         document.getElementById('out-plank').innerText = document.getElementById('goalPlank').value || "03:40";
         document.getElementById('out-push').innerText = (document.getElementById('goalPush').value || "80") + " reps";
+        ring();
+        window.scrollTo({top: document.getElementById('output').offsetTop - 20, behavior: 'smooth'});
     }
-    function saveLog() { const l = document.getElementById('log-input').value; if(l){ const d = document.createElement('div'); d.style.padding = '10px'; d.style.borderBottom = '1px solid #EEE'; d.innerText = `${new Date().toLocaleDateString()}: ${l}`; document.getElementById('log-display').prepend(d); document.getElementById('log-input').value = ''; } }
+    function save() { const l = document.getElementById('log-in').value; if(l){ const d = document.createElement('div'); d.style.padding='20px'; d.style.borderBottom='1px solid #EEE'; d.innerText=`${new Date().toLocaleDateString()}: ${l}`; document.getElementById('log-out').prepend(d); document.getElementById('log-in').value=''; } }
 </script>
 </body>
 </html>

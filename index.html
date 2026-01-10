@@ -42,7 +42,7 @@
         .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; }
-        .modal-content { max-width: 700px; margin: 0 auto; padding: 60px 24px; line-height: 1.6; color: var(--text-main); }
+        .modal-content { max-width: 700px; margin: 0 auto; padding: 60px 24px; line-height: 1.6; color: var(--text-main); position: relative; }
         .modal-content h2 { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 30px; letter-spacing: -0.5px; }
         .modal-content h4 { color: var(--apple-blue); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin: 25px 0 10px; }
         .modal-content p { font-size: 15px; margin-bottom: 15px; color: #3A3A3C; }
@@ -127,34 +127,32 @@
 <div id="how-it-works" class="modal">
     <div class="modal-content">
         <div class="close-x" onclick="toggleModal('how-it-works')">✕</div>
-        <h2>METHODOLOGY</h2>
-        <h4>Professional Framework</h4>
-        <p>Built upon the elite framework of <strong>Daniel Wallis</strong>, an ALL-NAVY team member and former NIKE Professional athlete. This protocol translates Olympic-level interval training into a tactical environment.</p>
-        <h4>The Allostatic Audit</h4>
-        <p>We utilize the <strong>McEwen Model of Allostatic Load</strong> to manage the intersection of operational stress and training. The algorithm prevents CNS burnout by ensuring high intensities are only prescribed when your physiology is prepared to adapt.</p>
-        <h4>Neural Pace Priming</h4>
-        <p>Focusing on 800m repeats with specific 400m lap targets (e.g., 82s/lap) primes the nervous system to maintain goal-pace rhythm without metabolic collapse.</p>
-        <button class="btn-primary" onclick="toggleModal('how-it-works')">Close</button>
+        <h2>THE LOGIC BEHIND THE PLAN</h2>
+        <p><strong>BACKGROUND:</strong> SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis</strong>, an ALL-NAVY team member and former NIKE Professional athlete. This program scales elite-level track and field preparation into a high-performance protocol specifically for the Navy PRT.</p>
+        <p><strong>The Allostatic Advantage:</strong> Utilizing the <strong>McEwen Model of Allostatic Load</strong> to audit readiness. The program pivots in real-time based on sleep and stress inputs, ensuring high intensities are only prescribed when the physiology is capable of adaptation.</p>
+        <p><strong>Neural Pace Priming:</strong> Success in the 1.5-mile run is determined by Lactate Threshold and Running Economy. By focusing on 800m repeats with specific 400m lap targets (e.g., 82s/lap), we prime your nervous system to recognize and maintain goal-pace rhythm without the metabolic collapse associated with "blind" running.</p>
+        <p><strong>Lactate Clearance Logistics:</strong> Training at exactly 102% of goal pace forces the body to improve its ability to clear blood lactate while under movement stress. This ensures that the final 400m of your PRT is a controlled acceleration.</p>
+        <button class="btn-primary" onclick="toggleModal('how-it-works')">Return Home</button>
     </div>
 </div>
 
 <div id="roadmap-modal" class="modal">
     <div class="modal-content">
         <div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div>
-        <h2>6-WEEK ROADMAP</h2>
+        <h2>6-WEEK TACTICAL ROADMAP</h2>
         <h4>Week 1: Adaptation</h4>
-        <p>Neural Priming. Establishing the foundation for goal-pace rhythm and teaching the body the mechanics of interval recovery.</p>
+        <p><strong>Neural Priming.</strong> Establishing the foundation for goal-pace rhythm and teaching the body the mechanics of interval recovery.</p>
         <h4>Week 2: Loading</h4>
-        <p>Structural Stress. Incremental increase in interval volume to build mitochondrial density and aerobic strength.</p>
+        <p><strong>Structural Stress.</strong> Incremental increase in interval volume to build mitochondrial density and aerobic strength.</p>
         <h4>Week 3: Development</h4>
-        <p>Threshold Expansion. Pushing the lactate threshold further out through controlled overreaching and specific pace targets.</p>
+        <p><strong>Threshold Expansion.</strong> Pushing the lactate threshold further out through controlled overreaching and specific pace targets.</p>
         <h4>Week 4: Overreaching</h4>
-        <p>Peak Load. The maximum growth stimulus phase, testing the intersection of maximum volume and allostatic pressure.</p>
+        <p><strong>Peak Load.</strong> The maximum growth stimulus phase, testing the intersection of maximum volume and allostatic pressure.</p>
         <h4>Week 5: Realization</h4>
-        <p>Intensity Maintenance. Reducing junk volume while holding high-end speed to keep the nervous system sharp.</p>
+        <p><strong>Intensity Maintenance.</strong> Reducing junk volume while holding high-end speed to keep the nervous system sharp.</p>
         <h4>Week 6: Absorption</h4>
-        <p>The Taper. Deliberate fatigue shedding to reveal the Day 42 peak performance physiological state.</p>
-        <button class="btn-primary" onclick="toggleModal('roadmap-modal')">Close</button>
+        <p><strong>The Taper.</strong> Deliberate fatigue shedding to reveal the Day 42 peak performance physiological state.</p>
+        <button class="btn-primary" onclick="toggleModal('roadmap-modal')">Return Home</button>
     </div>
 </div>
 
@@ -163,7 +161,6 @@
 <script>
     let currentMode = 'track';
     window.onload = () => { loadData(); fetchWeather(); };
-    
     async function fetchWeather() { 
         try { 
             const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.45&longitude=139.45&current=temperature_2m,wind_speed_10m"); 
@@ -172,12 +169,10 @@
             document.getElementById('wind-val').innerText = d.current.wind_speed_10m; 
         } catch(e) {} 
     }
-
     function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
     function resetToHome() { document.querySelectorAll('.modal').forEach(x => x.style.display = 'none'); window.scrollTo({top:0, behavior:'smooth'}); }
     function handleUpdate() { saveData(); }
     function setRunMode(mode) { currentMode = mode; document.getElementById('track-btn').classList.toggle('active', mode === 'track'); document.getElementById('tread-btn').classList.toggle('active', mode === 'treadmill'); generateDaily(); }
-    
     function generateDaily() {
         document.getElementById('output-section').style.display = 'block';
         if (currentMode === 'track') {
@@ -188,20 +183,18 @@
             document.getElementById('run-label').innerText = "3. Run (Treadmill Repeats)";
         }
     }
-
     function saveData() { 
         const d = { 
             r: document.getElementById('curRun').value, 
-            p: document.getElementById('curPush').value,
-            pl: document.getElementById('curPlank').value,
-            gr: document.getElementById('goalRun').value,
-            gp: document.getElementById('goalPush').value,
-            s: document.getElementById('startDate').value,
-            a: document.getElementById('aerobicBase').value
+            p: document.getElementById('curPush').value, 
+            pl: document.getElementById('curPlank').value, 
+            gr: document.getElementById('goalRun').value, 
+            gp: document.getElementById('goalPush').value, 
+            s: document.getElementById('startDate').value, 
+            a: document.getElementById('aerobicBase').value 
         }; 
         localStorage.setItem('saberhawks_stable_v1', JSON.stringify(d)); 
     }
-    
     function loadData() { 
         const s = JSON.parse(localStorage.getItem('saberhawks_stable_v1')); 
         if (s) { 

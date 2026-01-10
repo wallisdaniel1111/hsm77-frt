@@ -33,7 +33,6 @@
         
         .card { background: white; border-radius: 24px; padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); display: flex; flex-direction: column; box-sizing: border-box; }
         .span-2 { grid-column: span 2; }
-        .dark-card { background: #1D1D1F; color: white; border-radius: 24px; padding: 24px; box-sizing: border-box; }
         
         h2 { font-size: 18px; font-weight: 600; margin-top: 0; margin-bottom: 16px; }
         h3 { font-size: 13px; color: var(--apple-blue); text-transform: uppercase; margin: 0 0 12px; border-bottom: 1px solid #EEE; padding-bottom: 5px; }
@@ -93,7 +92,11 @@
     </div>
 
     <div class="card">
-        <h2>Status</h2>
+        <h2>Atsugi METOC</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div><span id="temp-val" style="font-size: 28px; font-weight: 700;">--°C</span></div>
+            <div style="font-size: 11px; color: var(--text-secondary);">Wind: <span id="wind-val">--</span> km/h</div>
+        </div>
         <label>Aerobic Base</label>
         <select id="aerobicBase" onchange="handleUpdate()">
             <option value="1.0">Standard (30min)</option>
@@ -109,11 +112,11 @@
             <button id="tread-btn" class="toggle-btn" onclick="setRunMode('treadmill')">TREADMILL</button>
         </div>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-            <div class="target-box"><label>1. Plank</label><div id="out-plank" class="stat-val">--</div><div class="rest-tag">REST 60s</div></div>
-            <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">--</div><div class="rest-tag">REST 120s</div></div>
+            <div class="target-box"><label>1. Plank</label><div id="out-plank" class="stat-val">3:45</div><div class="rest-tag">REST 60s</div></div>
+            <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">52</div><div class="rest-tag">REST 120s</div></div>
             <div id="run-box" class="target-box" style="border: 2px solid var(--apple-blue);">
                 <label id="run-label" style="color:var(--apple-blue); font-weight: 800;">3. Run (800m Repeats)</label>
-                <div id="out-run-vol" style="font-size: 15px; font-weight: 800; margin: 4px 0;">--</div>
+                <div id="out-run-vol" style="font-size: 15px; font-weight: 800; margin: 4px 0;">4 x 800m Repeats</div>
                 <div id="out-run-pace" class="stat-val">--</div>
                 <div id="out-run-rest" class="rest-tag" style="background:none; color:var(--text-main); border: 1px solid #DDD;">90s REST</div>
             </div>
@@ -159,16 +162,24 @@
 
 <script>
     let currentMode = 'track';
-    window.onload = () => loadData();
+    window.onload = () => { loadData(); fetchWeather(); };
+    
+    async function fetchWeather() { 
+        try { 
+            const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.45&longitude=139.45&current=temperature_2m,wind_speed_10m"); 
+            const d = await res.json(); 
+            document.getElementById('temp-val').innerText = d.current.temperature_2m + '°C'; 
+            document.getElementById('wind-val').innerText = d.current.wind_speed_10m; 
+        } catch(e) {} 
+    }
+
     function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
     function resetToHome() { document.querySelectorAll('.modal').forEach(x => x.style.display = 'none'); window.scrollTo({top:0, behavior:'smooth'}); }
     function handleUpdate() { saveData(); }
     function setRunMode(mode) { currentMode = mode; document.getElementById('track-btn').classList.toggle('active', mode === 'track'); document.getElementById('tread-btn').classList.toggle('active', mode === 'treadmill'); generateDaily(); }
+    
     function generateDaily() {
         document.getElementById('output-section').style.display = 'block';
-        document.getElementById('out-plank').innerText="3:45"; 
-        document.getElementById('out-push').innerText="52";
-        document.getElementById('out-run-vol').innerText = "4 x 800m Repeats";
         if (currentMode === 'track') {
             document.getElementById('out-run-pace').innerHTML = `82s / lap <br><small style="font-size:14px; color:#86868b;">Total: 2:44</small>`;
             document.getElementById('run-label').innerText = "3. Run (800m Repeats)";
@@ -177,8 +188,32 @@
             document.getElementById('run-label').innerText = "3. Run (Treadmill Repeats)";
         }
     }
-    function saveData() { const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value }; localStorage.setItem('saberhawks_stable_v1', JSON.stringify(d)); }
-    function loadData() { const s = JSON.parse(localStorage.getItem('saberhawks_stable_v1')); if (s) { document.getElementById('curRun').value = s.r || ""; document.getElementById('curPush').value = s.p || ""; } }
+
+    function saveData() { 
+        const d = { 
+            r: document.getElementById('curRun').value, 
+            p: document.getElementById('curPush').value,
+            pl: document.getElementById('curPlank').value,
+            gr: document.getElementById('goalRun').value,
+            gp: document.getElementById('goalPush').value,
+            s: document.getElementById('startDate').value,
+            a: document.getElementById('aerobicBase').value
+        }; 
+        localStorage.setItem('saberhawks_stable_v1', JSON.stringify(d)); 
+    }
+    
+    function loadData() { 
+        const s = JSON.parse(localStorage.getItem('saberhawks_stable_v1')); 
+        if (s) { 
+            document.getElementById('curRun').value = s.r || ""; 
+            document.getElementById('curPush').value = s.p || ""; 
+            document.getElementById('curPlank').value = s.pl || "";
+            document.getElementById('goalRun').value = s.gr || "";
+            document.getElementById('goalPush').value = s.gp || "";
+            document.getElementById('startDate').value = s.s || "";
+            document.getElementById('aerobicBase').value = s.a || "1.0";
+        } 
+    }
 </script>
 </body>
 </html>

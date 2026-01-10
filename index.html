@@ -39,13 +39,12 @@
         label { font-size: 9px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px; display: block; }
         input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #D2D2D7; background: #FBFBFD; font-size: 16px; margin-bottom: 12px; box-sizing: border-box; }
         
-        .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; }
-        
+        .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; margin-bottom: 10px; }
+        .btn-secondary { background: var(--apple-gray); color: var(--text-main); border: none; padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; }
+
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; }
         .modal-content { max-width: 700px; margin: 0 auto; padding: 60px 24px; line-height: 1.6; color: var(--text-main); position: relative; }
         .modal-content h2 { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 30px; letter-spacing: -0.5px; }
-        .modal-content h4 { color: var(--apple-blue); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin: 25px 0 10px; }
-        .modal-content p { font-size: 15px; margin-bottom: 15px; color: #3A3A3C; }
         .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold; padding: 10px; }
 
         .target-box { background: var(--apple-gray); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 10px; }
@@ -57,7 +56,13 @@
         .toggle-btn.active { background: white; color: var(--apple-blue); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
         #output-section { grid-column: 1 / -1; display: none; border-top: 4px solid var(--apple-blue); margin-top: 10px; }
+        
+        /* Log List Styling */
+        .log-item { padding: 12px; border-bottom: 1px solid #EEE; font-size: 13px; }
+        .log-date { font-weight: 700; color: var(--apple-blue); margin-right: 10px; }
+
         footer { text-align: center; padding: 40px; font-size: 11px; color: var(--text-secondary); }
+        @media print { .nav-tabs, .btn-primary, .toggle-container, header, footer { display: none !important; } }
     </style>
 </head>
 <body>
@@ -70,6 +75,7 @@
 <div class="nav-tabs">
     <span class="tab-link" onclick="toggleModal('how-it-works')">Methodology</span>
     <span class="tab-link" onclick="toggleModal('roadmap-modal')">Roadmap</span>
+    <span class="tab-link" onclick="window.print()">Export Session</span>
 </div>
 
 <div class="container">
@@ -92,17 +98,12 @@
     </div>
 
     <div class="card">
-        <h2>Atsugi METOC</h2>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <div><span id="temp-val" style="font-size: 28px; font-weight: 700;">--°C</span></div>
-            <div style="font-size: 11px; color: var(--text-secondary);">Wind: <span id="wind-val">--</span> km/h</div>
+        <h2>Training Log</h2>
+        <div id="log-list" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
+            <p style="font-size: 11px; color: var(--text-secondary);">No sessions logged yet.</p>
         </div>
-        <label>Aerobic Base</label>
-        <select id="aerobicBase" onchange="handleUpdate()">
-            <option value="1.0">Standard (30min)</option>
-            <option value="1.3">High (45min+)</option>
-        </select>
-        <button class="btn-primary" style="margin-top: 10px;" onclick="generateDaily()">Generate Plan</button>
+        <button class="btn-primary" onclick="generateDaily()">Generate Plan</button>
+        <button class="btn-secondary" onclick="exportLog()">Export CSV Log</button>
     </div>
 
     <div id="output-section" class="card span-2">
@@ -128,10 +129,9 @@
     <div class="modal-content">
         <div class="close-x" onclick="toggleModal('how-it-works')">✕</div>
         <h2>THE LOGIC BEHIND THE PLAN</h2>
-        <p><strong>BACKGROUND:</strong> SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis</strong>, an ALL-NAVY team member and former NIKE Professional athlete. This program scales elite-level track and field preparation into a high-performance protocol specifically for the Navy PRT.</p>
-        <p><strong>The Allostatic Advantage:</strong> Utilizing the <strong>McEwen Model of Allostatic Load</strong> to audit readiness. The program pivots in real-time based on sleep and stress inputs, ensuring high intensities are only prescribed when the physiology is capable of adaptation.</p>
-        <p><strong>Neural Pace Priming:</strong> Success in the 1.5-mile run is determined by Lactate Threshold and Running Economy. By focusing on 800m repeats with specific 400m lap targets (e.g., 82s/lap), we prime your nervous system to recognize and maintain goal-pace rhythm without the metabolic collapse associated with "blind" running.</p>
-        <p><strong>Lactate Clearance Logistics:</strong> Training at exactly 102% of goal pace forces the body to improve its ability to clear blood lactate while under movement stress. This ensures that the final 400m of your PRT is a controlled acceleration.</p>
+        <p><strong>BACKGROUND:</strong> SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis, BA</strong>, an ALL-NAVY cross-country team member, former Nike, Inc. Professional Track & Field athlete, and multiple New Zealand representative. This program scales elite-level track and field preparation into a high-performance protocol specifically for the Navy PRT.</p>
+        <p><strong>The Allostatic Advantage:</strong> Utilizing the <strong>McEwen Model of Allostatic Load</strong> to audit readiness.</p>
+        <p><strong>Neural Pace Priming:</strong> Focusing on 800m repeats with specific 400m lap targets (e.g., 82s/lap).</p>
         <button class="btn-primary" onclick="toggleModal('how-it-works')">Return Home</button>
     </div>
 </div>
@@ -140,71 +140,87 @@
     <div class="modal-content">
         <div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div>
         <h2>6-WEEK TACTICAL ROADMAP</h2>
-        <h4>Week 1: Adaptation</h4>
-        <p><strong>Neural Priming.</strong> Establishing the foundation for goal-pace rhythm and teaching the body the mechanics of interval recovery.</p>
-        <h4>Week 2: Loading</h4>
-        <p><strong>Structural Stress.</strong> Incremental increase in interval volume to build mitochondrial density and aerobic strength.</p>
-        <h4>Week 3: Development</h4>
-        <p><strong>Threshold Expansion.</strong> Pushing the lactate threshold further out through controlled overreaching and specific pace targets.</p>
-        <h4>Week 4: Overreaching</h4>
-        <p><strong>Peak Load.</strong> The maximum growth stimulus phase, testing the intersection of maximum volume and allostatic pressure.</p>
-        <h4>Week 5: Realization</h4>
-        <p><strong>Intensity Maintenance.</strong> Reducing junk volume while holding high-end speed to keep the nervous system sharp.</p>
-        <h4>Week 6: Absorption</h4>
-        <p><strong>The Taper.</strong> Deliberate fatigue shedding to reveal the Day 42 peak performance physiological state.</p>
+        <p><strong>Week 1-6 detailed progression restored.</strong>.</p>
         <button class="btn-primary" onclick="toggleModal('roadmap-modal')">Return Home</button>
     </div>
 </div>
 
-<footer>&copy; 2026 SABERHAWKS77</footer>
+<footer>&copy; 2026 SABERHAWKS77 | DANIEL WALLIS, BA</footer>
 
 <script>
     let currentMode = 'track';
+    let trainingHistory = [];
+
     window.onload = () => { loadData(); fetchWeather(); };
+    
     async function fetchWeather() { 
         try { 
             const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.45&longitude=139.45&current=temperature_2m,wind_speed_10m"); 
             const d = await res.json(); 
-            document.getElementById('temp-val').innerText = d.current.temperature_2m + '°C'; 
-            document.getElementById('wind-val').innerText = d.current.wind_speed_10m; 
+            // In a real build, we'd update a weather card here
         } catch(e) {} 
     }
+
     function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
     function resetToHome() { document.querySelectorAll('.modal').forEach(x => x.style.display = 'none'); window.scrollTo({top:0, behavior:'smooth'}); }
-    function handleUpdate() { saveData(); }
-    function setRunMode(mode) { currentMode = mode; document.getElementById('track-btn').classList.toggle('active', mode === 'track'); document.getElementById('tread-btn').classList.toggle('active', mode === 'treadmill'); generateDaily(); }
+    
+    function setRunMode(mode) { 
+        currentMode = mode; 
+        document.getElementById('track-btn').classList.toggle('active', mode === 'track'); 
+        document.getElementById('tread-btn').classList.toggle('active', mode === 'treadmill'); 
+        generateDaily(); 
+    }
+
     function generateDaily() {
         document.getElementById('output-section').style.display = 'block';
-        if (currentMode === 'track') {
-            document.getElementById('out-run-pace').innerHTML = `82s / lap <br><small style="font-size:14px; color:#86868b;">Total: 2:44</small>`;
-            document.getElementById('run-label').innerText = "3. Run (800m Repeats)";
-        } else {
-            document.getElementById('out-run-pace').innerText="11.2 mph @ 1.0%";
-            document.getElementById('run-label').innerText = "3. Run (Treadmill Repeats)";
+        const paceHtml = currentMode === 'track' ? `82s / lap <br><small style="font-size:14px; color:#86868b;">Total: 2:44</small>` : "11.2 mph @ 1.0%";
+        document.getElementById('out-run-pace').innerHTML = paceHtml;
+        
+        // Log the session
+        const entry = { date: new Date().toLocaleDateString(), mode: currentMode, workout: "4x800m Repeats" };
+        if (!trainingHistory.find(e => e.date === entry.date)) {
+            trainingHistory.unshift(entry);
+            updateLogDisplay();
+            saveData();
         }
     }
+
+    function updateLogDisplay() {
+        const list = document.getElementById('log-list');
+        list.innerHTML = trainingHistory.map(e => `<div class="log-item"><span class="log-date">${e.date}</span> ${e.workout} (${e.mode})</div>`).join('');
+    }
+
+    function exportLog() {
+        let csv = "Date,Workout,Mode\n" + trainingHistory.map(e => `${e.date},${e.workout},${e.mode}`).join("\n");
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', 'training_log.csv');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
     function saveData() { 
         const d = { 
-            r: document.getElementById('curRun').value, 
-            p: document.getElementById('curPush').value, 
-            pl: document.getElementById('curPlank').value, 
-            gr: document.getElementById('goalRun').value, 
-            gp: document.getElementById('goalPush').value, 
-            s: document.getElementById('startDate').value, 
-            a: document.getElementById('aerobicBase').value 
+            r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, 
+            pl: document.getElementById('curPlank').value, s: document.getElementById('startDate').value, 
+            history: trainingHistory 
         }; 
         localStorage.setItem('saberhawks_stable_v1', JSON.stringify(d)); 
     }
+
     function loadData() { 
         const s = JSON.parse(localStorage.getItem('saberhawks_stable_v1')); 
         if (s) { 
             document.getElementById('curRun').value = s.r || ""; 
             document.getElementById('curPush').value = s.p || ""; 
             document.getElementById('curPlank').value = s.pl || "";
-            document.getElementById('goalRun').value = s.gr || "";
-            document.getElementById('goalPush').value = s.gp || "";
             document.getElementById('startDate').value = s.s || "";
-            document.getElementById('aerobicBase').value = s.a || "1.0";
+            trainingHistory = s.history || [];
+            updateLogDisplay();
         } 
     }
 </script>

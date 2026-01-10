@@ -52,8 +52,9 @@
         .modal-content { max-width: 650px; margin: 0 auto; padding: 60px 24px 100px; line-height: 1.6; }
         .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold; padding: 10px; }
 
-        .target-box { background: var(--apple-gray); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 10px; }
+        .target-box { background: var(--apple-gray); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 10px; position: relative; }
         .stat-val { font-size: 28px; font-weight: 700; color: var(--apple-blue); margin: 5px 0; }
+        .rest-tag { font-size: 11px; font-weight: 800; color: var(--apple-red); background: rgba(255, 59, 48, 0.1); padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 5px; }
         
         .timeline-step { border-left: 2px solid var(--apple-blue); padding: 0 0 25px 20px; position: relative; margin-left: 10px; }
         .timeline-step::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; background: var(--apple-blue); border-radius: 50%; }
@@ -139,13 +140,18 @@
     <div id="output-section" class="card span-2">
         <h2>Today's Prescription</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-            <div class="target-box"><label>1. Plank</label><div id="out-plank" class="stat-val">--</div></div>
-            <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">--</div></div>
-            <div class="target-box" style="border: 1px solid var(--apple-blue);"><label>3. Run</label><div id="out-run-pace" class="stat-val">--</div></div>
+            <div class="target-box"><label>1. Plank</label><div id="out-plank" class="stat-val">--</div><div class="rest-tag">REST 60s</div></div>
+            <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">--</div><div class="rest-tag">REST 120s</div></div>
+            <div class="target-box" style="border: 1px solid var(--apple-blue);">
+                <label style="color:var(--apple-blue)">3. Run (800m Laps)</label>
+                <div id="out-run-vol" style="font-size: 14px; font-weight: 800; margin: 4px 0;">--</div>
+                <div id="out-run-pace" class="stat-val">--</div>
+                <div id="out-run-rest" class="rest-tag" style="background:none; color:var(--text-main);">90s REST</div>
+            </div>
         </div>
         <div style="margin-top:20px; display:flex; gap:10px;">
-            <button class="btn-secondary" style="flex:1;" onclick="toggleModal('log-modal')">Log Result</button>
-            <button class="btn-secondary" style="flex:1;" onclick="exportCSV()">Export History</button>
+            <button class="btn-secondary" style="flex:1; padding:12px;" onclick="toggleModal('log-modal')">Log Result</button>
+            <button class="btn-secondary" style="flex:1; padding:12px;" onclick="exportCSV()">Export History</button>
         </div>
     </div>
 </div>
@@ -206,10 +212,37 @@
             document.getElementById('proj-push').innerText = Math.round(curP * (1 + (0.12 * mult)));
         }
     }
-    function generateDaily() { document.getElementById('output-section').style.display = 'block'; document.getElementById('out-plank').innerText="3:45"; document.getElementById('out-push').innerText="52"; document.getElementById('out-run-pace').innerText="82s/Lap"; }
-    function exportCSV() { const logs = JSON.parse(localStorage.getItem('saber_logs') || '[]'); let csv = "Date,Notes\n"; logs.forEach(l => { csv += `"${l.date}","${l.text}"\n`; }); const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = "history.csv"; link.click(); }
-    function saveData() { const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, s: document.getElementById('startDate').value }; localStorage.setItem('saber_v1_26', JSON.stringify(d)); }
-    function loadData() { const s = JSON.parse(localStorage.getItem('saber_v1_26')); if (s) { document.getElementById('curRun').value = s.r; document.getElementById('curPush').value = s.p; document.getElementById('startDate').value = s.s; calculateProjection(); } }
+    function generateDaily() { 
+        document.getElementById('output-section').style.display = 'block'; 
+        document.getElementById('out-plank').innerText="3:45"; 
+        document.getElementById('out-push').innerText="52"; 
+        document.getElementById('out-run-vol').innerText = "4 x 800m";
+        document.getElementById('out-run-pace').innerText="82s/Lap"; 
+    }
+    function exportCSV() { 
+        const logs = JSON.parse(localStorage.getItem('saber_logs') || '[]'); 
+        let csv = "Date,Notes\n"; 
+        logs.forEach(l => { csv += `"${l.date}","${l.text}"\n`; }); 
+        const blob = new Blob([csv], { type: 'text/csv' }); 
+        const url = URL.createObjectURL(blob); 
+        const link = document.createElement("a"); 
+        link.href = url; 
+        link.download = "history.csv"; 
+        link.click(); 
+    }
+    function saveData() { 
+        const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, s: document.getElementById('startDate').value }; 
+        localStorage.setItem('saber_v1_28', JSON.stringify(d)); 
+    }
+    function loadData() { 
+        const s = JSON.parse(localStorage.getItem('saber_v1_28')); 
+        if (s) { 
+            document.getElementById('curRun').value = s.r; 
+            document.getElementById('curPush').value = s.p; 
+            document.getElementById('startDate').value = s.s; 
+            calculateProjection(); 
+        } 
+    }
     function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
 </script>
 </body>

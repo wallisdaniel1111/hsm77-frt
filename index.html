@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SABERHAWKS77 | Training Intelligence</title>
+    <title>SABERHAWKS77 | PRT Training Intelligence</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -12,7 +12,7 @@
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="apple-touch-icon-precomposed" href="icon.png">
     <link rel="icon" type="image/png" href="icon.png">
-    
+
     <style>
         :root {
             --apple-gray: #F5F5F7; --apple-blue: #007AFF; --apple-green: #34C759;
@@ -71,17 +71,20 @@
     </style>
 </head>
 <body>
+
 <header>
     <h1 onclick="resetToHome()">SABERHAWKS77</h1>
-    <p>Training Intelligence</p>
+    <p>PRT Training Intelligence</p>
     <div class="progress-container" id="p-container"><div id="progress-fill"></div></div>
     <div id="phase-label">Loading Plan...</div>
 </header>
+
 <div class="nav-tabs">
     <span class="tab-link" onclick="toggleModal('how-it-works')">Methodology</span>
     <span class="tab-link" onclick="toggleModal('roadmap-modal')">Roadmap</span>
     <a href="https://www.mapmyrun.com/" target="_blank" class="tab-link">MapMyRun ↗</a>
 </div>
+
 <div class="container">
     <div class="card span-2">
         <h2>Physiological Calibration</h2>
@@ -106,6 +109,7 @@
             </div>
         </div>
     </div>
+
     <div class="card">
         <h2>Atsugi Environment</h2>
         <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -113,6 +117,7 @@
             <a href="https://www.wunderground.com/weather/jp/ayase/35.45,139.45" target="_blank" class="btn-secondary">METOC ↗</a>
         </div>
     </div>
+
     <div class="card">
         <h2>Allostatic Audit</h2>
         <label>Sleep Quality</label>
@@ -124,6 +129,7 @@
             <option value="3">Low (Routine)</option><option value="2" selected>Medium (Standard Ops)</option><option value="1">High (Duty/Watch)</option>
         </select>
     </div>
+
     <div class="dark-card">
         <h2 style="color:white;">Day 42 Projected Peak</h2>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: flex-end;">
@@ -137,6 +143,7 @@
             </div>
         </div>
     </div>
+
     <div id="output-section" class="card span-2">
         <h2>Today's Prescription</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
@@ -155,5 +162,118 @@
         </div>
     </div>
 </div>
+
+<div id="how-it-works" class="modal">
+    <div class="modal-content">
+        <div class="close-x" onclick="toggleModal('how-it-works')">✕</div>
+        <h2 style="text-align:center;">THE LOGIC BEHIND THE PLAN</h2>
+        <p><strong>BACKGROUND:</strong> SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis</strong>, a multiple New Zealand representative and former NIKE Professional track athlete.</p>
+        <button class="btn-primary" style="background:var(--apple-gray); color:var(--text-main); margin-top:20px;" onclick="toggleModal('how-it-works')">Return Home</button>
+    </div>
+</div>
+
+<div id="roadmap-modal" class="modal">
+    <div class="modal-content">
+        <div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div>
+        <h2 style="text-align:center;">6-WEEK TACTICAL ROADMAP</h2>
+        <div class="timeline-step"><h4>WEEK 1: ADAPTATION</h4><p>Neural Priming. Teaching the brain goal pace rhythm.</p></div>
+        <div class="timeline-step"><h4>WEEK 6: ABSORPTION</h4><p>The Taper. Shedding fatigue to reveal your Day 42 Peak.</p></div>
+        <button class="btn-primary" style="background:var(--apple-gray); color:var(--text-main); margin-top:20px;" onclick="toggleModal('roadmap-modal')">Return Home</button>
+    </div>
+</div>
+
+<div id="log-modal" class="modal">
+    <div class="modal-content">
+        <div class="close-x" onclick="toggleModal('log-modal')">✕</div>
+        <h2>PERFORMANCE LOG</h2>
+        <textarea id="log-entry" rows="5" placeholder="Log details..."></textarea>
+        <button class="btn-primary" onclick="saveLogEntry()">Save Entry</button>
+        <div id="log-history" style="margin-top:20px;"></div>
+    </div>
+</div>
+
+<footer>&copy; 2026 SABERHAWKS77 | Daniel Wallis, BA</footer>
+
+<script>
+    window.onload = async () => { loadData(); await fetchWeather(); loadLogs(); };
+    async function fetchWeather() {
+        try {
+            const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.45&longitude=139.45&current=temperature_2m,wind_speed_10m");
+            const d = await res.json();
+            document.getElementById('temp-val').innerText = d.current.temperature_2m + '°C';
+            document.getElementById('wind-val').innerText = d.current.wind_speed_10m;
+        } catch(e) {}
+    }
+    function handleUpdate() { calculateProjection(); saveData(); }
+    function resetToHome() { const m = document.querySelectorAll('.modal'); m.forEach(x => x.style.display = 'none'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    
+    function calculateProjection() {
+        const curR = document.getElementById('curRun').value; const curP = parseInt(document.getElementById('curPush').value);
+        const sDate = document.getElementById('startDate').value; const mult = parseFloat(document.getElementById('aerobicBase').value);
+        if (sDate) { 
+            const diff = Math.floor((new Date() - new Date(sDate)) / 86400000) + 1; 
+            document.getElementById('day-label').innerText = `DAY ${Math.max(1, diff)}`;
+            document.getElementById('p-container').style.display = 'block';
+            document.getElementById('progress-fill').style.width = Math.min(100, (diff/42)*100) + '%';
+            const pl = document.getElementById('phase-label'); pl.style.display = 'block';
+            const phases = ["Adaptation", "Loading", "Development", "Overreaching", "Realization", "Absorption"];
+            pl.innerText = diff > 42 ? "Cycle Complete" : "Phase: " + phases[Math.floor((diff-1)/7)];
+        }
+        if (curR.includes(':') && curP) {
+            let rS = (parseInt(curR.split(':')[0])*60) + parseInt(curR.split(':')[1]);
+            let pR = rS * (1 - (0.08 * mult));
+            document.getElementById('proj-run').innerText = `${Math.floor(pR/60)}:${Math.floor(pR%60).toString().padStart(2,'0')}`;
+            document.getElementById('proj-push').innerText = Math.round(curP * (1 + (0.12 * mult)));
+        }
+    }
+
+    function generateDaily() {
+        document.getElementById('output-section').style.display = 'block';
+        document.getElementById('out-plank').innerText = "3:45";
+        document.getElementById('out-push').innerText = "52";
+        document.getElementById('out-run-vol').innerText = "4 x 800m";
+        document.getElementById('out-run-pace').innerText = "82s / Lap";
+        document.getElementById('out-run-rest').innerText = "90s REST";
+        window.scrollTo({ top: document.getElementById('output-section').offsetTop - 20, behavior: 'smooth' });
+    }
+
+    // Fixed Export Strategy for Chrome Mobile
+    function exportCSV() {
+        const logs = JSON.parse(localStorage.getItem('saber_logs') || '[]');
+        if (logs.length === 0) { alert("No logs to export."); return; }
+        let csv = "Date,Notes\n";
+        logs.forEach(l => { csv += `"${l.date}","${l.text.replace(/"/g, '""')}"\n`; });
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "Saberhawks77_History.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 100);
+    }
+
+    function saveData() {
+        const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, a: document.getElementById('aerobicBase').value, s: document.getElementById('startDate').value };
+        localStorage.setItem('saber_v1_24', JSON.stringify(d));
+    }
+    function loadData() {
+        const s = JSON.parse(localStorage.getItem('saber_v1_24'));
+        if (s) { Object.keys(s).forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k]; }); calculateProjection(); }
+    }
+    function saveLogEntry() {
+        const logs = JSON.parse(localStorage.getItem('saber_logs') || '[]');
+        logs.unshift({ date: new Date().toLocaleDateString(), text: document.getElementById('log-entry').value });
+        localStorage.setItem('saber_logs', JSON.stringify(logs));
+        document.getElementById('log-entry').value = ''; loadLogs();
+    }
+    function loadLogs() {
+        const logs = JSON.parse(localStorage.getItem('saber_logs') || '[]');
+        document.getElementById('log-history').innerHTML = logs.map(l => `<div><strong>${l.date}:</strong> ${l.text}</div>`).join('');
+    }
+    function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
+</script>
 </body>
 </html>

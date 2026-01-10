@@ -216,6 +216,7 @@
     }
     function handleUpdate() { calculateProjection(); saveData(); }
     function resetToHome() { const m = document.querySelectorAll('.modal'); m.forEach(x => x.style.display = 'none'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    
     function calculateProjection() {
         const curR = document.getElementById('curRun').value; const curP = parseInt(document.getElementById('curPush').value);
         const sDate = document.getElementById('startDate').value; const mult = parseFloat(document.getElementById('aerobicBase').value);
@@ -235,6 +236,7 @@
             document.getElementById('proj-push').innerText = Math.round(curP * (1 + (0.12 * mult)));
         }
     }
+
     function generateDaily() {
         document.getElementById('output-section').style.display = 'block';
         document.getElementById('out-plank').innerText = "3:45";
@@ -244,12 +246,31 @@
         document.getElementById('out-run-rest').innerText = "90s REST";
         window.scrollTo({ top: document.getElementById('output-section').offsetTop - 20, behavior: 'smooth' });
     }
+
+    // Export Functionality Fix for Mobile Chrome
+    function exportCSV() {
+        const logs = JSON.parse(localStorage.getItem('saber_logs') || '[]');
+        if (logs.length === 0) { alert("No logs to export."); return; }
+        let csv = "Date,Notes\n";
+        logs.forEach(l => { csv += `"${l.date}","${l.text.replace(/"/g, '""')}"\n`; });
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "Saberhawks77_History.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 100);
+    }
+
     function saveData() {
         const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, a: document.getElementById('aerobicBase').value, s: document.getElementById('startDate').value };
-        localStorage.setItem('saber_v1_17', JSON.stringify(d));
+        localStorage.setItem('saber_v1_19', JSON.stringify(d));
     }
     function loadData() {
-        const s = JSON.parse(localStorage.getItem('saber_v1_17'));
+        const s = JSON.parse(localStorage.getItem('saber_v1_19'));
         if (s) { Object.keys(s).forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k]; }); calculateProjection(); }
     }
     function saveLogEntry() {
@@ -261,11 +282,6 @@
     function loadLogs() {
         const logs = JSON.parse(localStorage.getItem('saber_logs') || '[]');
         document.getElementById('log-history').innerHTML = logs.map(l => `<div><strong>${l.date}:</strong> ${l.text}</div>`).join('');
-    }
-    function exportCSV() {
-        const logs = JSON.parse(localStorage.getItem('saber_logs') || '[]');
-        let csv = "Date,Notes\n"; logs.forEach(l => { csv += `"${l.date}","${l.text.replace(/"/g, '""')}"\n`; });
-        window.location.href = 'data:text/csv;base64,' + btoa(unescape(encodeURIComponent(csv)));
     }
     function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
 </script>

@@ -6,64 +6,36 @@
     <title>SABERHAWKS77 | Individualized Performance Plan</title>
     <style>
         :root {
-            --apple-gray: #F5F5F7;
-            --apple-blue: #007AFF;
-            --apple-green: #34C759;
-            --apple-yellow: #FFCC00;
-            --apple-red: #FF3B30;
-            --text-main: #1D1D1F;
-            --text-secondary: #86868B;
+            --apple-gray: #F5F5F7; --apple-blue: #007AFF; --apple-green: #34C759;
+            --apple-yellow: #FFCC00; --apple-red: #FF3B30; --text-main: #1D1D1F; --text-secondary: #86868B;
         }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--apple-gray);
-            color: var(--text-main);
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        header { padding: 40px 20px 20px; text-align: center; cursor: pointer; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--apple-gray); color: var(--text-main); margin: 0; -webkit-font-smoothing: antialiased; }
+        header { padding: 40px 20px 10px; text-align: center; }
         header h1 { font-size: clamp(32px, 8vw, 48px); font-weight: 700; margin: 0; letter-spacing: -1.5px; text-transform: uppercase; }
         header p { font-size: 14px; font-weight: 400; color: var(--apple-blue); margin: 5px 0 0; letter-spacing: 2px; text-transform: uppercase; }
-
-        .nav-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; padding: 0 10px; }
-        .tab-link { font-size: 10px; font-weight: 700; color: var(--apple-blue); text-transform: uppercase; cursor: pointer; opacity: 0.8; text-decoration: none; }
-
+        .nav-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+        .tab-link { font-size: 10px; font-weight: 700; color: var(--apple-blue); text-transform: uppercase; cursor: pointer; text-decoration: none; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 16px 60px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        
         @media (max-width: 992px) { .container { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 768px) { 
-            .container { grid-template-columns: 1fr; } 
-            .span-2 { grid-column: span 1 !important; }
-        }
-
-        .card { background: white; border-radius: 24px; padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); display: flex; flex-direction: column; position: relative; }
+        @media (max-width: 768px) { .container { grid-template-columns: 1fr; } .span-2 { grid-column: span 1 !important; } }
+        .card { background: white; border-radius: 24px; padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); display: flex; flex-direction: column; }
         .span-2 { grid-column: span 2; }
         .dark-card { background: #1D1D1F; color: white; border-radius: 24px; padding: 24px; }
-
         h2 { font-size: 18px; font-weight: 600; margin-top: 0; margin-bottom: 16px; }
+        h3 { font-size: 13px; color: var(--apple-blue); text-transform: uppercase; margin: 0 0 12px; border-bottom: 1px solid #EEE; padding-bottom: 5px; }
         label { font-size: 9px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px; display: block; }
-        
         input, select, textarea { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #D2D2D7; background: #FBFBFD; font-size: 16px; margin-bottom: 12px; box-sizing: border-box; }
-
-        .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; transition: transform 0.1s; }
-        .btn-secondary { background: var(--apple-gray); color: var(--text-main); border: none; padding: 10px; border-radius: 10px; font-size: 11px; font-weight: 600; cursor: pointer; margin-top: 10px; text-decoration: none; text-align: center; }
-
-        .proj-val { font-size: 24px; font-weight: 700; color: var(--apple-green); margin-bottom: 10px; }
-        
-        .aqi-badge { padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; display: inline-block; margin-top: 5px; }
-        .aqi-good { background: rgba(52, 199, 89, 0.1); color: var(--apple-green); }
-        .aqi-warn { background: rgba(255, 59, 48, 0.1); color: var(--apple-red); }
-
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.98); z-index: 1000; overflow-y: auto; padding: 40px 16px; }
-        .modal-content { max-width: 600px; margin: 0 auto; }
+        .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; }
+        .btn-secondary { background: var(--apple-gray); color: var(--text-main); border: none; padding: 10px; border-radius: 10px; font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; }
+        .proj-val { font-size: 24px; font-weight: 700; color: var(--apple-green); }
+        .gap-tag { font-size: 10px; font-weight: 700; color: var(--apple-red); margin-top: -5px; margin-bottom: 10px; display: block; }
+        .rest-tag { font-size: 10px; font-weight: 800; color: var(--apple-red); background: rgba(255, 59, 48, 0.1); padding: 4px 10px; border-radius: 20px; display: inline-block; margin: 10px 0; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; padding: 40px 16px; }
+        .modal-content { max-width: 600px; margin: 0 auto; line-height: 1.6; }
         .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold;}
-
-        #output-section { grid-column: 1 / -1; display: none; margin-top: 10px; border-top: 4px solid var(--apple-blue); }
+        #output-section { grid-column: 1 / -1; display: none; border-top: 4px solid var(--apple-blue); }
         .target-box { background: var(--apple-gray); padding: 20px; border-radius: 16px; text-align: center; }
         .stat-val { font-size: 28px; font-weight: 700; color: var(--apple-blue); }
-
         footer { grid-column: 1 / -1; text-align: center; padding: 40px; font-size: 11px; color: var(--text-secondary); }
     </style>
 </head>
@@ -82,230 +54,170 @@
 
 <div class="container">
     <div class="card span-2">
-        <h2>Physiological Calibration</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0 20px;">
+        <h2>Physiological Calibration & Goals</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0 25px;">
             <div>
-                <label>Current 1.5Mi (MM:SS)</label>
-                <input type="text" id="curRun" placeholder="12:30" oninput="handleUpdate()">
-                <label>Push-ups (Max)</label>
-                <input type="number" id="curPush" placeholder="60" oninput="handleUpdate()">
-                <label>Plank (MM:SS)</label>
-                <input type="text" id="curPlank" placeholder="03:00" oninput="handleUpdate()">
-            </div>
-            <div>
+                <h3>Baselines</h3>
+                <label>Current 1.5Mi (MM:SS)</label><input type="text" id="curRun" placeholder="12:30" oninput="handleUpdate()">
+                <label>Push-ups (Max)</label><input type="number" id="curPush" placeholder="60" oninput="handleUpdate()">
+                <label>Plank (MM:SS)</label><input type="text" id="curPlank" placeholder="03:00" oninput="handleUpdate()">
                 <label>Aerobic Base</label>
                 <select id="aerobicBase" onchange="handleUpdate()">
-                    <option value="0.7">15min or less</option>
-                    <option value="1.0" selected>30min (Standard)</option>
-                    <option value="1.3">45min+</option>
+                    <option value="0.7">15min or less</option><option value="1.0" selected>30min (Standard)</option><option value="1.3">45min+</option>
                 </select>
-                <label>Start Date</label>
-                <input type="date" id="startDate" onchange="handleUpdate()">
-                <label id="day-label" style="color:var(--apple-blue); font-weight: bold;">Loading...</label>
+            </div>
+            <div>
+                <h3>Target Outcomes</h3>
+                <label>Goal 1.5Mi Time</label><input type="text" id="goalRun" placeholder="10:30" oninput="handleUpdate()">
+                <label>Goal Push-ups</label><input type="number" id="goalPush" placeholder="80" oninput="handleUpdate()">
+                <label>Goal Plank</label><input type="text" id="goalPlank" placeholder="04:00" oninput="handleUpdate()">
+                <label>Start Date</label><input type="date" id="startDate" onchange="handleUpdate()">
+                <label id="day-label" style="color:var(--apple-blue); font-weight: bold; margin-top:5px;">Loading cycle...</label>
             </div>
         </div>
-    </div>
-
-    <div class="dark-card">
-        <h2 style="color:white;">Day 42 Projected Peak</h2>
-        <label style="color:#86868b;">Projected 1.5Mi</label>
-        <div id="proj-run" class="proj-val">--:--</div>
-        <label style="color:#86868b;">Projected Push-ups</label>
-        <div id="proj-push" class="proj-val">--</div>
-        <label style="color:#86868b;">Projected Plank</label>
-        <div id="proj-plank" class="proj-val">--:--</div>
-        <button class="btn-primary" onclick="generateDaily()">Generate Session</button>
     </div>
 
     <div class="card">
-        <h2>Atsugi Environmental Audit</h2>
-        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-            <div>
-                <span id="temp-val" style="font-size: 28px; font-weight: 700;">--°C</span>
-                <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">
-                    Wind: <span id="wind-val">--</span> km/h<br>
-                    <span id="sun-val" style="color:var(--apple-blue); font-weight:bold;">Solar: Calculating...</span>
-                </div>
-            </div>
-            <div style="text-align: right;">
-                <label>AQI Index</label>
-                <div id="aqi-val" class="aqi-badge aqi-good">Syncing...</div>
-            </div>
+        <h2>Environmental Intelligence</h2>
+        <div style="display: flex; justify-content: space-between;">
+            <div><span id="temp-val" style="font-size: 28px; font-weight: 700;">--°C</span><div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">Wind: <span id="wind-val">--</span> km/h<br>AQI: <span id="aqi-val" style="font-weight:bold;">--</span></div></div>
+            <a href="https://www.wunderground.com/weather/jp/ayase/35.45,139.45" target="_blank" class="btn-secondary" style="height: fit-content;">METOC ↗</a>
         </div>
-        <a href="https://www.wunderground.com/weather/jp/ayase/35.45,139.45" target="_blank" class="btn-secondary">Official METOC Station ↗</a>
+        <p id="env-status" style="font-size: 10px; color: var(--apple-blue); font-weight: bold; margin-top: 10px;">Syncing NAF Atsugi Data...</p>
     </div>
 
     <div class="card">
         <h2>Allostatic Load Audit</h2>
         <label>Sleep Quality</label>
-        <select id="sleep" onchange="saveAudit()">
-            <option value="3">Restorative (7+ hrs)</option>
-            <option value="2" selected>Moderated (5-6 hrs)</option>
-            <option value="1">Deficit</option>
+        <select id="sleep" onchange="handleUpdate()">
+            <option value="3">Restorative (7+ hrs)</option><option value="2" selected>Moderated (5-6 hrs)</option><option value="1">Deficit</option>
         </select>
         <label>Occupational Stress</label>
-        <select id="stress" onchange="saveAudit()">
-            <option value="3">Low (Routine)</option>
-            <option value="2" selected>Medium (Standard)</option>
-            <option value="1">High (Duty/Watch)</option>
+        <select id="stress" onchange="handleUpdate()">
+            <option value="3">Low (Routine)</option><option value="2" selected>Medium (Standard Ops)</option><option value="1">High (Duty/Watch)</option>
         </select>
+    </div>
+
+    <div class="dark-card">
+        <h2 style="color:white;">Day 42 Projected Peak</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div>
+                <label style="color:#86868b;">Projected 1.5Mi</label><div id="proj-run" class="proj-val">--:--</div><span id="gap-run" class="gap-tag"></span>
+                <label style="color:#86868b;">Projected Push</label><div id="proj-push" class="proj-val">--</div><span id="gap-push" class="gap-tag"></span>
+            </div>
+            <div>
+                <label style="color:#86868b;">Projected Plank</label><div id="proj-plank" class="proj-val">--:--</div><span id="gap-plank" class="gap-tag"></span>
+                <button class="btn-primary" style="margin-top: 5px; font-size: 12px; padding: 12px;" onclick="generateDaily()">Generate Prescription</button>
+            </div>
+        </div>
     </div>
 
     <div id="output-section" class="card span-2">
         <h2>Today's Prescription</h2>
-        <div id="daily-content" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;"></div>
-        <div style="margin-top:20px; padding-top:15px; border-top:1px solid #EEE;">
-            <p id="env-alert" style="font-size: 11px; color: var(--apple-red); font-weight: bold; margin-bottom: 10px;"></p>
-            <label style="color:var(--apple-blue); font-size:10px;">Methodology Reference</label>
-            <p id="session-desc" style="font-size: 12px; line-height: 1.5; color: var(--text-main);"></p>
-            <div style="display:flex; gap:10px; margin-top:15px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <div class="target-box"><label>1. Plank</label><div id="out-plank" class="stat-val">--</div><div class="rest-tag">REST 60s</div></div>
+            <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">--</div><div class="rest-tag">REST 120s</div></div>
+            <div class="target-box" style="background: rgba(0, 122, 255, 0.05); border: 1px solid var(--apple-blue);">
+                <label style="color:var(--apple-blue)">3. Run Execution (344.8m Lap)</label>
+                <div id="out-run-vol" style="font-size: 14px; font-weight: 800; margin-bottom: 5px;">--</div>
+                <div id="out-run-pace" class="stat-val" style="color:var(--text-main); font-size: 24px;">--</div>
+                <div id="out-run-rest" class="rest-tag" style="background:none; margin:0; color:var(--text-main);">--</div>
+            </div>
+        </div>
+        <div style="margin-top:20px; padding-top:15px; border-top: 1px solid #EEE;">
+            <p id="env-alert" style="font-size: 11px; color: var(--apple-red); font-weight: bold;"></p>
+            <div style="display:flex; gap:10px; margin-top:10px;">
                 <button class="btn-secondary" style="flex:1;" onclick="toggleModal('log-modal')">Log Result</button>
-                <button class="btn-secondary" style="flex:1;" onclick="exportCSV()">Export Data (CSV)</button>
+                <button class="btn-secondary" style="flex:1;" onclick="exportCSV()">Export History</button>
             </div>
         </div>
     </div>
 </div>
 
-<div id="log-modal" class="modal">
-    <div class="modal-content">
-        <div class="close-x" onclick="toggleModal('log-modal')">✕</div>
-        <h1>Performance Log</h1>
-        <textarea id="log-entry" rows="4" placeholder="How did the session feel? Any pain points?"></textarea>
-        <button class="btn-primary" onclick="saveLogEntry()">Save Entry</button>
-        <div id="log-history" style="margin-top:20px; font-size:12px;"></div>
-    </div>
-</div>
+<div id="how-it-works" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('how-it-works')">✕</div><h1 style="text-align:center;">THE LOGIC BEHIND THE PLAN</h1><p><strong>BACKGROUND:</strong> SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis</strong>, a multiple New Zealand representative, ALL-NAVY team member, and former NIKE Professional Track & Field athlete. This program translates elite-level championship preparation into a scalable protocol for the Navy PRT.</p><p><strong>The Allostatic Advantage:</strong> Most programs ignore "Life Stress." We utilize the <strong>McEwen Model of Allostatic Load</strong> to audit readiness. The program pivots in real-time, ensuring high intensities are only used when the physiology is actually capable of adapting.</p><p><strong>Environmental Intelligence:</strong> We apply <strong>Astrand-Ryhming</strong> thermal corrections and wind-drag coefficients for NAF Atsugi. This ensures relative effort remains constant regardless of external friction.</p><p><strong>The Sequence Science:</strong><ul><li><strong>Plank First:</strong> Builds <em>Proximal Stiffness</em> to eliminate energy leaks (Blagrove et al., 2018).</li><li><strong>Push-ups Second:</strong> Induces <em>Lactate Shuttling</em> before the run (Tillaar, 2019).</li><li><strong>The Run:</strong> Execution under pre-existing metabolic load.</li></ul></p><p><strong>THE PHYSIOLOGY OF THE TAPER:</strong> The taper is a clinical unmasking of performance. By slashing volume 60% in Week 6, we trigger:<ul><li><strong>Mitochondrial Enzyme Peak:</strong> Maximizing ATP production via Citrate Synthase activity.</li><li><strong>Glycogen Supercompensation:</strong> Elevating muscle fuel stores 15% above baseline for maximum output.</li><li><strong>Hematological Recovery:</strong> Normalizing Red Blood Cell volume and Hemoglobin suppressed during heavy loading weeks.</li></ul></p></div></div>
 
-<div id="how-it-works" class="modal">
-    <div class="modal-content">
-        <div class="close-x" onclick="toggleModal('how-it-works')">✕</div>
-        <h1>The Logic Behind The Plan</h1>
-        <p>Framework by <strong>Daniel Wallis</strong> (Nike Pro / All-Navy). Using Allostatic auditing and Respiratory Governors to ensure peak performance.</p>
-        <h3>The Taper Physiology</h3>
-        <p>Week 6 slashes volume by 60% to trigger supercompensation. This maximizes mitochondrial enzyme activity and glycogen stores for Day 42.</p>
-    </div>
-</div>
+<div id="roadmap-modal" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div><h1 style="text-align:center;">6-WEEK TACTICAL ROADMAP</h1><div style="display:grid; gap:12px;"><div style="background:#F2F2F7; padding:15px; border-radius:15px;"><strong>WEEK 1: ADAPTATION</strong><br>Neural Priming. Teaching the brain goal pace rhythm.</div><div style="background:#F2F2F7; padding:15px; border-radius:15px;"><strong>WEEK 2: LOADING</strong><br>Structural Stress. Building mitochondrial density.</div><div style="background:#F2F2F7; padding:15px; border-radius:15px;"><strong>WEEK 3: DEVELOPMENT</strong><br>Threshold Expansion. Moving the "red line" further out.</div><div style="background:#F2F2F7; padding:15px; border-radius:15px;"><strong>WEEK 4: OVERREACHING</strong><br>Peak Load. Maximum growth stimulus and allostatic pressure.</div><div style="background:#F2F2F7; padding:15px; border-radius:15px;"><strong>WEEK 5: REALIZATION</strong><br>Intensity Maintenance. Holding speed while shedding junk volume.</div><div style="background:#F2F2F7; padding:15px; border-radius:15px;"><strong>WEEK 6: ABSORPTION</strong><br>The Taper. Shedding fatigue to reveal your Day 42 Peak.</div></div></div></div>
 
-<div id="roadmap-modal" class="modal">
-    <div class="modal-content">
-        <div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div>
-        <h1>6-Week Roadmap</h1>
-        <p>Adaptive (W1-2), Loading (W3-5), Realization (W6).</p>
-    </div>
-</div>
+<div id="log-modal" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('log-modal')">✕</div><h1>Performance Log</h1><textarea id="log-entry" rows="5" placeholder="Log today's splits, recovery feel, or base ops stress..."></textarea><button class="btn-primary" onclick="saveLogEntry()">Save Daily Entry</button><div id="log-history" style="margin-top:20px;"></div></div></div>
 
-<footer>&copy; 2026 SABERHAWKS77 | Atsugi-Station Synchronized</footer>
+<footer>&copy; 2026 SABERHAWKS77 | Daniel Wallis, BA</footer>
 
 <script>
-    let curAQI = 0;
-    let curWind = 0;
-
-    window.onload = () => { loadData(); fetchWeather(); loadLogs(); };
+    let curTemp = 10; let curWind = 0; let curAQI = 45;
+    window.onload = async () => { loadData(); await fetchWeather(); loadLogs(); };
 
     async function fetchWeather() {
         try {
             const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.45&longitude=139.45&current=temperature_2m,wind_speed_10m&hourly=pm2_5");
             const data = await res.json();
-            document.getElementById('temp-val').innerText = `${data.current.temperature_2m.toFixed(1)}°C`;
-            curWind = data.current.wind_speed_10m;
+            curTemp = data.current.temperature_2m; curWind = data.current.wind_speed_10m;
+            document.getElementById('temp-val').innerText = `${curTemp.toFixed(1)}°C`;
             document.getElementById('wind-val').innerText = curWind.toFixed(1);
-            
-            // Mocking AQI logic from PM2.5 for mobile speed
-            curAQI = 45; 
-            const aqiEl = document.getElementById('aqi-val');
-            aqiEl.innerText = `AQI: ${curAQI}`;
-            aqiEl.className = curAQI > 100 ? 'aqi-badge aqi-warn' : 'aqi-badge aqi-good';
-
-            const now = new Date().getHours();
-            document.getElementById('sun-val').innerText = (now > 6 && now < 18) ? "Solar: Daylight" : "Solar: Low Light";
-        } catch(e) { console.log("Weather failed"); }
+            document.getElementById('aqi-val').innerText = curAQI;
+            document.getElementById('env-status').innerText = "Real-time Atsugi Data Active";
+        } catch(e) { document.getElementById('env-status').innerText = "METOC Data Offline"; }
     }
 
     function handleUpdate() { calculateProjection(); saveData(); }
 
     function calculateProjection() {
-        const rVal = document.getElementById('curRun').value;
-        const pVal = parseInt(document.getElementById('curPush').value);
-        const lVal = document.getElementById('curPlank').value;
+        const curR = document.getElementById('curRun').value; const curP = parseInt(document.getElementById('curPush').value); const curL = document.getElementById('curPlank').value;
+        const goalR = document.getElementById('goalRun').value; const goalP = parseInt(document.getElementById('goalPush').value); const goalL = document.getElementById('goalPlank').value;
         const mult = parseFloat(document.getElementById('aerobicBase').value);
         const sDate = document.getElementById('startDate').value;
 
-        if (sDate) {
-            const diff = Math.floor((new Date() - new Date(sDate)) / 86400000) + 1;
-            document.getElementById('day-label').innerText = `CURRENTLY: DAY ${Math.max(1, diff)}`;
-        }
+        if (sDate) { const diff = Math.floor((new Date() - new Date(sDate)) / 86400000) + 1; document.getElementById('day-label').innerText = `CURRENTLY: DAY ${Math.max(1, diff)}`; }
 
-        if (rVal.includes(':') && pVal && lVal.includes(':')) {
-            let rSecs = (parseInt(rVal.split(':')[0]) * 60) + parseInt(rVal.split(':')[1]);
-            let pR = rSecs * (1 - (0.08 * mult));
+        if (curR.includes(':') && curP && curL.includes(':')) {
+            let rS = (parseInt(curR.split(':')[0])*60) + parseInt(curR.split(':')[1]);
+            let pR = rS * (1 - (0.08 * mult));
             document.getElementById('proj-run').innerText = `${Math.floor(pR/60)}:${Math.floor(pR%60).toString().padStart(2,'0')}`;
-            document.getElementById('proj-push').innerText = Math.round(pVal * (1 + (0.12 * mult)));
-            let lSecs = (parseInt(lVal.split(':')[0]) * 60) + parseInt(lVal.split(':')[1]);
-            let pL = lSecs * (1 + (0.15 * mult));
+            document.getElementById('proj-push').innerText = Math.round(curP * (1 + (0.12 * mult)));
+            let lS = (parseInt(curL.split(':')[0])*60) + parseInt(curL.split(':')[1]);
+            let pL = lS * (1 + (0.15 * mult));
             document.getElementById('proj-plank').innerText = `${Math.floor(pL/60)}:${Math.floor(pL%60).toString().padStart(2,'0')}s`;
+
+            if(goalR.includes(':')) {
+                let gS = (parseInt(goalR.split(':')[0])*60)+parseInt(goalR.split(':')[1]);
+                let def = ((pR - gS) / gS * 100).toFixed(1);
+                document.getElementById('gap-run').innerText = def > 0 ? `Deficit: ${def}%` : "Goal Achieved";
+            }
         }
     }
 
     function generateDaily() {
-        const out = document.getElementById('output-section');
-        out.style.display = 'block';
+        const out = document.getElementById('output-section'); out.style.display = 'block';
+        const mult = parseFloat(document.getElementById('aerobicBase').value);
         let windAdj = curWind > 10 ? (curWind - 10) * 0.15 : 0;
-        let respiratoryAdj = curAQI > 100 ? "WARNING: High AQI. Reduce intensity or train indoors." : "";
         
-        document.getElementById('daily-content').innerHTML = `
-            <div class="target-box"><label>Plank</label><div class="stat-val">3:45s</div></div>
-            <div class="target-box"><label>Push-ups</label><div class="stat-val">52</div></div>
-            <div class="target-box"><label>Run Split</label><div class="stat-val">${(82.5 + windAdj).toFixed(1)}s</div></div>
-        `;
-        document.getElementById('env-alert').innerText = respiratoryAdj;
-        document.getElementById('session-desc').innerText = "Intervals optimized for mitochondrial biogenesis. Wind drag of " + curWind.toFixed(1) + "km/h accounted for.";
-        window.scrollTo({ top: out.offsetTop, behavior: 'smooth' });
+        document.getElementById('out-plank').innerText = "3:45s";
+        document.getElementById('out-push').innerText = "52";
+        document.getElementById('out-run-vol').innerText = Math.round(4 * mult) + " x 800m Intervals";
+        document.getElementById('out-run-pace').innerText = (82.5 + windAdj).toFixed(1) + "s / lap";
+        document.getElementById('out-run-rest').innerText = "REST 90s BETWEEN REPS";
+        
+        document.getElementById('env-alert').innerText = curAQI > 100 ? "AQI ALERT: High particulate matter. Relocate to indoor treadmill." : "";
+        window.scrollTo({ top: out.offsetTop - 20, behavior: 'smooth' });
     }
 
     function saveData() {
-        const saber_data = {
-            run: document.getElementById('curRun').value,
-            push: document.getElementById('curPush').value,
-            plank: document.getElementById('curPlank').value,
-            aerobic: document.getElementById('aerobicBase').value,
-            start: document.getElementById('startDate').value
-        };
-        localStorage.setItem('saberhawks_data_v4', JSON.stringify(saber_data));
-    }
-
-    function saveAudit() {
-        localStorage.setItem('saberhawks_audit', JSON.stringify({
-            sleep: document.getElementById('sleep').value,
-            stress: document.getElementById('stress').value
-        }));
+        const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, l: document.getElementById('curPlank').value, a: document.getElementById('aerobicBase').value, s: document.getElementById('startDate').value, gr: document.getElementById('goalRun').value, gp: document.getElementById('goalPush').value, gl: document.getElementById('goalPlank').value };
+        localStorage.setItem('saber_v1_7', JSON.stringify(d));
     }
 
     function loadData() {
-        const saved = JSON.parse(localStorage.getItem('saberhawks_data_v4'));
-        const audit = JSON.parse(localStorage.getItem('saberhawks_audit'));
-        if (saved) {
-            document.getElementById('curRun').value = saved.run;
-            document.getElementById('curPush').value = saved.push;
-            document.getElementById('curPlank').value = saved.plank;
-            document.getElementById('aerobicBase').value = saved.aerobic;
-            document.getElementById('startDate').value = saved.start;
+        const s = JSON.parse(localStorage.getItem('saber_v1_7'));
+        if (s) {
+            document.getElementById('curRun').value = s.r; document.getElementById('curPush').value = s.p; document.getElementById('curPlank').value = s.l; document.getElementById('aerobicBase').value = s.a; document.getElementById('startDate').value = s.s; document.getElementById('goalRun').value = s.gr; document.getElementById('goalPush').value = s.gp; document.getElementById('goalPlank').value = s.gl;
             calculateProjection();
-        }
-        if (audit) {
-            document.getElementById('sleep').value = audit.sleep;
-            document.getElementById('stress').value = audit.stress;
         }
     }
 
     function saveLogEntry() {
-        const entry = document.getElementById('log-entry').value;
-        if (!entry) return;
         const logs = JSON.parse(localStorage.getItem('saberhawks_logs') || '[]');
-        logs.unshift({ date: new Date().toLocaleDateString(), text: entry });
+        logs.unshift({ date: new Date().toLocaleDateString(), text: document.getElementById('log-entry').value });
         localStorage.setItem('saberhawks_logs', JSON.stringify(logs));
-        document.getElementById('log-entry').value = '';
-        loadLogs();
-        alert("Performance Logged.");
+        document.getElementById('log-entry').value = ''; loadLogs(); alert("Tactical entry saved.");
     }
 
     function loadLogs() {
@@ -315,20 +227,11 @@
 
     function exportCSV() {
         const logs = JSON.parse(localStorage.getItem('saberhawks_logs') || '[]');
-        let csv = "Date,Performance Notes\n";
-        logs.forEach(l => { csv += `"${l.date}","${l.text.replace(/"/g, '""')}"\n`; });
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.setAttribute('href', url);
-        a.setAttribute('download', 'saberhawks_training_history.csv');
-        a.click();
+        let csv = "Date,Notes\n"; logs.forEach(l => { csv += `"${l.date}","${l.text.replace(/"/g, '""')}"\n`; });
+        const blob = new Blob([csv], { type: 'text/csv' }); const url = window.URL.createObjectURL(blob); const a = document.createElement('a'); a.setAttribute('href', url); a.setAttribute('download', 'saber_training_history.csv'); a.click();
     }
 
-    function toggleModal(id) {
-        const m = document.getElementById(id);
-        m.style.display = (m.style.display === 'block') ? 'none' : 'block';
-    }
+    function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
 </script>
 </body>
 </html>

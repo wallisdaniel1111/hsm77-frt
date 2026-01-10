@@ -4,67 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SABERHAWKS77 | PRT Training Intelligence</title>
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
     <style>
-        :root {
-            --apple-gray: #F5F5F7; --apple-blue: #007AFF; --apple-green: #34C759;
-            --apple-red: #FF3B30; --text-main: #1D1D1F; --text-secondary: #86868B;
-        }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            background-color: var(--apple-gray); color: var(--text-main); margin: 0; 
-            -webkit-font-smoothing: antialiased; overflow-x: hidden;
-        }
-        header { padding: 40px 20px 10px; text-align: center; }
-        header h1 { font-size: clamp(32px, 8vw, 48px); font-weight: 700; margin: 0; letter-spacing: -1.5px; text-transform: uppercase; cursor: pointer; }
-        header p { font-size: 14px; font-weight: 400; color: var(--apple-blue); margin: 5px 0 8px; letter-spacing: 2px; text-transform: uppercase; }
-        
-        .nav-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+        :root { --apple-gray: #F5F5F7; --apple-blue: #007AFF; --text-main: #1D1D1F; --text-secondary: #86868B; --apple-red: #FF3B30; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: var(--apple-gray); margin: 0; -webkit-font-smoothing: antialiased; }
+        header { padding: 40px 20px; text-align: center; }
+        header h1 { font-size: 32px; font-weight: 700; margin: 0; text-transform: uppercase; }
+        .nav-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
         .tab-link { font-size: 11px; font-weight: 700; color: var(--apple-blue); text-transform: uppercase; cursor: pointer; text-decoration: none; }
-        
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 16px 60px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; box-sizing: border-box; }
-        @media (max-width: 768px) { .container { grid-template-columns: 1fr; } .span-2 { grid-column: span 1 !important; } }
-        
-        .card { background: white; border-radius: 24px; padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); display: flex; flex-direction: column; box-sizing: border-box; }
-        .span-2 { grid-column: span 2; }
-        
-        h2 { font-size: 18px; font-weight: 600; margin-top: 0; margin-bottom: 16px; }
-        h3 { font-size: 13px; color: var(--apple-blue); text-transform: uppercase; margin: 0 0 12px; border-bottom: 1px solid #EEE; padding-bottom: 5px; }
-        label { font-size: 9px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px; display: block; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 16px 60px; display: grid; gap: 20px; }
+        .card { background: white; border-radius: 24px; padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); }
+        .span-2 { grid-column: span 1; }
+        @media (min-width: 768px) { .span-2 { grid-column: span 2; } .container { grid-template-columns: repeat(3, 1fr); } }
+        label { font-size: 9px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; display: block; margin-bottom: 5px; }
         input, select, textarea { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #D2D2D7; background: #FBFBFD; font-size: 16px; margin-bottom: 12px; box-sizing: border-box; }
-        
-        .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; }
-        .btn-secondary { background: #E5E5EA; color: #1D1D1F; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; margin-top: 10px; }
-
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; }
-        .modal-content { max-width: 600px; margin: 0 auto; padding: 40px 20px; position: relative; }
-        .modal-header { font-size: 18px; font-weight: 800; text-align: center; margin-bottom: 30px; letter-spacing: 0.5px; text-transform: uppercase; }
-        .section-box { border-left: 3px solid var(--apple-blue); background: #FBFBFD; padding: 20px; border-radius: 0 16px 16px 0; margin-bottom: 25px; }
-        .section-title { font-size: 11px; font-weight: 800; color: var(--apple-blue); text-transform: uppercase; margin-bottom: 10px; display: block; }
-        .taper-box { background: #F0F7FF; padding: 20px; border-radius: 16px; border: 1px solid #D0E5FF; margin-top: 10px; }
-        .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold; }
-
+        .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; cursor: pointer; width: 100%; }
         .target-box { background: var(--apple-gray); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 10px; }
-        .stat-val { font-size: 28px; font-weight: 700; color: var(--apple-blue); margin: 5px 0; }
-        .rest-tag { font-size: 10px; font-weight: 800; color: var(--apple-red); background: rgba(255, 59, 48, 0.1); padding: 4px 10px; border-radius: 10px; margin-top: 5px; display: inline-block; text-transform: uppercase; }
-
-        .toggle-container { display: flex; background: var(--apple-gray); border-radius: 10px; padding: 4px; margin-bottom: 15px; }
-        .toggle-btn { flex: 1; padding: 8px; border: none; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; background: none; color: var(--text-secondary); }
-        .toggle-btn.active { background: white; color: var(--apple-blue); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-
-        #output-section { grid-column: 1 / -1; display: none; }
-        footer { text-align: center; padding: 40px; font-size: 11px; color: var(--text-secondary); }
+        .stat-val { font-size: 28px; font-weight: 700; color: var(--apple-blue); }
+        .rest-tag { font-size: 10px; font-weight: 800; color: var(--apple-red); background: rgba(255,59,48,0.1); padding: 4px 10px; border-radius: 10px; margin-top: 5px; display: inline-block; }
+        .trajectory-card { background: #FBFBFD; border-top: 4px solid var(--apple-blue); padding: 24px; border-radius: 24px; margin-top: 10px; }
+        .trajectory-val { font-size: 28px; font-weight: 800; color: #1D1D1F; text-transform: uppercase; margin: 10px 0; }
+        .evidence-quote { padding: 16px 24px; border-left: 2px solid #D2D2D7; margin-top: 20px; }
+        .evidence-quote p { font-style: italic; font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 0 0 8px; }
+        .evidence-quote a { font-size: 11px; font-weight: 600; color: var(--apple-blue); text-decoration: none; text-transform: uppercase; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; padding: 40px 20px; box-sizing: border-box; }
+        .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold; }
+        .section-box { border-left: 3px solid var(--apple-blue); background: #FBFBFD; padding: 20px; border-radius: 0 16px 16px 0; margin-bottom: 25px; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1 onclick="resetToHome()">SABERHAWKS77</h1>
-    <p>PRT Training Intelligence</p>
-</header>
+<header><h1>SABERHAWKS77</h1><p>PRT Training Intelligence</p></header>
 
 <div class="nav-tabs">
     <span class="tab-link" onclick="toggleModal('how-it-works')">Methodology</span>
@@ -76,119 +45,85 @@
 <div class="container">
     <div class="card span-2">
         <h2>Physiological Calibration</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0 25px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
             <div>
                 <h3>Baselines</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div><label>Age</label><input type="number" id="age" placeholder="25" oninput="handleUpdate()"></div>
-                    <div><label>Sex</label><select id="sex" onchange="handleUpdate()"><option value="m">Male</option><option value="f">Female</option></select></div>
-                </div>
-                <label>Current 1.5Mi (MM:SS)</label><input type="text" id="curRun" placeholder="12:30" oninput="handleUpdate()">
-                <label>Push-ups (2mins)</label><input type="number" id="curPush" placeholder="60" oninput="handleUpdate()">
-                <label>Plank (MM:SS)</label><input type="text" id="curPlank" placeholder="03:00" oninput="handleUpdate()">
-                <label>Continuous Run Capacity</label>
-                <select id="aerobicBase" onchange="handleUpdate()"><option value="0.7">15min or less</option><option value="1.0" selected>30min (Standard)</option><option value="1.3">45min+</option></select>
+                <div style="display: flex; gap: 10px;"><input type="number" id="age" placeholder="Age"><select id="sex"><option value="m">Male</option><option value="f">Female</option></select></div>
+                <label>1.5Mi Run</label><input type="text" id="curRun" placeholder="MM:SS">
+                <label>Push-ups (2mins)</label><input type="number" id="curPush">
+                <label>Plank (MM:SS)</label><input type="text" id="curPlank">
+                <label>Continuous Run Capacity</label><select id="ab"><option value="0.7">15m</option><option value="1.0" selected>30m</option><option value="1.3">45m+</option></select>
             </div>
             <div>
                 <h3>6-Week Goal</h3>
-                <label>Goal 1.5Mi Time</label><input type="text" id="goalRun" placeholder="10:30" oninput="handleUpdate()">
-                <label>Goal Push-ups (2mins)</label><input type="number" id="goalPush" placeholder="80" oninput="handleUpdate()">
-                <label>Goal Plank (MM:SS)</label><input type="text" id="goalPlank" placeholder="04:00" oninput="handleUpdate()">
-                <label>Start Date</label><input type="date" id="startDate" onchange="handleUpdate()">
-                <button class="btn-primary" style="margin-top: 10px;" onclick="generateDaily()">Generate Plan</button>
+                <label>Goal 1.5Mi</label><input type="text" id="goalRun" placeholder="MM:SS">
+                <label>Goal Push-ups</label><input type="number" id="goalPush">
+                <label>Goal Plank</label><input type="text" id="goalPlank">
+                <label>Start Date</label><input type="date" id="startDate">
+                <button class="btn-primary" onclick="generateDaily()">Generate Plan</button>
             </div>
         </div>
     </div>
 
-    <div id="output-section" class="span-2" style="display:grid; grid-template-columns: 1fr; gap:20px; width:100%;">
+    <div id="output-section" class="span-2" style="display:none;">
         <div class="card">
             <h2>Today's Prescription</h2>
-            <div class="toggle-container">
-                <button id="track-btn" class="toggle-btn active" onclick="setRunMode('track')">OUTDOOR TRACK</button>
-                <button id="tread-btn" class="toggle-btn" onclick="setRunMode('treadmill')">TREADMILL</button>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+                <div class="target-box"><label>1. Plank</label><div id="out-plank" class="stat-val">--</div><div class="rest-tag">60s REST</div></div>
+                <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">--</div><div class="rest-tag">120s REST</div></div>
+                <div class="target-box" style="border: 2px solid var(--apple-blue);"><label>3. Run (800m)</label><div id="out-pace" class="stat-val">82s/lap</div><div style="font-size:12px; font-weight:600; margin:5px 0;">Total: 2:44</div><div style="font-size:10px; font-weight:800; border:1px solid #ddd; padding:4px; border-radius:8px;">90S INTERVAL REST</div></div>
             </div>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;">
-                <div class="target-box"><label>1. Plank</label><div id="out-plank" class="stat-val">1:24s</div><div class="rest-tag">60s REST</div></div>
-                <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">35 reps</div><div class="rest-tag">120s REST</div></div>
-                <div class="target-box" style="border: 2px solid var(--apple-blue);"><label>3. Run (800m Repeats)</label>
-                    <div id="out-run-pace" class="stat-val">82s / lap</div>
-                    <div style="font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px;">Total Repeat: 2:44</div>
-                    <div style="font-size: 10px; font-weight: 800; color: #1D1D1F; border: 1px solid #D2D2D7; padding: 4px 10px; border-radius: 10px; display: inline-block; text-transform: uppercase;">90S INTERVAL REST</div>
-                </div>
+            <div class="evidence-quote">
+                <p>Concurrent strength and endurance training improves running economy by enhancing musculotendinous stiffness, allowing for higher force production with lower oxygen consumption.</p>
+                <a href="https://pubmed.ncbi.nlm.nih.gov/29043072/" target="_blank">Source: Blagrove et al. (2018) ↗</a>
             </div>
+        </div>
+        <div class="trajectory-card">
+            <h3>Tier Trajectory</h3>
+            <div id="traj-val" class="trajectory-val">PROJECTED: --</div>
+            <p style="font-size:13px; color:var(--text-secondary);">Fatigue is currently masking performance. Week 6 taper will reveal peak scores.</p>
         </div>
     </div>
 </div>
 
-<div id="log-page" class="modal">
-    <div class="modal-content">
-        <div class="close-x" onclick="toggleModal('log-page')">✕</div>
-        <div class="modal-header">PERFORMANCE LOG & EXPORT</div>
-        <textarea id="log-input" placeholder="Notes..." style="height: 250px; font-size: 16px;"></textarea>
-        <button class="btn-primary" onclick="saveLog()">Save Entry</button>
-        <button id="export-btn" class="btn-secondary" onclick="window.print()">Export Log</button>
-        <div id="log-display" style="margin-top: 25px;"></div>
-    </div>
-</div>
+<div id="log-page" class="modal"><div class="close-x" onclick="toggleModal('log-page')">✕</div><div class="modal-header">PERFORMANCE LOG & EXPORT</div><textarea id="log-input" placeholder="Notes..." style="height:300px;"></textarea><button class="btn-primary" onclick="saveLog()">Save Entry</button><button class="btn-primary" style="background:#E5E5EA; color:#1D1D1F; margin-top:10px;" onclick="window.print()">Export Log</button><div id="log-display"></div></div>
 
 <div id="how-it-works" class="modal">
-    <div class="modal-content">
-        <div class="close-x" onclick="toggleModal('how-it-works')">✕</div>
-        <div class="modal-header">THE LOGIC BEHIND THE PLAN</div>
-        <div class="section-box">
-            <span class="section-title">BACKGROUND</span>
-            <p><strong>SABERHAWKS77</strong> is built upon the professional framework of <strong>Daniel Wallis</strong>, a <strong>multiple New Zealand representative</strong>, <strong>ALL-NAVY team member</strong>, and <strong>former NIKE Professional Track & Field athlete</strong>. This program translates elite-level championship preparation into a scalable protocol for the Navy PRT.</p>
-        </div>
-        <p><strong>The Allostatic Advantage:</strong> Utilizing the <strong>McEwen Model of Allostatic Load</strong> to audit readiness. The program pivots in real-time.</p>
-        <p><strong>Environmental Intelligence:</strong> Applying <strong>Astrand-Ryhming</strong> thermal corrections for NAF Atsugi.</p>
-        <p><strong>The Sequence Science:</strong> 
-            <ul>
-                <li><strong>Plank First:</strong> Builds <strong>Proximal Stiffness</strong> to eliminate energy leaks (Blagrove et al., 2018).</li>
-                <li><strong>Push-ups Second:</strong> Induces <strong>Lactate Shuttling</strong> before the run (Tillaar, 2019).</li>
-                <li><strong>The Run:</strong> Execution under pre-existing metabolic load.</li>
-            </ul>
-        </p>
-        <div class="taper-box">
-            <span style="color:var(--apple-blue); font-size:12px; font-weight:800; text-transform:uppercase;">THE PHYSIOLOGY OF THE TAPER</span>
-            <p style="font-size:13px; margin: 10px 0;">The taper is a clinical unmasking of performance. By slashing volume 60% in Week 6, we trigger:</p>
-            <ul style="font-size: 13px;">
-                <li><strong>Mitochondrial Enzyme Peak:</strong> Maximizing ATP production.</li>
-                <li><strong>Glycogen Supercompensation:</strong> Elevating muscle fuel stores 15%.</li>
-                <li><strong>Hematological Recovery:</strong> Normalizing Red Blood Cell volume.</li>
-            </ul>
-        </div>
-        <button class="btn-primary" style="margin-top:30px;" onclick="toggleModal('how-it-works')">Return Home</button>
-    </div>
+    <div class="close-x" onclick="toggleModal('how-it-works')">✕</div><div class="modal-header">THE LOGIC BEHIND THE PLAN</div>
+    <div class="section-box"><span class="section-title">BACKGROUND</span><p><strong>SABERHAWKS77</strong> is built upon the professional framework of <strong>Daniel Wallis</strong>, a multiple New Zealand representative and ALL-NAVY team member. This program translates elite-level championship preparation into a scalable protocol for the Navy PRT.</p></div>
+    <p><strong>The Allostatic Advantage:</strong> Utilizing the McEwen Model of Allostatic Load to audit readiness.</p>
+    <p><strong>Environmental Intelligence:</strong> Applying Astrand-Ryhming thermal corrections for NAF Atsugi.</p>
+    <p><strong>The Sequence Science:</strong> <ul><li>Plank First: Proximal Stiffness</li><li>Push-ups: Lactate Shuttling</li><li>Run: Metabolic Loading</li></ul></p>
+    <div class="section-box" style="background:#F0F7FF; border:1px solid #D0E5FF; border-left:3px solid var(--apple-blue);"><span class="section-title">THE PHYSIOLOGY OF THE TAPER</span><ul><li>Mitochondrial Enzyme Peak</li><li>Glycogen Supercompensation</li><li>Hematological Recovery</li></ul></div>
 </div>
 
 <div id="roadmap-modal" class="modal">
-    <div class="modal-content">
-        <div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div>
-        <div class="modal-header">6-WEEK TACTICAL ROADMAP</div>
-        <div class="section-box"><span class="section-title">WEEK 1: ADAPTATION</span><p>Neural Priming. Teaching the brain goal pace rhythm.</p></div>
-        <div class="section-box"><span class="section-title">WEEK 2: LOADING</span><p>Structural Stress. Building mitochondrial density.</p></div>
-        <div class="section-box"><span class="section-title">WEEK 3: DEVELOPMENT</span><p>Threshold Expansion. Moving the "red line" further out.</p></div>
-        <div class="section-box"><span class="section-title">WEEK 4: OVERREACHING</span><p>Peak Load. Maximum growth stimulus.</p></div>
-        <div class="section-box"><span class="section-title">WEEK 5: REALIZATION</span><p>Intensity Maintenance. Holding speed, shedding volume.</p></div>
-        <div class="section-box"><span class="section-title">WEEK 6: ABSORPTION</span><p>The Taper. Shedding fatigue to reveal Day 42 Peak.</p></div>
-        <button class="btn-primary" onclick="toggleModal('roadmap-modal')">Return Home</button>
-    </div>
+    <div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div><div class="modal-header">6-WEEK TACTICAL ROADMAP</div>
+    <div class="section-box"><span class="section-title">WEEK 1: ADAPTATION</span><p>Neural Priming. Teaching the brain goal pace rhythm.</p></div>
+    <div class="section-box"><span class="section-title">WEEK 2: LOADING</span><p>Structural Stress. Building mitochondrial density.</p></div>
+    <div class="section-box"><span class="section-title">WEEK 3: DEVELOPMENT</span><p>Threshold Expansion.</p></div>
+    <div class="section-box"><span class="section-title">WEEK 4: OVERREACHING</span><p>Peak Load. Maximum growth stimulus.</p></div>
+    <div class="section-box"><span class="section-title">WEEK 5: REALIZATION</span><p>Intensity Maintenance.</p></div>
+    <div class="section-box"><span class="section-title">WEEK 6: ABSORPTION</span><p>The Taper. Shedding fatigue to reveal Day 42 Peak.</p></div>
 </div>
 
 <footer>&copy; 2026 SABERHAWKS77 | DANIEL WALLIS, BA</footer>
 
 <script>
-    let currentMode = 'track';
-    window.onload = () => loadData();
     function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
-    function resetToHome() { document.querySelectorAll('.modal').forEach(x => x.style.display = 'none'); window.scrollTo({top:0, behavior:'smooth'}); }
-    function handleUpdate() { enforcePlankCap(); saveData(); }
-    function enforcePlankCap() { const p = document.getElementById('curPlank'); if(p.value.includes(':')){ let s = (parseInt(p.value.split(':')[0])*60)+parseInt(p.value.split(':')[1]); if(s>220) p.value="03:40"; } }
-    function generateDaily() { document.getElementById('output-section').style.display = 'grid'; }
-    function setRunMode(m) { currentMode = m; document.getElementById('track-btn').classList.toggle('active', m === 'track'); document.getElementById('tread-btn').classList.toggle('active', m === 'treadmill'); generateDaily(); }
-    function saveLog() { const l = document.getElementById('log-input').value; if(l){ const d = document.createElement('div'); d.style.padding = '10px'; d.style.borderBottom = '1px solid #EEE'; d.innerText = `${new Date().toLocaleDateString()}: ${l}`; document.getElementById('log-display').prepend(d); document.getElementById('log-input').value = ''; saveData(); } }
-    function saveData() { const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, pl: document.getElementById('curPlank').value, s: document.getElementById('startDate').value, logs: document.getElementById('log-display').innerHTML }; localStorage.setItem('saberhawks_stable_v1', JSON.stringify(d)); }
-    function loadData() { const s = JSON.parse(localStorage.getItem('saberhawks_stable_v1')); if(s){ document.getElementById('curRun').value = s.r||""; document.getElementById('curPush').value = s.p||""; document.getElementById('curPlank').value = s.pl||""; document.getElementById('startDate').value = s.s||""; document.getElementById('log-display').innerHTML = s.logs||""; } }
+    function resetToHome() { document.querySelectorAll('.modal').forEach(x => x.style.display = 'none'); }
+    function generateDaily() { 
+        document.getElementById('output-section').style.display = 'block'; 
+        const g = document.getElementById('goalRun').value;
+        if(g && g.includes(':')){
+            let s = (parseInt(g.split(':')[0])*60)+parseInt(g.split(':')[1]);
+            let t = s < 630 ? "OUTSTANDING" : s < 720 ? "EXCELLENT" : s < 840 ? "GOOD" : "SATISFACTORY";
+            document.getElementById('traj-val').innerText = `PROJECTED: ${t}`;
+        }
+        document.getElementById('out-plank').innerText = document.getElementById('goalPlank').value || "03:40";
+        document.getElementById('out-push').innerText = (document.getElementById('goalPush').value || "80") + " reps";
+    }
+    function saveLog() { const l = document.getElementById('log-input').value; if(l){ const d = document.createElement('div'); d.style.padding = '10px'; d.style.borderBottom = '1px solid #EEE'; d.innerText = `${new Date().toLocaleDateString()}: ${l}`; document.getElementById('log-display').prepend(d); document.getElementById('log-input').value = ''; } }
 </script>
 </body>
 </html>

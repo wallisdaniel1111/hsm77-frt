@@ -3,13 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SABERHAWKS77 | Individualized Performance Plan</title>
+    <title>SABERHAWKS77 | Performance Plan</title>
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SABERHAWKS77">
+    
     <style>
         :root {
             --apple-gray: #F5F5F7; --apple-blue: #007AFF; --apple-green: #34C759;
             --apple-yellow: #FFCC00; --apple-red: #FF3B30; --text-main: #1D1D1F; --text-secondary: #86868B;
         }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--apple-gray); color: var(--text-main); margin: 0; -webkit-font-smoothing: antialiased; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: var(--apple-gray); color: var(--text-main); margin: 0; 
+            -webkit-font-smoothing: antialiased; overflow-x: hidden;
+        }
         header { padding: 40px 20px 10px; text-align: center; }
         header h1 { font-size: clamp(32px, 8vw, 48px); font-weight: 700; margin: 0; letter-spacing: -1.5px; text-transform: uppercase; }
         header p { font-size: 14px; font-weight: 400; color: var(--apple-blue); margin: 5px 0 8px; letter-spacing: 2px; text-transform: uppercase; }
@@ -20,24 +29,38 @@
 
         .nav-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
         .tab-link { font-size: 10px; font-weight: 700; color: var(--apple-blue); text-transform: uppercase; cursor: pointer; text-decoration: none; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 16px 60px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 16px 60px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; box-sizing: border-box; }
         @media (max-width: 992px) { .container { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) { .container { grid-template-columns: 1fr; } .span-2 { grid-column: span 1 !important; } }
+        
         .card { background: white; border-radius: 24px; padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); display: flex; flex-direction: column; }
         .span-2 { grid-column: span 2; }
         .dark-card { background: #1D1D1F; color: white; border-radius: 24px; padding: 24px; }
+        
         h2 { font-size: 18px; font-weight: 600; margin-top: 0; margin-bottom: 16px; }
         h3 { font-size: 13px; color: var(--apple-blue); text-transform: uppercase; margin: 0 0 12px; border-bottom: 1px solid #EEE; padding-bottom: 5px; }
         label { font-size: 9px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px; display: block; }
         input, select, textarea { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #D2D2D7; background: #FBFBFD; font-size: 16px; margin-bottom: 12px; box-sizing: border-box; }
-        .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; margin-bottom: 10px; }
+        
+        .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; margin-bottom: 10px; -webkit-tap-highlight-color: transparent; }
         .btn-secondary { background: var(--apple-gray); color: var(--text-main); border: none; padding: 10px; border-radius: 10px; font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; }
+        
         .proj-val { font-size: 24px; font-weight: 700; color: var(--apple-green); }
         .gap-tag { font-size: 10px; font-weight: 700; color: var(--apple-red); margin-top: -5px; margin-bottom: 10px; display: block; }
         .rest-tag { font-size: 10px; font-weight: 800; color: var(--apple-red); background: rgba(255, 59, 48, 0.1); padding: 4px 10px; border-radius: 20px; display: inline-block; margin: 10px 0; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; padding: 40px 16px; }
-        .modal-content { max-width: 600px; margin: 0 auto; line-height: 1.6; }
-        .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold;}
+        
+        /* Modal Responsive Fixes */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        .modal-content { max-width: 650px; margin: 0 auto; padding: 60px 24px 100px; line-height: 1.6; box-sizing: border-box; }
+        .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold; padding: 10px; }
+
+        /* Roadmap Timeline UI */
+        .timeline-step { border-left: 2px solid var(--apple-blue); padding: 0 0 25px 20px; position: relative; }
+        .timeline-step::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; background: var(--apple-blue); border-radius: 50%; }
+        .timeline-step h4 { margin: 0 0 5px 0; font-size: 14px; color: var(--apple-blue); }
+        .timeline-step p { margin: 0; font-size: 13px; color: var(--text-main); }
+
         #output-section { grid-column: 1 / -1; display: none; border-top: 4px solid var(--apple-blue); }
         .target-box { background: var(--apple-gray); padding: 20px; border-radius: 16px; text-align: center; }
         .stat-val { font-size: 28px; font-weight: 700; color: var(--apple-blue); }
@@ -48,20 +71,20 @@
 
 <header>
     <h1>SABERHAWKS77</h1>
-    <p>Individualized Performance Plan</p>
+    <p>Performance Plan</p>
     <div class="progress-container" id="p-container"><div id="progress-fill"></div></div>
     <div id="phase-label">Loading Plan...</div>
 </header>
 
 <div class="nav-tabs">
-    <span class="tab-link" onclick="toggleModal('how-it-works')">The Methodology</span>
-    <span class="tab-link" onclick="toggleModal('roadmap-modal')">Tactical Roadmap</span>
+    <span class="tab-link" onclick="toggleModal('how-it-works')">Methodology</span>
+    <span class="tab-link" onclick="toggleModal('roadmap-modal')">Roadmap</span>
     <a href="https://www.mapmyrun.com/" target="_blank" class="tab-link">MapMyRun ↗</a>
 </div>
 
 <div class="container">
     <div class="card span-2">
-        <h2>Physiological Calibration & Goals</h2>
+        <h2>Physiological Calibration</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0 25px;">
             <div>
                 <h3>Baselines</h3>
@@ -86,15 +109,14 @@
 
     <div class="card">
         <h2>Environmental Intelligence</h2>
-        <div style="display: flex; justify-content: space-between;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
             <div><span id="temp-val" style="font-size: 28px; font-weight: 700;">--°C</span><div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">Wind: <span id="wind-val">--</span> km/h<br>AQI: <span id="aqi-val" style="font-weight:bold;">--</span></div></div>
-            <a href="https://www.wunderground.com/weather/jp/ayase/35.45,139.45" target="_blank" class="btn-secondary" style="height: fit-content;">METOC ↗</a>
+            <a href="https://www.wunderground.com/weather/jp/ayase/35.45,139.45" target="_blank" class="btn-secondary">METOC ↗</a>
         </div>
-        <p id="env-status" style="font-size: 10px; color: var(--apple-blue); font-weight: bold; margin-top: 10px;">Syncing NAF Atsugi Data...</p>
     </div>
 
     <div class="card">
-        <h2>Allostatic Load Audit</h2>
+        <h2>Allostatic Audit</h2>
         <label>Sleep Quality</label>
         <select id="sleep" onchange="handleUpdate()">
             <option value="3">Restorative (7+ hrs)</option><option value="2" selected>Moderated (5-6 hrs)</option><option value="1">Deficit</option>
@@ -114,7 +136,7 @@
             </div>
             <div>
                 <label style="color:#86868b;">Projected Plank</label><div id="proj-plank" class="proj-val">--:--</div><span id="gap-plank" class="gap-tag"></span>
-                <button class="btn-primary" style="margin-top: 5px; font-size: 12px; padding: 12px;" onclick="generateDaily()">Generate Prescription</button>
+                <button class="btn-primary" style="margin-top: 5px; font-size: 12px; padding: 12px;" onclick="generateDaily()">Prescription</button>
             </div>
         </div>
     </div>
@@ -132,8 +154,7 @@
             </div>
         </div>
         <div style="margin-top:20px; padding-top:15px; border-top: 1px solid #EEE;">
-            <p id="env-alert" style="font-size: 11px; color: var(--apple-red); font-weight: bold;"></p>
-            <div style="display:flex; gap:10px; margin-top:10px;">
+            <div style="display:flex; gap:10px;">
                 <button class="btn-secondary" style="flex:1;" onclick="toggleModal('log-modal')">Log Result</button>
                 <button class="btn-secondary" style="flex:1;" onclick="exportCSV()">Export History</button>
             </div>
@@ -141,11 +162,48 @@
     </div>
 </div>
 
-<div id="how-it-works" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('how-it-works')">✕</div><h1 style="text-align:center;">THE LOGIC BEHIND THE PLAN</h1><p><strong>BACKGROUND:</strong> SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis</strong>, a multiple New Zealand representative, ALL-NAVY team member, and former NIKE Professional Track & Field athlete. This program translates elite-level championship preparation into a scalable protocol for the Navy PRT.</p><p><strong>The Allostatic Advantage:</strong> Most programs ignore "Life Stress." We utilize the <strong>McEwen Model of Allostatic Load</strong> to audit readiness. The program pivots in real-time, ensuring high intensities are only used when the physiology is actually capable of adapting.</p><p><strong>Environmental Intelligence:</strong> We apply <strong>Astrand-Ryhming</strong> thermal corrections and wind-drag coefficients for NAF Atsugi. This ensures relative effort remains constant regardless of external friction.</p><p><strong>The Sequence Science:</strong><ul><li><strong>Plank First:</strong> Builds <em>Proximal Stiffness</em> to eliminate energy leaks (Blagrove et al., 2018).</li><li><strong>Push-ups Second:</strong> Induces <em>Lactate Shuttling</em> before the run (Tillaar, 2019).</li><li><strong>The Run:</strong> Execution under pre-existing metabolic load.</li></ul></p><p><strong>THE PHYSIOLOGY OF THE TAPER:</strong> The taper is a clinical unmasking of performance. By slashing volume 60% in Week 6, we trigger:<ul><li><strong>Mitochondrial Enzyme Peak:</strong> Maximizing ATP production via Citrate Synthase activity.</li><li><strong>Glycogen Supercompensation:</strong> Elevating muscle fuel stores 15% above baseline for maximum output.</li><li><strong>Hematological Recovery:</strong> Normalizing Red Blood Cell volume and Hemoglobin suppressed during heavy loading weeks.</li></ul></p></div></div>
+<div id="how-it-works" class="modal">
+    <div class="modal-content">
+        <div class="close-x" onclick="toggleModal('how-it-works')">✕</div>
+        <h2 style="text-align:center;">THE LOGIC BEHIND THE PLAN</h2>
+        <p><strong>BACKGROUND:</strong> SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis</strong>, a multiple New Zealand representative, ALL-NAVY team member, and former NIKE Professional Track & Field athlete. This program translates elite-level championship preparation into a scalable protocol for the Navy PRT.</p>
+        <p><strong>The Allostatic Advantage:</strong> We utilize the <strong>McEwen Model of Allostatic Load</strong> to audit readiness. The program pivots in real-time, ensuring high intensities are only used when the physiology is capable of adapting.</p>
+        <p><strong>The Sequence Science:</strong>
+            <ul>
+                <li><strong>Plank First:</strong> Builds Proximal Stiffness (Blagrove et al., 2018).</li>
+                <li><strong>Push-ups Second:</strong> Induces Lactate Shuttling (Tillaar, 2019).</li>
+                <li><strong>The Run:</strong> Execution under metabolic load.</li>
+            </ul>
+        </p>
+        <p><strong>THE PHYSIOLOGY OF THE TAPER:</strong> By slashing volume 60% in Week 6, we trigger Mitochondrial Enzyme Peaking and Glycogen Supercompensation.</p>
+        <button class="btn-primary" style="background:var(--apple-gray); color:var(--text-main); margin-top:20px;" onclick="toggleModal('how-it-works')">Return to Dashboard</button>
+    </div>
+</div>
 
-<div id="roadmap-modal" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div><h1 style="text-align:center;">6-WEEK TACTICAL ROADMAP</h1><div style="display:grid; gap:12px;"><div style="background:#F2F2F7; padding:15px; border-radius:15px;"><strong>WEEK 1: ADAPTATION</strong><br>Neural Priming. Teaching the brain goal pace rhythm.</div><div style="background:#F2F2F7; padding:15px; border-radius:15px;"><strong>WEEK 2: LOADING</strong><br>Structural Stress. Building mitochondrial density.</div><div style="background:#F2F2F7; padding:15px; border-radius:15px;"><strong>WEEK 3: DEVELOPMENT</strong><br>Threshold Expansion. Moving the "red line" further out.</div><div style="background:#F2F2F7; padding:15px; border-radius:15px;"><strong>WEEK 4: OVERREACHING</strong><br>Peak Load. Maximum growth stimulus and allostatic pressure.</div><div style="background:#F2F2F7; padding:15px; border-radius:15px;"><strong>WEEK 5: REALIZATION</strong><br>Intensity Maintenance. Holding speed while shedding junk volume.</div><div style="background:#F2F2F7; padding:15px; border-radius:15px;"><strong>WEEK 6: ABSORPTION</strong><br>The Taper. Shedding fatigue to reveal your Day 42 Peak.</div></div></div></div>
+<div id="roadmap-modal" class="modal">
+    <div class="modal-content">
+        <div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div>
+        <h2 style="text-align:center;">TACTICAL ROADMAP</h2>
+        <div class="timeline-step"><h4>WEEK 1: ADAPTATION</h4><p>Neural Priming. Teaching the brain goal pace rhythm.</p></div>
+        <div class="timeline-step"><h4>WEEK 2: LOADING</h4><p>Structural Stress. Building mitochondrial density.</p></div>
+        <div class="timeline-step"><h4>WEEK 3: DEVELOPMENT</h4><p>Threshold Expansion. Moving the "red line" further out.</p></div>
+        <div class="timeline-step"><h4>WEEK 4: OVERREACHING</h4><p>Peak Load. Maximum growth stimulus and allostatic pressure.</p></div>
+        <div class="timeline-step"><h4>WEEK 5: REALIZATION</h4><p>Intensity Maintenance. Holding speed while shedding junk volume.</p></div>
+        <div class="timeline-step"><h4>WEEK 6: ABSORPTION</h4><p>The Taper. Shedding fatigue to reveal your Day 42 Peak.</p></div>
+        <button class="btn-primary" style="background:var(--apple-gray); color:var(--text-main); margin-top:20px;" onclick="toggleModal('roadmap-modal')">Return to Dashboard</button>
+    </div>
+</div>
 
-<div id="log-modal" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('log-modal')">✕</div><h1>Performance Log</h1><textarea id="log-entry" rows="5" placeholder="Log today's splits, recovery feel, or base ops stress..."></textarea><button class="btn-primary" onclick="saveLogEntry()">Save Daily Entry</button><button class="btn-primary" style="background:var(--apple-gray); color:var(--text-main);" onclick="toggleModal('log-modal')">Return to Dashboard</button><div id="log-history" style="margin-top:20px;"></div></div></div>
+<div id="log-modal" class="modal">
+    <div class="modal-content">
+        <div class="close-x" onclick="toggleModal('log-modal')">✕</div>
+        <h2>Performance Log</h2>
+        <textarea id="log-entry" rows="5" placeholder="Log today's splits, recovery feel, or base ops stress..."></textarea>
+        <button class="btn-primary" onclick="saveLogEntry()">Save Daily Entry</button>
+        <button class="btn-primary" style="background:var(--apple-gray); color:var(--text-main);" onclick="toggleModal('log-modal')">Return to Dashboard</button>
+        <div id="log-history" style="margin-top:20px;"></div>
+    </div>
+</div>
 
 <footer>&copy; 2026 SABERHAWKS77 | Daniel Wallis, BA</footer>
 
@@ -161,21 +219,19 @@
             document.getElementById('temp-val').innerText = `${curTemp.toFixed(1)}°C`;
             document.getElementById('wind-val').innerText = curWind.toFixed(1);
             document.getElementById('aqi-val').innerText = curAQI;
-            document.getElementById('env-status').innerText = "Real-time Atsugi Data Active";
-        } catch(e) { document.getElementById('env-status').innerText = "METOC Data Offline"; }
+        } catch(e) {}
     }
 
     function handleUpdate() { calculateProjection(); saveData(); }
 
     function calculateProjection() {
         const curR = document.getElementById('curRun').value; const curP = parseInt(document.getElementById('curPush').value); const curL = document.getElementById('curPlank').value;
-        const goalR = document.getElementById('goalRun').value; const goalP = parseInt(document.getElementById('goalPush').value); const goalL = document.getElementById('goalPlank').value;
-        const mult = parseFloat(document.getElementById('aerobicBase').value);
+        const goalR = document.getElementById('goalRun').value; const mult = parseFloat(document.getElementById('aerobicBase').value);
         const sDate = document.getElementById('startDate').value;
 
         if (sDate) { 
             const diff = Math.floor((new Date() - new Date(sDate)) / 86400000) + 1; 
-            document.getElementById('day-label').innerText = `CURRENTLY: DAY ${Math.max(1, diff)}`;
+            document.getElementById('day-label').innerText = `DAY ${Math.max(1, diff)}`;
             const progress = Math.min(100, Math.max(0, (diff / 42) * 100));
             document.getElementById('p-container').style.display = 'block';
             document.getElementById('progress-fill').style.width = progress + '%';
@@ -186,7 +242,7 @@
             else if(diff <= 21) pLabel.innerText = "Phase: Development";
             else if(diff <= 28) pLabel.innerText = "Phase: Overreaching";
             else if(diff <= 35) pLabel.innerText = "Phase: Realization";
-            else if(diff <= 42) pLabel.innerText = "Phase: Absorption (The Taper)";
+            else if(diff <= 42) pLabel.innerText = "Phase: Absorption";
             else pLabel.innerText = "Cycle Complete";
         }
 
@@ -212,20 +268,19 @@
         let windAdj = curWind > 10 ? (curWind - 10) * 0.15 : 0;
         document.getElementById('out-plank').innerText = "3:45s";
         document.getElementById('out-push').innerText = "52";
-        document.getElementById('out-run-vol').innerText = Math.round(4 * mult) + " x 800m Intervals";
+        document.getElementById('out-run-vol').innerText = Math.round(4 * mult) + " x 800m";
         document.getElementById('out-run-pace').innerText = (82.5 + windAdj).toFixed(1) + "s / lap";
-        document.getElementById('out-run-rest').innerText = "REST 90s BETWEEN REPS";
-        document.getElementById('env-alert').innerText = curAQI > 100 ? "AQI ALERT: High particulate matter. Relocate to indoor treadmill." : "";
+        document.getElementById('out-run-rest').innerText = "90s REST";
         window.scrollTo({ top: out.offsetTop - 20, behavior: 'smooth' });
     }
 
     function saveData() {
         const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, l: document.getElementById('curPlank').value, a: document.getElementById('aerobicBase').value, s: document.getElementById('startDate').value, gr: document.getElementById('goalRun').value, gp: document.getElementById('goalPush').value, gl: document.getElementById('goalPlank').value };
-        localStorage.setItem('saber_v1_11', JSON.stringify(d));
+        localStorage.setItem('saber_v1_12', JSON.stringify(d));
     }
 
     function loadData() {
-        const s = JSON.parse(localStorage.getItem('saber_v1_11'));
+        const s = JSON.parse(localStorage.getItem('saber_v1_12'));
         if (s) {
             document.getElementById('curRun').value = s.r; document.getElementById('curPush').value = s.p; document.getElementById('curPlank').value = s.l; document.getElementById('aerobicBase').value = s.a; document.getElementById('startDate').value = s.s; document.getElementById('goalRun').value = s.gr; document.getElementById('goalPush').value = s.gp; document.getElementById('goalPlank').value = s.gl;
             calculateProjection();
@@ -236,7 +291,7 @@
         const logs = JSON.parse(localStorage.getItem('saberhawks_logs') || '[]');
         logs.unshift({ date: new Date().toLocaleDateString(), text: document.getElementById('log-entry').value });
         localStorage.setItem('saberhawks_logs', JSON.stringify(logs));
-        document.getElementById('log-entry').value = ''; loadLogs(); alert("Tactical entry saved.");
+        document.getElementById('log-entry').value = ''; loadLogs(); alert("Entry saved.");
     }
 
     function loadLogs() {
@@ -248,9 +303,8 @@
         const logs = JSON.parse(localStorage.getItem('saberhawks_logs') || '[]');
         let csv = "Date,Notes\n"; 
         logs.forEach(l => { csv += `"${l.date}","${l.text.replace(/"/g, '""')}"\n`; });
-        const b64 = btoa(unescape(encodeURIComponent(csv)));
-        const dataUri = 'data:text/csv;base64,' + b64;
-        window.location.href = dataUri;
+        const encoded = btoa(unescape(encodeURIComponent(csv)));
+        window.location.href = 'data:text/csv;base64,' + encoded;
     }
 
     function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }

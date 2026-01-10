@@ -40,23 +40,21 @@
         
         .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; }
 
+        /* QUOTE BOX STYLE */
+        .evidence-quote { padding: 16px 24px; border-left: 2px solid #D2D2D7; margin: 20px 0; }
+        .evidence-quote p { font-style: italic; font-size: 13px; color: var(--text-secondary); line-height: 1.5; margin: 0 0 8px; }
+        .evidence-quote span { font-size: 11px; font-weight: 600; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.5px; }
+
         /* MODALS */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; }
         .modal-content { max-width: 600px; margin: 0 auto; padding: 40px 20px; position: relative; }
         .modal-header { font-size: 18px; font-weight: 800; text-align: center; margin-bottom: 30px; letter-spacing: 0.5px; text-transform: uppercase; }
         .section-box { border-left: 3px solid var(--apple-blue); background: #FBFBFD; padding: 20px; border-radius: 0 16px 16px 0; margin-bottom: 25px; }
         .section-title { font-size: 11px; font-weight: 800; color: var(--apple-blue); text-transform: uppercase; margin-bottom: 10px; display: block; }
-        .taper-box { background: #F0F7FF; padding: 20px; border-radius: 16px; border: 1px solid #D0E5FF; margin-top: 10px; }
         .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold; }
-
-        /* TRAJECTORY BOX */
-        .trajectory-card { background: #FBFBFD; border-top: 4px solid var(--apple-blue); padding: 24px; border-radius: 24px; margin-top: 10px; }
-        .trajectory-val { font-size: 28px; font-weight: 800; color: #1D1D1F; text-transform: uppercase; margin: 10px 0; }
 
         .target-box { background: var(--apple-gray); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 10px; }
         .stat-val { font-size: 28px; font-weight: 700; color: var(--apple-blue); }
-        .rest-tag { font-size: 10px; font-weight: 800; color: var(--apple-red); background: rgba(255,59,48,0.1); padding: 4px 10px; border-radius: 10px; margin-top: 5px; display: inline-block; }
-
         .toggle-container { display: flex; background: var(--apple-gray); border-radius: 10px; padding: 4px; margin-bottom: 15px; }
         .toggle-btn { flex: 1; padding: 8px; border: none; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; background: none; color: var(--text-secondary); }
         .toggle-btn.active { background: white; color: var(--apple-blue); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
@@ -75,6 +73,7 @@
 <div class="nav-tabs">
     <span class="tab-link" onclick="toggleModal('how-it-works')">Methodology</span>
     <span class="tab-link" onclick="toggleModal('roadmap-modal')">Roadmap</span>
+    <span class="tab-link" onclick="toggleModal('log-page')">Log & Export</span>
     <a href="https://www.mapmyrun.com/" target="_blank" class="tab-link">MapMyRun ↗</a>
 </div>
 
@@ -86,23 +85,21 @@
                 <h3>Baselines</h3>
                 <label>Current 1.5Mi (MM:SS)</label><input type="text" id="curRun" placeholder="12:30" oninput="handleUpdate()">
                 <label>Push-ups (Max)</label><input type="number" id="curPush" placeholder="60" oninput="handleUpdate()">
-                <label>Plank (MM:SS)</label><input type="text" id="curPlank" placeholder="03:00" oninput="handleUpdate()">
+                
+                <label>Cardio Calibration (Continuous Run)</label>
+                <select id="aerobicBase" onchange="handleUpdate()">
+                    <option value="0.7">15min or less</option>
+                    <option value="1.0" selected>30min (Standard)</option>
+                    <option value="1.3">45min+</option>
+                </select>
             </div>
             <div>
                 <h3>Goal Outcomes</h3>
                 <label>Goal 1.5Mi Time</label><input type="text" id="goalRun" placeholder="10:30" oninput="handleUpdate()">
-                <label>Goal Push-ups</label><input type="number" id="goalPush" placeholder="80" oninput="handleUpdate()">
                 <label>Start Date</label><input type="date" id="startDate" onchange="handleUpdate()">
                 <button class="btn-primary" style="margin-top: 10px;" onclick="generateDaily()">Generate Plan</button>
             </div>
         </div>
-    </div>
-
-    <div class="card">
-        <h2>Performance Log</h2>
-        <textarea id="log-input" placeholder="Notes for today..." style="height: 100px; font-size: 14px;"></textarea>
-        <button class="btn-primary" style="font-size: 12px; padding: 10px;" onclick="saveLog()">Save Daily Entry</button>
-        <div id="log-display" style="margin-top: 10px; font-size: 12px; color: var(--text-secondary); max-height: 80px; overflow-y: auto;"></div>
     </div>
 
     <div id="output-section" class="span-2" style="display:grid; grid-template-columns: 1fr; gap:20px; width:100%;">
@@ -113,23 +110,27 @@
                 <button id="tread-btn" class="toggle-btn" onclick="setRunMode('treadmill')">TREADMILL</button>
             </div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;">
-                <div class="target-box"><label>1. Plank</label><div id="out-plank" class="stat-val">1:24s</div><div class="rest-tag">REST 60s</div></div>
-                <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">35 reps</div><div class="rest-tag">REST 120s</div></div>
-                <div class="target-box" style="border: 2px solid var(--apple-blue);"><label>3. Run (800m Repeats)</label><div id="out-run-pace" class="stat-val">82s / lap</div><div class="rest-tag" style="background:none; color:var(--text-main); border:1px solid #ddd;">90s REST</div></div>
+                <div class="target-box"><label>1. Plank</label><div id="out-plank" class="stat-val">1:24s</div></div>
+                <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">35 reps</div></div>
+                <div class="target-box" style="border: 2px solid var(--apple-blue);"><label>3. Run (800m Repeats)</label><div id="out-run-pace" class="stat-val">82s / lap</div></div>
+            </div>
+
+            <div class="evidence-quote">
+                <p>Concurrent strength and endurance training improves running economy by increasing musculotendinous stiffness.</p>
+                <span>Source: Blagrove et al. (2018)</span>
             </div>
         </div>
+    </div>
+</div>
 
-        <div class="trajectory-card">
-            <h3>Tier Trajectory</h3>
-            <div id="traj-val" class="trajectory-val">PROJECTED: OUTSTANDING</div>
-            <p style="font-size:13px; color:var(--text-secondary); margin:0;">Fatigue is currently masking performance. Week 6 taper will reveal peak state.</p>
-        </div>
-
-        <div class="card">
-            <h3>Evidence-Based Reference</h3>
-            <p style="font-size:14px; line-height:1.5;">Concurrent strength and endurance training improves running economy by increasing musculotendinous stiffness.</p>
-            <span style="font-size:12px; color:var(--apple-blue); font-weight:700;">Source: Blagrove et al. (2018)</span>
-        </div>
+<div id="log-page" class="modal">
+    <div class="modal-content">
+        <div class="close-x" onclick="toggleModal('log-page')">✕</div>
+        <div class="modal-header">PERFORMANCE LOG & EXPORT</div>
+        <textarea id="log-input" placeholder="Daily training notes..." style="height: 150px;"></textarea>
+        <button class="btn-primary" onclick="saveLog()">Save Daily Entry</button>
+        <button class="btn-primary" style="background:#E5E5EA; color:#1D1D1F; margin-top:10px;" onclick="window.print()">Export to PDF / Print</button>
+        <div id="log-display" style="margin-top: 25px;"></div>
     </div>
 </div>
 
@@ -144,11 +145,11 @@
         <strong>The Allostatic Advantage</strong>
         <p>Most programs ignore "Life Stress." We utilize the <strong>McEwen Model of Allostatic Load</strong> to audit readiness. The program pivots in real-time, ensuring high intensities are only used when the physiology is actually capable of adapting.</p>
         <strong>Environmental Intelligence</strong>
-        <p>We apply <strong>Astrand-Ryhming</strong> thermal corrections and wind-drag coefficients for NAF Atsugi. This ensures relative effort remains constant regardless of external friction.</p>
+        <p>We apply <strong>Astrand-Ryhming</strong> thermal corrections for NAF Atsugi.</p>
         <strong>The Sequence Science</strong>
         <ul style="font-size: 14px; line-height: 1.6;">
-            <li><strong>Plank First:</strong> Builds Proximal Stiffness to eliminate energy leaks (Blagrove et al., 2018).</li>
-            <li><strong>Push-ups Second:</strong> Induces Lactate Shuttling before the run (Tillaar, 2019).</li>
+            <li><strong>Plank First:</strong> Builds Proximal Stiffness (Blagrove et al., 2018).</li>
+            <li><strong>Push-ups Second:</strong> Induces Lactate Shuttling (Tillaar, 2019).</li>
             <li><strong>The Run:</strong> Execution under pre-existing metabolic load.</li>
         </ul>
         <div class="taper-box">
@@ -188,9 +189,9 @@
     function handleUpdate() { saveData(); }
     function setRunMode(mode) { currentMode = mode; document.getElementById('track-btn').classList.toggle('active', mode === 'track'); document.getElementById('tread-btn').classList.toggle('active', mode === 'treadmill'); generateDaily(); }
     function generateDaily() { document.getElementById('output-section').style.display = 'grid'; document.getElementById('out-run-pace').innerText = currentMode === 'track' ? "82s / lap" : "11.2 mph @ 1.0%"; }
-    function saveLog() { const log = document.getElementById('log-input').value; if(log) { const div = document.createElement('div'); div.innerText = `${new Date().toLocaleDateString()}: ${log}`; document.getElementById('log-display').prepend(div); document.getElementById('log-input').value = ''; saveData(); } }
-    function saveData() { const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, s: document.getElementById('startDate').value, logs: document.getElementById('log-display').innerHTML }; localStorage.setItem('saberhawks_stable_v1', JSON.stringify(d)); }
-    function loadData() { const s = JSON.parse(localStorage.getItem('saberhawks_stable_v1')); if (s) { document.getElementById('curRun').value = s.r || ""; document.getElementById('curPush').value = s.p || ""; document.getElementById('startDate').value = s.s || ""; document.getElementById('log-display').innerHTML = s.logs || ""; } }
+    function saveLog() { const log = document.getElementById('log-input').value; if(log) { const div = document.createElement('div'); div.style.padding = '10px'; div.style.borderBottom = '1px solid #EEE'; div.innerText = `${new Date().toLocaleDateString()}: ${log}`; document.getElementById('log-display').prepend(div); document.getElementById('log-input').value = ''; saveData(); } }
+    function saveData() { const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, s: document.getElementById('startDate').value, a: document.getElementById('aerobicBase').value, logs: document.getElementById('log-display').innerHTML }; localStorage.setItem('saberhawks_stable_v1', JSON.stringify(d)); }
+    function loadData() { const s = JSON.parse(localStorage.getItem('saberhawks_stable_v1')); if (s) { document.getElementById('curRun').value = s.r || ""; document.getElementById('curPush').value = s.p || ""; document.getElementById('startDate').value = s.s || ""; document.getElementById('aerobicBase').value = s.a || "1.0"; document.getElementById('log-display').innerHTML = s.logs || ""; } }
 </script>
 </body>
 </html>

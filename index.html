@@ -246,18 +246,14 @@
 
     function exportCSV() {
         const logs = JSON.parse(localStorage.getItem('saberhawks_logs') || '[]');
-        let csv = "Date,Notes\n"; logs.forEach(l => { csv += `"${l.date}","${l.text.replace(/"/g, '""')}"\n`; });
-        const encodedUri = encodeURI("data:text/csv;charset=utf-8," + csv);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "saber_training_history.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        let csv = "Date,Notes\n"; 
+        logs.forEach(l => { csv += `"${l.date}","${l.text.replace(/"/g, '""')}"\n`; });
+        const b64 = btoa(unescape(encodeURIComponent(csv)));
+        const dataUri = 'data:text/csv;base64,' + b64;
+        window.location.href = dataUri;
     }
 
     function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
 </script>
 </body>
 </html>
-

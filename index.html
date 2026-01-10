@@ -28,8 +28,14 @@
         label { font-size: 10px; font-weight: 700; color: var(--apple-secondary); text-transform: uppercase; display: block; margin-bottom: 8px; letter-spacing: 0.5px; }
         input, select, textarea { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid var(--apple-border); background: #FBFBFD; font-size: 17px; margin-bottom: 16px; box-sizing: border-box; outline: none; }
         
-        .btn-blue { background: var(--apple-blue); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 17px; font-weight: 600; cursor: pointer; width: 100%; }
+        .btn-blue { background: var(--apple-blue); color: white; border: none; padding: 20px; border-radius: 20px; font-size: 17px; font-weight: 600; cursor: pointer; width: 100%; transition: transform 0.1s; }
+        .btn-blue:active { transform: scale(0.98); }
         .btn-gray { background: #E5E5EA; color: var(--apple-text); border: none; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 12px; }
+
+        /* Treadmill Toggle Styling */
+        .toggle-container { display: flex; background: #E5E5EA; border-radius: 12px; padding: 4px; margin-bottom: 20px; }
+        .toggle-btn { flex: 1; padding: 10px; border: none; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; background: none; color: var(--apple-secondary); transition: all 0.2s ease; }
+        .toggle-btn.active { background: white; color: var(--apple-blue); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
 
         .stat-val { font-size: 36px; font-weight: 700; color: var(--apple-blue); margin: 4px 0; }
         .rest-pill { font-size: 11px; font-weight: 800; color: var(--apple-red); background: rgba(255,59,48,0.1); padding: 4px 14px; border-radius: 20px; display: inline-block; text-transform: uppercase; }
@@ -88,14 +94,18 @@
     <div id="output" style="display:none;">
         <div class="card">
             <h2>Today's Prescription</h2>
+            <div class="toggle-container">
+                <button id="track-btn" class="toggle-btn active" onclick="setMode('track')">OUTDOOR TRACK</button>
+                <button id="tread-btn" class="toggle-btn" onclick="setMode('treadmill')">TREADMILL</button>
+            </div>
             <div class="grid-row">
                 <div style="text-align:center; background:var(--apple-bg); border-radius:24px; padding:24px;"><label>1. Plank</label><div class="stat-val" id="out-plank">--</div><div class="rest-pill">60s Rest</div></div>
                 <div style="text-align:center; background:var(--apple-bg); border-radius:24px; padding:24px;"><label>2. Push-ups</label><div class="stat-val" id="out-push">--</div><div class="rest-pill">120s Rest</div></div>
             </div>
             <div class="run-card">
-                <label>3. Run (800m Repeats)</label>
-                <div class="stat-val">82s / lap</div>
-                <div style="font-weight:700; margin: 8px 0; font-size:18px;">Total Repeat: 2:44</div>
+                <label id="run-label">3. Run (800m Repeats)</label>
+                <div class="stat-val" id="out-pace">82s / lap</div>
+                <div style="font-weight:700; margin: 8px 0; font-size:18px;" id="out-total">Total Repeat: 2:44</div>
                 <div style="font-size:11px; font-weight:800; border:1px solid var(--apple-border); padding:6px 16px; border-radius:12px; display: inline-block;">90S INTERVAL REST</div>
             </div>
 
@@ -152,6 +162,21 @@
 
 <script>
     function toggleM(id) { document.getElementById(id).style.display = (document.getElementById(id).style.display==='block')?'none':'block'; }
+    
+    function setMode(mode) {
+        document.getElementById('track-btn').classList.toggle('active', mode === 'track');
+        document.getElementById('tread-btn').classList.toggle('active', mode === 'treadmill');
+        if(mode === 'track') {
+            document.getElementById('run-label').innerText = "3. Run (800m Repeats)";
+            document.getElementById('out-pace').innerText = "82s / lap";
+            document.getElementById('out-total').style.display = 'block';
+        } else {
+            document.getElementById('run-label').innerText = "3. Run (Treadmill Intervals)";
+            document.getElementById('out-pace').innerText = "11.2 MPH @ 1.0%";
+            document.getElementById('out-total').style.display = 'none';
+        }
+    }
+
     function gen() {
         document.getElementById('output').style.display = 'block';
         const g = document.getElementById('goalRun').value;
@@ -163,6 +188,7 @@
         document.getElementById('out-push').innerText = (document.getElementById('goalPush').value || "80") + " reps";
         window.scrollTo({top: document.getElementById('output').offsetTop - 20, behavior: 'smooth'});
     }
+    
     function save() { const l = document.getElementById('log-in').value; if(l){ const d = document.createElement('div'); d.style.padding='20px'; d.style.borderBottom='1px solid #EEE'; d.innerText=`${new Date().toLocaleDateString()}: ${l}`; document.getElementById('log-out').prepend(d); document.getElementById('log-in').value=''; } }
 </script>
 </body>

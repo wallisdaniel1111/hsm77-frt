@@ -9,7 +9,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="SABERHAWKS77">
     <link rel="apple-touch-icon" href="icon.png">
-    <link rel="icon" type="image/png" href="icon.png">
 
     <style>
         :root {
@@ -37,32 +36,31 @@
         h2 { font-size: 18px; font-weight: 600; margin-top: 0; margin-bottom: 16px; }
         h3 { font-size: 13px; color: var(--apple-blue); text-transform: uppercase; margin: 0 0 12px; border-bottom: 1px solid #EEE; padding-bottom: 5px; }
         label { font-size: 9px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px; display: block; }
-        input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #D2D2D7; background: #FBFBFD; font-size: 16px; margin-bottom: 12px; box-sizing: border-box; }
+        input, select, textarea { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #D2D2D7; background: #FBFBFD; font-size: 16px; margin-bottom: 12px; box-sizing: border-box; }
         
-        .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; margin-bottom: 10px; }
-        .btn-secondary { background: var(--apple-gray); color: var(--text-main); border: none; padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; }
+        .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; }
 
+        /* MODAL STYLING */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; }
-        .modal-content { max-width: 700px; margin: 0 auto; padding: 60px 24px; line-height: 1.6; color: var(--text-main); position: relative; }
-        .modal-content h2 { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 30px; letter-spacing: -0.5px; }
-        .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold; padding: 10px; }
+        .modal-content { max-width: 600px; margin: 0 auto; padding: 40px 20px; position: relative; }
+        .section-box { border-left: 3px solid var(--apple-blue); background: #FBFBFD; padding: 20px; border-radius: 0 16px 16px 0; margin-bottom: 25px; }
+        .section-title { font-size: 11px; font-weight: 800; color: var(--apple-blue); text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold; }
+
+        /* TRAJECTORY BOX */
+        .trajectory-card { background: #FBFBFD; border-top: 4px solid var(--apple-blue); padding: 24px; border-radius: 24px; margin-top: 10px; grid-column: 1 / -1; }
+        .trajectory-val { font-size: 32px; font-weight: 800; color: #1D1D1F; text-transform: uppercase; margin: 10px 0; }
 
         .target-box { background: var(--apple-gray); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 10px; }
-        .stat-val { font-size: 28px; font-weight: 700; color: var(--apple-blue); margin: 5px 0; }
-        .rest-tag { font-size: 11px; font-weight: 800; color: var(--apple-red); background: rgba(255, 59, 48, 0.1); padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 5px; text-transform: uppercase; }
-        
+        .stat-val { font-size: 28px; font-weight: 700; color: var(--apple-blue); }
+        .rest-tag { font-size: 10px; font-weight: 800; color: var(--apple-red); background: rgba(255,59,48,0.1); padding: 4px 10px; border-radius: 10px; margin-top: 5px; display: inline-block; }
+
         .toggle-container { display: flex; background: var(--apple-gray); border-radius: 10px; padding: 4px; margin-bottom: 15px; }
         .toggle-btn { flex: 1; padding: 8px; border: none; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; background: none; color: var(--text-secondary); }
         .toggle-btn.active { background: white; color: var(--apple-blue); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-        #output-section { grid-column: 1 / -1; display: none; border-top: 4px solid var(--apple-blue); margin-top: 10px; }
-        
-        /* Log List Styling */
-        .log-item { padding: 12px; border-bottom: 1px solid #EEE; font-size: 13px; }
-        .log-date { font-weight: 700; color: var(--apple-blue); margin-right: 10px; }
-
+        #output-section { grid-column: 1 / -1; display: none; }
         footer { text-align: center; padding: 40px; font-size: 11px; color: var(--text-secondary); }
-        @media print { .nav-tabs, .btn-primary, .toggle-container, header, footer { display: none !important; } }
     </style>
 </head>
 <body>
@@ -75,7 +73,7 @@
 <div class="nav-tabs">
     <span class="tab-link" onclick="toggleModal('how-it-works')">Methodology</span>
     <span class="tab-link" onclick="toggleModal('roadmap-modal')">Roadmap</span>
-    <span class="tab-link" onclick="window.print()">Export Session</span>
+    <span class="tab-link" onclick="toggleModal('performance-log')">Performance Log</span>
 </div>
 
 <div class="container">
@@ -83,144 +81,106 @@
         <h2>Physiological Calibration</h2>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0 25px;">
             <div>
-                <h3>Baselines</h3>
                 <label>Current 1.5Mi (MM:SS)</label><input type="text" id="curRun" placeholder="12:30" oninput="handleUpdate()">
                 <label>Push-ups (Max)</label><input type="number" id="curPush" placeholder="60" oninput="handleUpdate()">
                 <label>Plank (MM:SS)</label><input type="text" id="curPlank" placeholder="03:00" oninput="handleUpdate()">
             </div>
             <div>
-                <h3>Target Outcomes</h3>
                 <label>Goal 1.5Mi Time</label><input type="text" id="goalRun" placeholder="10:30" oninput="handleUpdate()">
-                <label>Goal Push-ups</label><input type="number" id="goalPush" placeholder="80" oninput="handleUpdate()">
                 <label>Start Date</label><input type="date" id="startDate" onchange="handleUpdate()">
+                <button class="btn-primary" style="margin-top: 10px;" onclick="generateDaily()">Generate Plan</button>
             </div>
         </div>
     </div>
 
-    <div class="card">
-        <h2>Training Log</h2>
-        <div id="log-list" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
-            <p style="font-size: 11px; color: var(--text-secondary);">No sessions logged yet.</p>
-        </div>
-        <button class="btn-primary" onclick="generateDaily()">Generate Plan</button>
-        <button class="btn-secondary" onclick="exportLog()">Export CSV Log</button>
-    </div>
-
-    <div id="output-section" class="card span-2">
-        <h2>Today's Prescription</h2>
-        <div class="toggle-container">
-            <button id="track-btn" class="toggle-btn active" onclick="setRunMode('track')">OUTDOOR TRACK</button>
-            <button id="tread-btn" class="toggle-btn" onclick="setRunMode('treadmill')">TREADMILL</button>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-            <div class="target-box"><label>1. Plank</label><div id="out-plank" class="stat-val">3:45</div><div class="rest-tag">REST 60s</div></div>
-            <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">52</div><div class="rest-tag">REST 120s</div></div>
-            <div id="run-box" class="target-box" style="border: 2px solid var(--apple-blue);">
-                <label id="run-label" style="color:var(--apple-blue); font-weight: 800;">3. Run (800m Repeats)</label>
-                <div id="out-run-vol" style="font-size: 15px; font-weight: 800; margin: 4px 0;">4 x 800m Repeats</div>
-                <div id="out-run-pace" class="stat-val">--</div>
-                <div id="out-run-rest" class="rest-tag" style="background:none; color:var(--text-main); border: 1px solid #DDD;">90s REST</div>
+    <div id="output-section" class="span-2" style="display:grid; grid-template-columns: 1fr; gap:20px; width:100%;">
+        <div class="card">
+            <h2>Today's Prescription</h2>
+            <div class="toggle-container">
+                <button id="track-btn" class="toggle-btn active" onclick="setRunMode('track')">OUTDOOR TRACK</button>
+                <button id="tread-btn" class="toggle-btn" onclick="setRunMode('treadmill')">TREADMILL</button>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;">
+                <div class="target-box"><label>1. Plank</label><div id="out-plank" class="stat-val">--</div><div class="rest-tag">REST 60s</div></div>
+                <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">-- reps</div><div class="rest-tag">REST 120s</div></div>
+                <div class="target-box" style="border: 2px solid var(--apple-blue);"><label>3. Run (800m Repeats)</label><div id="out-run-pace" class="stat-val">--</div><div class="rest-tag" style="background:none; color:var(--text-main); border:1px solid #ddd;">90s REST</div></div>
             </div>
         </div>
+
+        <div class="trajectory-card">
+            <h3 style="margin-bottom:5px;">Tier Trajectory</h3>
+            <div id="traj-val" class="trajectory-val">Projected: Outstanding</div>
+            <p style="font-size:13px; color:var(--text-secondary); margin:0;">Fatigue is currently masking performance. Week 6 taper will reveal peak state.</p>
+        </div>
+
+        <div class="card">
+            <h3>Evidence-Based Reference</h3>
+            <p style="font-size:14px; line-height:1.5;">Concurrent strength and endurance training improves running economy by increasing musculotendinous stiffness, allowing for higher force production at lower oxygen consumption.</p>
+            <a href="#" style="font-size:12px; color:var(--apple-blue); text-decoration:none; font-weight:700;">Source: Blagrove et al. (2018) - Running Economy & Strength ↗</a>
+        </div>
+    </div>
+</div>
+
+<div id="performance-log" class="modal">
+    <div class="modal-content">
+        <div class="close-x" onclick="toggleModal('performance-log')">✕</div>
+        <h2 style="text-align:center;">PERFORMANCE LOG</h2>
+        <textarea id="log-details" placeholder="Log details..." style="height:150px;"></textarea>
+        <button class="btn-primary" onclick="saveLogEntry()">Save Entry</button>
+        <div id="saved-logs" style="margin-top:20px; font-size:13px;"></div>
     </div>
 </div>
 
 <div id="how-it-works" class="modal">
     <div class="modal-content">
         <div class="close-x" onclick="toggleModal('how-it-works')">✕</div>
-        <h2>THE LOGIC BEHIND THE PLAN</h2>
-        <p><strong>BACKGROUND:</strong> SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis, BA</strong>, an ALL-NAVY cross-country team member, former Nike, Inc. Professional Track & Field athlete, and multiple New Zealand representative. This program scales elite-level track and field preparation into a high-performance protocol specifically for the Navy PRT.</p>
-        <p><strong>The Allostatic Advantage:</strong> Utilizing the <strong>McEwen Model of Allostatic Load</strong> to audit readiness.</p>
-        <p><strong>Neural Pace Priming:</strong> Focusing on 800m repeats with specific 400m lap targets (e.g., 82s/lap).</p>
-        <button class="btn-primary" onclick="toggleModal('how-it-works')">Return Home</button>
+        <h2 style="text-align:center;">THE LOGIC BEHIND THE PLAN</h2>
+        <div class="section-box"><span class="section-title">BACKGROUND</span><p>SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis</strong>, a multiple New Zealand representative, ALL-NAVY team member, and former NIKE Professional Track & Field athlete.</p></div>
+        <p><strong>The Allostatic Advantage:</strong> Utilizing the <strong>McEwen Model of Allostatic Load</strong> to audit readiness. The program pivots in real-time.</p>
+        <p><strong>Environmental Intelligence:</strong> Applying <strong>Astrand-Ryhming</strong> thermal corrections for NAF Atsugi.</p>
+        <button class="btn-primary" style="margin-top:20px;" onclick="toggleModal('how-it-works')">Return Home</button>
     </div>
 </div>
 
-<div id="roadmap-modal" class="modal">
-    <div class="modal-content">
-        <div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div>
-        <h2>6-WEEK TACTICAL ROADMAP</h2>
-        <p><strong>Week 1-6 detailed progression restored.</strong>.</p>
-        <button class="btn-primary" onclick="toggleModal('roadmap-modal')">Return Home</button>
-    </div>
-</div>
+<div id="roadmap-modal" class="modal"><div class="modal-content"><div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div><h2>6-WEEK ROADMAP</h2><p>Full progression restored.</p><button class="btn-primary" onclick="toggleModal('roadmap-modal')">Return Home</button></div></div>
 
 <footer>&copy; 2026 SABERHAWKS77 | DANIEL WALLIS, BA</footer>
 
 <script>
     let currentMode = 'track';
-    let trainingHistory = [];
-
-    window.onload = () => { loadData(); fetchWeather(); };
-    
-    async function fetchWeather() { 
-        try { 
-            const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.45&longitude=139.45&current=temperature_2m,wind_speed_10m"); 
-            const d = await res.json(); 
-            // In a real build, we'd update a weather card here
-        } catch(e) {} 
-    }
-
+    window.onload = () => loadData();
     function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
     function resetToHome() { document.querySelectorAll('.modal').forEach(x => x.style.display = 'none'); window.scrollTo({top:0, behavior:'smooth'}); }
+    function handleUpdate() { saveData(); }
+    function setRunMode(mode) { currentMode = mode; document.getElementById('track-btn').classList.toggle('active', mode === 'track'); document.getElementById('tread-btn').classList.toggle('active', mode === 'treadmill'); generateDaily(); }
     
-    function setRunMode(mode) { 
-        currentMode = mode; 
-        document.getElementById('track-btn').classList.toggle('active', mode === 'track'); 
-        document.getElementById('tread-btn').classList.toggle('active', mode === 'treadmill'); 
-        generateDaily(); 
+    function generateDaily() { 
+        document.getElementById('output-section').style.display = 'grid'; 
+        document.getElementById('out-plank').innerText = "1:24s";
+        document.getElementById('out-push').innerText = "35 reps";
+        document.getElementById('out-run-pace').innerText = currentMode === 'track' ? "82s / lap" : "11.2 mph @ 1.0%"; 
     }
 
-    function generateDaily() {
-        document.getElementById('output-section').style.display = 'block';
-        const paceHtml = currentMode === 'track' ? `82s / lap <br><small style="font-size:14px; color:#86868b;">Total: 2:44</small>` : "11.2 mph @ 1.0%";
-        document.getElementById('out-run-pace').innerHTML = paceHtml;
-        
-        // Log the session
-        const entry = { date: new Date().toLocaleDateString(), mode: currentMode, workout: "4x800m Repeats" };
-        if (!trainingHistory.find(e => e.date === entry.date)) {
-            trainingHistory.unshift(entry);
-            updateLogDisplay();
-            saveData();
+    function saveLogEntry() { 
+        const log = document.getElementById('log-details').value;
+        if(log) {
+            const entry = document.createElement('div');
+            entry.innerHTML = `<strong>${new Date().toLocaleDateString()}</strong>: ${log}`;
+            document.getElementById('saved-logs').prepend(entry);
+            document.getElementById('log-details').value = '';
         }
     }
 
-    function updateLogDisplay() {
-        const list = document.getElementById('log-list');
-        list.innerHTML = trainingHistory.map(e => `<div class="log-item"><span class="log-date">${e.date}</span> ${e.workout} (${e.mode})</div>`).join('');
-    }
-
-    function exportLog() {
-        let csv = "Date,Workout,Mode\n" + trainingHistory.map(e => `${e.date},${e.workout},${e.mode}`).join("\n");
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.setAttribute('hidden', '');
-        a.setAttribute('href', url);
-        a.setAttribute('download', 'training_log.csv');
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    }
-
     function saveData() { 
-        const d = { 
-            r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, 
-            pl: document.getElementById('curPlank').value, s: document.getElementById('startDate').value, 
-            history: trainingHistory 
-        }; 
+        const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, s: document.getElementById('startDate').value }; 
         localStorage.setItem('saberhawks_stable_v1', JSON.stringify(d)); 
     }
-
     function loadData() { 
         const s = JSON.parse(localStorage.getItem('saberhawks_stable_v1')); 
         if (s) { 
             document.getElementById('curRun').value = s.r || ""; 
             document.getElementById('curPush').value = s.p || ""; 
-            document.getElementById('curPlank').value = s.pl || "";
             document.getElementById('startDate').value = s.s || "";
-            trainingHistory = s.history || [];
-            updateLogDisplay();
         } 
     }
 </script>

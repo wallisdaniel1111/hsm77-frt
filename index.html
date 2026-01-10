@@ -10,13 +10,12 @@
     <meta name="apple-mobile-web-app-title" content="SABERHAWKS77">
     
     <link rel="apple-touch-icon" href="icon.png">
-    <link rel="apple-touch-icon-precomposed" href="icon.png">
     <link rel="icon" type="image/png" href="icon.png">
 
     <style>
         :root {
             --apple-gray: #F5F5F7; --apple-blue: #007AFF; --apple-green: #34C759;
-            --apple-yellow: #FFCC00; --apple-red: #FF3B30; --text-main: #1D1D1F; --text-secondary: #86868B;
+            --apple-red: #FF3B30; --text-main: #1D1D1F; --text-secondary: #86868B;
         }
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
@@ -24,45 +23,22 @@
             -webkit-font-smoothing: antialiased; overflow-x: hidden;
         }
         header { padding: 40px 20px 10px; text-align: center; }
-        header h1 { font-size: clamp(32px, 8vw, 48px); font-weight: 700; margin: 0; letter-spacing: -1.5px; text-transform: uppercase; }
-        header p { font-size: 14px; font-weight: 400; color: var(--apple-blue); margin: 5px 0 8px; letter-spacing: 2px; text-transform: uppercase; }
+        header h1 { font-size: 32px; font-weight: 700; margin: 0; text-transform: uppercase; }
+        header p { font-size: 14px; color: var(--apple-blue); margin: 5px 0; text-transform: uppercase; letter-spacing: 2px; }
         
-        .progress-container { width: 220px; height: 6px; background: #E5E5EA; border-radius: 3px; margin: 0 auto 5px; overflow: hidden; display: none; }
-        #progress-fill { height: 100%; width: 0%; background: var(--apple-blue); transition: width 1s ease-in-out; }
-        #phase-label { font-size: 10px; font-weight: 800; color: var(--apple-blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; display: none; }
-
-        .nav-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+        .nav-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
         .tab-link { font-size: 10px; font-weight: 700; color: var(--apple-blue); text-transform: uppercase; cursor: pointer; text-decoration: none; }
         
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 16px 60px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; box-sizing: border-box; }
-        @media (max-width: 768px) { .container { grid-template-columns: 1fr; } .span-2 { grid-column: span 1 !important; } }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 16px 60px; display: grid; gap: 20px; }
+        .card { background: white; border-radius: 24px; padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); }
         
-        .card { background: white; border-radius: 24px; padding: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.03); display: flex; flex-direction: column; box-sizing: border-box; }
-        .span-2 { grid-column: span 2; }
-        .dark-card { background: #1D1D1F; color: white; border-radius: 24px; padding: 24px; box-sizing: border-box; }
-        
-        h2 { font-size: 18px; font-weight: 600; margin-top: 0; margin-bottom: 16px; }
-        h3 { font-size: 13px; color: var(--apple-blue); text-transform: uppercase; margin: 0 0 12px; border-bottom: 1px solid #EEE; padding-bottom: 5px; }
-        label { font-size: 9px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px; display: block; }
-        input, select, textarea { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #D2D2D7; background: #FBFBFD; font-size: 16px; margin-bottom: 12px; box-sizing: border-box; }
-        
-        .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; }
-        .btn-secondary { background: var(--apple-gray); color: var(--text-main); border: none; padding: 10px; border-radius: 10px; font-size: 11px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; }
-        
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; }
-        .modal-content { max-width: 650px; margin: 0 auto; padding: 60px 24px 100px; line-height: 1.6; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; padding: 60px 24px; box-sizing: border-box; }
         .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold; padding: 10px; }
 
-        .target-box { background: var(--apple-gray); padding: 20px; border-radius: 16px; text-align: center; box-sizing: border-box; margin-bottom: 10px; }
-        .stat-val { font-size: 28px; font-weight: 700; color: var(--apple-blue); margin: 5px 0; }
-        .rest-tag { font-size: 11px; font-weight: 800; color: var(--apple-red); background: rgba(255, 59, 48, 0.1); padding: 4px 12px; border-radius: 20px; display: inline-block; }
-
-        .timeline-step { border-left: 2px solid var(--apple-blue); padding: 0 0 25px 20px; position: relative; }
+        .timeline-step { border-left: 2px solid var(--apple-blue); padding: 0 0 25px 20px; position: relative; margin-left: 10px; }
         .timeline-step::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; background: var(--apple-blue); border-radius: 50%; }
-        .timeline-step h4 { margin: 0 0 5px 0; font-size: 14px; color: var(--apple-blue); }
-        .timeline-step p { margin: 0; font-size: 13px; color: var(--text-main); }
-        #output-section { grid-column: 1 / -1; display: none; border-top: 4px solid var(--apple-blue); }
-        footer { grid-column: 1 / -1; text-align: center; padding: 40px; font-size: 11px; color: var(--text-secondary); }
+        .timeline-step h4 { margin: 0 0 5px 0; font-size: 14px; color: var(--apple-blue); text-transform: uppercase; }
+        .timeline-step p { margin: 0; font-size: 13px; color: var(--text-main); line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -70,8 +46,6 @@
 <header>
     <h1>SABERHAWKS77</h1>
     <p>PRT Training Intelligence</p>
-    <div class="progress-container" id="p-container"><div id="progress-fill"></div></div>
-    <div id="phase-label">Loading Plan...</div>
 </header>
 
 <div class="nav-tabs">
@@ -81,62 +55,39 @@
 </div>
 
 <div class="container">
-    <div class="card span-2">
-        <h2>Physiological Calibration</h2>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0 25px;">
-            <div>
-                <h3>Baselines</h3>
-                <label>Current 1.5Mi (MM:SS)</label><input type="text" id="curRun" placeholder="12:30" oninput="handleUpdate()">
-                <label>Push-ups (Max)</label><input type="number" id="curPush" placeholder="60" oninput="handleUpdate()">
-                <label>Plank (MM:SS)</label><input type="text" id="curPlank" placeholder="03:00" oninput="handleUpdate()">
-                <label>Aerobic Base</label>
-                <select id="aerobicBase" onchange="handleUpdate()">
-                    <option value="0.7">15min or less</option><option value="1.0" selected>30min (Standard)</option><option value="1.3">45min+</option>
-                </select>
-            </div>
-            <div>
-                <h3>Target Outcomes</h3>
-                <label>Goal 1.5Mi Time</label><input type="text" id="goalRun" placeholder="10:30" oninput="handleUpdate()">
-                <label>Goal Push-ups</label><input type="number" id="goalPush" placeholder="80" oninput="handleUpdate()">
-                <label>Goal Plank</label><input type="text" id="goalPlank" placeholder="04:00" oninput="handleUpdate()">
-                <label>Start Date</label><input type="date" id="startDate" onchange="handleUpdate()">
-                <label id="day-label" style="color:var(--apple-blue); font-weight: bold; margin-top:5px;">Enter Start Date</label>
-            </div>
-        </div>
-    </div>
-
     <div class="card">
-        <h2>Atsugi Environment</h2>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div><span id="temp-val" style="font-size: 28px; font-weight: 700;">--°C</span><div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">Wind: <span id="wind-val">--</span> km/h<br>AQI: <span id="aqi-val" style="font-weight:bold;">--</span></div></div>
-            <a href="https://www.wunderground.com/weather/jp/ayase/35.45,139.45" target="_blank" class="btn-secondary">METOC ↗</a>
-        </div>
+        <h2 style="font-size: 18px; margin-bottom: 16px;">Physiological Calibration</h2>
+        <p style="font-size: 14px; color: var(--text-secondary);">Your custom training dashboard is active. Please enter your baseline data to generate your Day 42 peak performance plan.</p>
     </div>
+</div>
 
-    <div class="card">
-        <h2>Allostatic Audit</h2>
-        <label>Sleep Quality</label>
-        <select id="sleep" onchange="handleUpdate()">
-            <option value="3">Restorative (7+ hrs)</option><option value="2" selected>Moderated (5-6 hrs)</option><option value="1">Deficit</option>
-        </select>
-        <label>Occupational Stress</label>
-        <select id="stress" onchange="handleUpdate()">
-            <option value="3">Low (Routine)</option><option value="2" selected>Medium (Standard Ops)</option><option value="1">High (Duty/Watch)</option>
-        </select>
-    </div>
+<div id="how-it-works" class="modal">
+    <div class="close-x" onclick="toggleModal('how-it-works')">✕</div>
+    <h2 style="text-align:center;">THE LOGIC BEHIND THE PLAN</h2>
+    <p><strong>BACKGROUND:</strong> SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis</strong>, an ALL-NAVY team member and former NIKE Professional athlete.</p>
+    <p><strong>The Allostatic Advantage:</strong> We utilize the <strong>McEwen Model of Allostatic Load</strong> to audit readiness. The program pivots in real-time based on your sleep and stress.</p>
+    <button style="width:100%; padding:16px; background:var(--apple-gray); border:none; border-radius:30px; font-weight:600;" onclick="toggleModal('how-it-works')">Return Home</button>
+</div>
 
-    <div class="dark-card">
-        <h2 style="color:white;">Day 42 Projected Peak</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: flex-end;">
-            <div>
-                <label style="color:#86868b;">Projected 1.5Mi</label><div id="proj-run" style="font-size: 24px; font-weight: 700; color: var(--apple-green);">--:--</div>
-                <label style="color:#86868b; margin-top:10px;">Projected Push</label><div id="proj-push" style="font-size: 24px; font-weight: 700; color: var(--apple-green);">--</div>
-            </div>
-            <div>
-                <label style="color:#86868b;">Projected Plank</label><div id="proj-plank" style="font-size: 24px; font-weight: 700; color: var(--apple-green); margin-bottom:15px;">--:--</div>
-                <button class="btn-primary" style="font-size: 14px; padding: 12px;" onclick="generateDaily()">Generate Plan</button>
-            </div>
-        </div>
-    </div>
+<div id="roadmap-modal" class="modal">
+    <div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div>
+    <h2 style="text-align:center; margin-bottom:30px;">6-WEEK TACTICAL ROADMAP</h2>
+    <div class="timeline-step"><h4>WEEK 1: ADAPTATION</h4><p>Neural Priming. Teaching the brain goal pace rhythm.</p></div>
+    <div class="timeline-step"><h4>WEEK 2: LOADING</h4><p>Structural Stress. Building mitochondrial density.</p></div>
+    <div class="timeline-step"><h4>WEEK 3: DEVELOPMENT</h4><p>Threshold Expansion. Moving the "red line" further out.</p></div>
+    <div class="timeline-step"><h4>WEEK 4: OVERREACHING</h4><p>Peak Load. Maximum growth stimulus and allostatic pressure.</p></div>
+    <div class="timeline-step"><h4>WEEK 5: REALIZATION</h4><p>Intensity Maintenance. Holding speed while shedding junk volume.</p></div>
+    <div class="timeline-step"><h4>WEEK 6: ABSORPTION</h4><p>The Taper. Shedding fatigue to reveal your Day 42 Peak.</p></div>
+    <button style="width:100%; padding:16px; background:var(--apple-gray); border:none; border-radius:30px; margin-top:20px; font-weight:600;" onclick="toggleModal('roadmap-modal')">Return Home</button>
+</div>
 
-    <div id="output-section" class="card span-
+<script>
+    function toggleModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) {
+            modal.style.display = (modal.style.display === 'block') ? 'none' : 'block';
+        }
+    }
+</script>
+</body>
+</html>

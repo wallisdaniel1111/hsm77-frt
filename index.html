@@ -8,7 +8,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="SABERHAWKS77">
-    
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="icon" type="image/png" href="icon.png">
 
@@ -26,10 +25,6 @@
         header h1 { font-size: clamp(32px, 8vw, 48px); font-weight: 700; margin: 0; letter-spacing: -1.5px; text-transform: uppercase; cursor: pointer; }
         header p { font-size: 14px; font-weight: 400; color: var(--apple-blue); margin: 5px 0 8px; letter-spacing: 2px; text-transform: uppercase; }
         
-        .progress-container { width: 220px; height: 6px; background: #E5E5EA; border-radius: 3px; margin: 0 auto 5px; overflow: hidden; display: none; }
-        #progress-fill { height: 100%; width: 0%; background: var(--apple-blue); transition: width 1s ease-in-out; }
-        #phase-label { font-size: 10px; font-weight: 800; color: var(--apple-blue); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; display: none; }
-
         .nav-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
         .tab-link { font-size: 11px; font-weight: 700; color: var(--apple-blue); text-transform: uppercase; cursor: pointer; text-decoration: none; }
         
@@ -43,16 +38,18 @@
         h2 { font-size: 18px; font-weight: 600; margin-top: 0; margin-bottom: 16px; }
         h3 { font-size: 13px; color: var(--apple-blue); text-transform: uppercase; margin: 0 0 12px; border-bottom: 1px solid #EEE; padding-bottom: 5px; }
         label { font-size: 9px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 6px; display: block; }
-        input, select, textarea { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #D2D2D7; background: #FBFBFD; font-size: 16px; margin-bottom: 12px; box-sizing: border-box; }
+        input, select { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #D2D2D7; background: #FBFBFD; font-size: 16px; margin-bottom: 12px; box-sizing: border-box; }
         
         .btn-primary { background: var(--apple-blue); color: white; border: none; padding: 16px; border-radius: 30px; font-weight: 600; font-size: 16px; cursor: pointer; width: 100%; }
-        .btn-secondary { background: var(--apple-gray); color: var(--text-main); border: none; padding: 12px; border-radius: 12px; font-size: 12px; font-weight: 600; cursor: pointer; text-decoration: none; text-align: center; flex: 1; }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; box-sizing: border-box; }
-        .modal-content { max-width: 650px; margin: 0 auto; padding: 60px 24px 100px; line-height: 1.6; position: relative; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 1000; overflow-y: auto; }
+        .modal-content { max-width: 700px; margin: 0 auto; padding: 60px 24px; line-height: 1.6; color: var(--text-main); }
+        .modal-content h2 { font-size: 24px; font-weight: 700; text-align: center; margin-bottom: 30px; letter-spacing: -0.5px; }
+        .modal-content h4 { color: var(--apple-blue); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin: 25px 0 10px; }
+        .modal-content p { font-size: 15px; margin-bottom: 15px; color: #3A3A3C; }
         .close-x { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 24px; font-weight: bold; padding: 10px; }
 
-        .target-box { background: var(--apple-gray); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 10px; position: relative; }
+        .target-box { background: var(--apple-gray); padding: 20px; border-radius: 16px; text-align: center; margin-bottom: 10px; }
         .stat-val { font-size: 28px; font-weight: 700; color: var(--apple-blue); margin: 5px 0; }
         .rest-tag { font-size: 11px; font-weight: 800; color: var(--apple-red); background: rgba(255, 59, 48, 0.1); padding: 4px 12px; border-radius: 20px; display: inline-block; margin-top: 5px; text-transform: uppercase; }
         
@@ -60,11 +57,8 @@
         .toggle-btn { flex: 1; padding: 8px; border: none; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; background: none; color: var(--text-secondary); }
         .toggle-btn.active { background: white; color: var(--apple-blue); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-        .timeline-step { border-left: 2px solid var(--apple-blue); padding: 0 0 25px 20px; position: relative; margin-left: 10px; }
-        .timeline-step::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; background: var(--apple-blue); border-radius: 50%; }
-
         #output-section { grid-column: 1 / -1; display: none; border-top: 4px solid var(--apple-blue); margin-top: 10px; }
-        footer { grid-column: 1 / -1; text-align: center; padding: 40px; font-size: 11px; color: var(--text-secondary); }
+        footer { text-align: center; padding: 40px; font-size: 11px; color: var(--text-secondary); }
     </style>
 </head>
 <body>
@@ -72,14 +66,11 @@
 <header>
     <h1 onclick="resetToHome()">SABERHAWKS77</h1>
     <p>PRT Training Intelligence</p>
-    <div class="progress-container" id="p-container"><div id="progress-fill"></div></div>
-    <div id="phase-label">Loading Plan...</div>
 </header>
 
 <div class="nav-tabs">
     <span class="tab-link" onclick="toggleModal('how-it-works')">Methodology</span>
     <span class="tab-link" onclick="toggleModal('roadmap-modal')">Roadmap</span>
-    <a href="https://www.mapmyrun.com/" target="_blank" class="tab-link">MapMyRun ↗</a>
 </div>
 
 <div class="container">
@@ -91,54 +82,24 @@
                 <label>Current 1.5Mi (MM:SS)</label><input type="text" id="curRun" placeholder="12:30" oninput="handleUpdate()">
                 <label>Push-ups (Max)</label><input type="number" id="curPush" placeholder="60" oninput="handleUpdate()">
                 <label>Plank (MM:SS)</label><input type="text" id="curPlank" placeholder="03:00" oninput="handleUpdate()">
-                <label>Aerobic Base</label>
-                <select id="aerobicBase" onchange="handleUpdate()">
-                    <option value="0.7">15min or less</option><option value="1.0" selected>30min (Standard)</option><option value="1.3">45min+</option>
-                </select>
             </div>
             <div>
                 <h3>Target Outcomes</h3>
                 <label>Goal 1.5Mi Time</label><input type="text" id="goalRun" placeholder="10:30" oninput="handleUpdate()">
                 <label>Goal Push-ups</label><input type="number" id="goalPush" placeholder="80" oninput="handleUpdate()">
-                <label>Goal Plank</label><input type="text" id="goalPlank" placeholder="04:00" oninput="handleUpdate()">
                 <label>Start Date</label><input type="date" id="startDate" onchange="handleUpdate()">
-                <label id="day-label" style="color:var(--apple-blue); font-weight: 800; font-size: 11px;">ENTER START DATE</label>
             </div>
         </div>
     </div>
 
     <div class="card">
-        <h2>Atsugi Environment</h2>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div><span id="temp-val" style="font-size: 28px; font-weight: 700;">--°C</span><div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">Wind: <span id="wind-val">--</span> km/h</div></div>
-            <a href="https://www.wunderground.com/weather/jp/ayase/35.45,139.45" target="_blank" class="btn-secondary" style="max-width: 80px;">METOC ↗</a>
-        </div>
-    </div>
-
-    <div class="card">
-        <h2>Allostatic Audit</h2>
-        <label>Sleep Quality</label>
-        <select id="sleep" onchange="handleUpdate()">
-            <option value="3">Restorative (7+ hrs)</option><option value="2" selected>Moderated (5-6 hrs)</option><option value="1">Deficit</option>
+        <h2>Status</h2>
+        <label>Aerobic Base</label>
+        <select id="aerobicBase" onchange="handleUpdate()">
+            <option value="1.0">Standard (30min)</option>
+            <option value="1.3">High (45min+)</option>
         </select>
-        <label>Occupational Stress</label>
-        <select id="stress" onchange="handleUpdate()">
-            <option value="3">Low (Routine)</option><option value="2" selected>Medium (Standard Ops)</option><option value="1">High (Duty/Watch)</option>
-        </select>
-    </div>
-
-    <div class="dark-card">
-        <h2 style="color:white;">Day 42 Projected Peak</h2>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <div>
-                <label style="color:#86868b;">Projected 1.5Mi</label><div id="proj-run" style="font-size: 24px; font-weight: 700; color: var(--apple-green);">--:--</div>
-                <label style="color:#86868b; margin-top:10px;">Projected Push</label><div id="proj-push" style="font-size: 24px; font-weight: 700; color: var(--apple-green);">--</div>
-            </div>
-            <div>
-                <label style="color:#86868b;">Projected Plank</label><div id="proj-plank" style="font-size: 24px; font-weight: 700; color: var(--apple-green); margin-bottom:15px;">--:--</div>
-                <button class="btn-primary" style="font-size: 14px; padding: 12px;" onclick="generateDaily()">Generate Plan</button>
-            </div>
-        </div>
+        <button class="btn-primary" style="margin-top: 10px;" onclick="generateDaily()">Generate Plan</button>
     </div>
 
     <div id="output-section" class="card span-2">
@@ -152,7 +113,7 @@
             <div class="target-box"><label>2. Push-ups</label><div id="out-push" class="stat-val">--</div><div class="rest-tag">REST 120s</div></div>
             <div id="run-box" class="target-box" style="border: 2px solid var(--apple-blue);">
                 <label id="run-label" style="color:var(--apple-blue); font-weight: 800;">3. Run (800m Repeats)</label>
-                <div id="out-run-vol" style="font-size: 15px; font-weight: 800; margin: 4px 0; color: var(--text-main);">--</div>
+                <div id="out-run-vol" style="font-size: 15px; font-weight: 800; margin: 4px 0;">--</div>
                 <div id="out-run-pace" class="stat-val">--</div>
                 <div id="out-run-rest" class="rest-tag" style="background:none; color:var(--text-main); border: 1px solid #DDD;">90s REST</div>
             </div>
@@ -163,24 +124,34 @@
 <div id="how-it-works" class="modal">
     <div class="modal-content">
         <div class="close-x" onclick="toggleModal('how-it-works')">✕</div>
-        <h2 style="text-align:center;">THE LOGIC BEHIND THE PLAN</h2>
-        <p><strong>BACKGROUND:</strong> SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis</strong>, an ALL-NAVY team member and former NIKE Professional athlete. This program scales elite-level track and field preparation into a high-performance protocol specifically for the Navy PRT.</p>
-        <p><strong>The Allostatic Advantage:</strong> Utilizing the <strong>McEwen Model of Allostatic Load</strong> to audit readiness. The program pivots in real-time based on sleep and stress inputs, ensuring high intensities are only prescribed when the physiology is capable of adaptation.</p>
-        <button class="btn-primary" style="background:var(--apple-gray); color:var(--text-main); margin-top:20px;" onclick="toggleModal('how-it-works')">Return Home</button>
+        <h2>METHODOLOGY</h2>
+        <h4>Professional Framework</h4>
+        <p>Built upon the elite framework of <strong>Daniel Wallis</strong>, an ALL-NAVY team member and former NIKE Professional athlete. This protocol translates Olympic-level interval training into a tactical environment.</p>
+        <h4>The Allostatic Audit</h4>
+        <p>We utilize the <strong>McEwen Model of Allostatic Load</strong> to manage the intersection of operational stress and training. The algorithm prevents CNS burnout by ensuring high intensities are only prescribed when your physiology is prepared to adapt.</p>
+        <h4>Neural Pace Priming</h4>
+        <p>Focusing on 800m repeats with specific 400m lap targets (e.g., 82s/lap) primes the nervous system to maintain goal-pace rhythm without metabolic collapse.</p>
+        <button class="btn-primary" onclick="toggleModal('how-it-works')">Close</button>
     </div>
 </div>
 
 <div id="roadmap-modal" class="modal">
     <div class="modal-content">
         <div class="close-x" onclick="toggleModal('roadmap-modal')">✕</div>
-        <h2 style="text-align:center;">6-WEEK TACTICAL ROADMAP</h2>
-        <div class="timeline-step"><h4>WEEK 1: ADAPTATION</h4><p>Neural Priming. Teaching the brain goal pace rhythm.</p></div>
-        <div class="timeline-step"><h4>WEEK 2: LOADING</h4><p>Structural Stress. Building mitochondrial density and aerobic strength.</p></div>
-        <div class="timeline-step"><h4>WEEK 3: DEVELOPMENT</h4><p>Threshold Expansion. Moving the "red line" further out.</p></div>
-        <div class="timeline-step"><h4>WEEK 4: OVERREACHING</h4><p>Peak Load. Maximum growth stimulus and allostatic pressure.</p></div>
-        <div class="timeline-step"><h4>WEEK 5: REALIZATION</h4><p>Intensity Maintenance. Holding speed while shedding junk volume.</p></div>
-        <div class="timeline-step"><h4>WEEK 6: ABSORPTION</h4><p>The Taper. Shedding fatigue to reveal your Day 42 Peak.</p></div>
-        <button class="btn-primary" style="background:var(--apple-gray); color:var(--text-main); margin-top:20px;" onclick="toggleModal('roadmap-modal')">Return Home</button>
+        <h2>6-WEEK ROADMAP</h2>
+        <h4>Week 1: Adaptation</h4>
+        <p>Neural Priming. Establishing the foundation for goal-pace rhythm and teaching the body the mechanics of interval recovery.</p>
+        <h4>Week 2: Loading</h4>
+        <p>Structural Stress. Incremental increase in interval volume to build mitochondrial density and aerobic strength.</p>
+        <h4>Week 3: Development</h4>
+        <p>Threshold Expansion. Pushing the lactate threshold further out through controlled overreaching and specific pace targets.</p>
+        <h4>Week 4: Overreaching</h4>
+        <p>Peak Load. The maximum growth stimulus phase, testing the intersection of maximum volume and allostatic pressure.</p>
+        <h4>Week 5: Realization</h4>
+        <p>Intensity Maintenance. Reducing junk volume while holding high-end speed to keep the nervous system sharp.</p>
+        <h4>Week 6: Absorption</h4>
+        <p>The Taper. Deliberate fatigue shedding to reveal the Day 42 peak performance physiological state.</p>
+        <button class="btn-primary" onclick="toggleModal('roadmap-modal')">Close</button>
     </div>
 </div>
 
@@ -188,69 +159,26 @@
 
 <script>
     let currentMode = 'track';
-    window.onload = async () => { loadData(); await fetchWeather(); };
-    async function fetchWeather() { try { const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.45&longitude=139.45&current=temperature_2m,wind_speed_10m"); const d = await res.json(); document.getElementById('temp-val').innerText = d.current.temperature_2m + '°C'; document.getElementById('wind-val').innerText = d.current.wind_speed_10m; } catch(e) {} }
-    function handleUpdate() { calculateProjection(); saveData(); }
+    window.onload = () => loadData();
+    function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
     function resetToHome() { document.querySelectorAll('.modal').forEach(x => x.style.display = 'none'); window.scrollTo({top:0, behavior:'smooth'}); }
-    
-    function setRunMode(mode) {
-        currentMode = mode;
-        document.getElementById('track-btn').classList.toggle('active', mode === 'track');
-        document.getElementById('tread-btn').classList.toggle('active', mode === 'treadmill');
-        if(document.getElementById('output-section').style.display === 'block') generateDaily();
-    }
-
-    function calculateProjection() {
-        const curR = document.getElementById('curRun').value; const curP = parseInt(document.getElementById('curPush').value);
-        const sDate = document.getElementById('startDate').value; const mult = parseFloat(document.getElementById('aerobicBase').value);
-        if (sDate) { 
-            const diff = Math.floor((new Date() - new Date(sDate)) / 86400000) + 1; 
-            document.getElementById('day-label').innerText = `DAY ${Math.max(1, diff)}`;
-            document.getElementById('p-container').style.display = 'block';
-            document.getElementById('progress-fill').style.width = Math.min(100, (diff/42)*100) + '%';
-        }
-        if (curR.includes(':') && curP) {
-            let rS = (parseInt(curR.split(':')[0])*60) + parseInt(curR.split(':')[1]);
-            let pR = rS * (1 - (0.08 * mult));
-            document.getElementById('proj-run').innerText = `${Math.floor(pR/60)}:${Math.floor(pR%60).toString().padStart(2,'0')}`;
-            document.getElementById('proj-push').innerText = Math.round(curP * (1 + (0.12 * mult)));
-        }
-    }
-
+    function handleUpdate() { saveData(); }
+    function setRunMode(mode) { currentMode = mode; document.getElementById('track-btn').classList.toggle('active', mode === 'track'); document.getElementById('tread-btn').classList.toggle('active', mode === 'treadmill'); generateDaily(); }
     function generateDaily() {
         document.getElementById('output-section').style.display = 'block';
         document.getElementById('out-plank').innerText="3:45"; 
         document.getElementById('out-push').innerText="52";
         document.getElementById('out-run-vol').innerText = "4 x 800m Repeats";
-        
         if (currentMode === 'track') {
-            const lapTime = 82; 
-            const totalRepeatTime = lapTime * 2;
-            const minutes = Math.floor(totalRepeatTime / 60);
-            const seconds = totalRepeatTime % 60;
-            document.getElementById('out-run-pace').innerHTML = `${lapTime}s / lap <br><small style="font-size:14px; color:#86868b;">Total: ${minutes}:${seconds.toString().padStart(2, '0')}</small>`;
+            document.getElementById('out-run-pace').innerHTML = `82s / lap <br><small style="font-size:14px; color:#86868b;">Total: 2:44</small>`;
             document.getElementById('run-label').innerText = "3. Run (800m Repeats)";
         } else {
             document.getElementById('out-run-pace').innerText="11.2 mph @ 1.0%";
             document.getElementById('run-label').innerText = "3. Run (Treadmill Repeats)";
         }
     }
-
-    function saveData() { 
-        const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, s: document.getElementById('startDate').value, a: document.getElementById('aerobicBase').value }; 
-        localStorage.setItem('saberhawks_stable_v1', JSON.stringify(d)); 
-    }
-    function loadData() { 
-        const s = JSON.parse(localStorage.getItem('saberhawks_stable_v1')); 
-        if (s) { 
-            document.getElementById('curRun').value = s.r || ""; 
-            document.getElementById('curPush').value = s.p || ""; 
-            document.getElementById('startDate').value = s.s || ""; 
-            document.getElementById('aerobicBase').value = s.a || "1.0";
-            calculateProjection(); 
-        } 
-    }
-    function toggleModal(id) { const m = document.getElementById(id); m.style.display = (m.style.display === 'block') ? 'none' : 'block'; }
+    function saveData() { const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value }; localStorage.setItem('saberhawks_stable_v1', JSON.stringify(d)); }
+    function loadData() { const s = JSON.parse(localStorage.getItem('saberhawks_stable_v1')); if (s) { document.getElementById('curRun').value = s.r || ""; document.getElementById('curPush').value = s.p || ""; } }
 </script>
 </body>
 </html>

@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SABERHAWKS77 | Training Intelligence</title>
+    <title>SABERHAWKS77 | PRT Training Intelligence</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="SABERHAWKS77">
     
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="apple-touch-icon-precomposed" href="icon.png">
+    <link rel="icon" type="image/png" href="icon.png">
+
     <style>
         :root {
             --apple-gray: #F5F5F7; --apple-blue: #007AFF; --apple-green: #34C759;
@@ -25,6 +29,7 @@
             letter-spacing: -1.5px; text-transform: uppercase; cursor: pointer;
             -webkit-tap-highlight-color: transparent;
         }
+        /* Subheading Style */
         header p { font-size: 14px; font-weight: 400; color: var(--apple-blue); margin: 5px 0 8px; letter-spacing: 2px; text-transform: uppercase; }
         
         .progress-container { width: 220px; height: 6px; background: #E5E5EA; border-radius: 3px; margin: 0 auto 5px; overflow: hidden; display: none; }
@@ -70,7 +75,7 @@
 
 <header>
     <h1 onclick="resetToHome()">SABERHAWKS77</h1>
-    <p>Training Intelligence</p>
+    <p>PRT Training Intelligence</p>
     <div class="progress-container" id="p-container"><div id="progress-fill"></div></div>
     <div id="phase-label">Loading Plan...</div>
 </header>
@@ -163,16 +168,8 @@
     <div class="modal-content">
         <div class="close-x" onclick="toggleModal('how-it-works')">✕</div>
         <h2 style="text-align:center;">THE LOGIC BEHIND THE PLAN</h2>
-        <p><strong>BACKGROUND:</strong> SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis</strong>, a multiple New Zealand representative, ALL-NAVY team member, and former NIKE Professional Track & Field athlete. This program translates elite-level championship preparation into a scalable protocol for the Navy PRT.</p>
-        <p><strong>The Allostatic Advantage:</strong> Most programs ignore "Life Stress." We utilize the <strong>McEwen Model of Allostatic Load</strong> to audit readiness. The program pivots in real-time, ensuring high intensities are only used when the physiology is capable of adapting.</p>
-        <p><strong>The Sequence Science:</strong>
-            <ul>
-                <li><strong>Plank First:</strong> Builds Proximal Stiffness (Blagrove et al., 2018).</li>
-                <li><strong>Push-ups Second:</strong> Induces Lactate Shuttling (Tillaar, 2019).</li>
-                <li><strong>The Run:</strong> Execution under pre-existing metabolic load.</li>
-            </ul>
-        </p>
-        <p><strong>THE PHYSIOLOGY OF THE TAPER:</strong> By slashing volume 60% in Week 6, we trigger Mitochondrial Enzyme Peaking and Glycogen Supercompensation to reveal your Day 42 Peak.</p>
+        <p><strong>BACKGROUND:</strong> SABERHAWKS77 is built upon the professional framework of <strong>Daniel Wallis</strong>, a multiple New Zealand representative, ALL-NAVY team member, and former NIKE Professional Track & Field athlete.</p>
+        <p><strong>The Allostatic Advantage:</strong> Utilizing the <strong>McEwen Model of Allostatic Load</strong> to audit readiness. The program pivots in real-time, ensuring high intensities are only used when the physiology is capable of adapting.</p>
         <button class="btn-primary" style="background:var(--apple-gray); color:var(--text-main); margin-top:20px;" onclick="toggleModal('how-it-works')">Return Home</button>
     </div>
 </div>
@@ -197,7 +194,6 @@
         <h2>PERFORMANCE LOG</h2>
         <textarea id="log-entry" rows="5" placeholder="Log details..."></textarea>
         <button class="btn-primary" onclick="saveLogEntry()">Save Entry</button>
-        <button class="btn-primary" style="background:var(--apple-gray); color:var(--text-main); margin-top:10px;" onclick="toggleModal('log-modal')">Return Home</button>
         <div id="log-history" style="margin-top:20px;"></div>
     </div>
 </div>
@@ -247,7 +243,6 @@
         window.scrollTo({ top: document.getElementById('output-section').offsetTop - 20, behavior: 'smooth' });
     }
 
-    // Export Functionality Fix for Mobile Chrome
     function exportCSV() {
         const logs = JSON.parse(localStorage.getItem('saber_logs') || '[]');
         if (logs.length === 0) { alert("No logs to export."); return; }
@@ -267,10 +262,10 @@
 
     function saveData() {
         const d = { r: document.getElementById('curRun').value, p: document.getElementById('curPush').value, a: document.getElementById('aerobicBase').value, s: document.getElementById('startDate').value };
-        localStorage.setItem('saber_v1_19', JSON.stringify(d));
+        localStorage.setItem('saber_v1_23', JSON.stringify(d));
     }
     function loadData() {
-        const s = JSON.parse(localStorage.getItem('saber_v1_19'));
+        const s = JSON.parse(localStorage.getItem('saber_v1_23'));
         if (s) { Object.keys(s).forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = s[k]; }); calculateProjection(); }
     }
     function saveLogEntry() {

@@ -32,7 +32,6 @@
         .btn-blue:active { transform: scale(0.98); }
         .btn-gray { background: #E5E5EA; color: var(--apple-text); border: none; padding: 18px; border-radius: 16px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 12px; }
 
-        /* Treadmill Toggle Styling */
         .toggle-container { display: flex; background: #E5E5EA; border-radius: 12px; padding: 4px; margin-bottom: 20px; }
         .toggle-btn { flex: 1; padding: 10px; border: none; border-radius: 10px; font-size: 12px; font-weight: 700; cursor: pointer; background: none; color: var(--apple-secondary); transition: all 0.2s ease; }
         .toggle-btn.active { background: white; color: var(--apple-blue); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
@@ -153,12 +152,15 @@
     <h2 style="text-align:center;">PERFORMANCE LOG</h2>
     <textarea id="log-in" placeholder="Notes..." style="height:380px;"></textarea>
     <button class="btn-blue" onclick="save()">Save Entry</button>
-    <button class="btn-gray" onclick="window.print()">Export Log</button>
+    <button class="btn-gray" onclick="exportCSV()">Export Log (CSV)</button>
     <div id="log-out" style="margin-top:32px;"></div>
 </div></div>
 
 <script>
+    let logEntries = [];
+
     function toggleM(id) { document.getElementById(id).style.display = (document.getElementById(id).style.display==='block')?'none':'block'; }
+    
     function setMode(mode) {
         document.getElementById('track-btn').classList.toggle('active', mode === 'track');
         document.getElementById('tread-btn').classList.toggle('active', mode === 'treadmill');
@@ -172,6 +174,7 @@
             document.getElementById('out-total').style.display = 'none';
         }
     }
+
     function gen() {
         document.getElementById('output').style.display = 'block';
         const g = document.getElementById('goalRun').value;
@@ -183,7 +186,37 @@
         document.getElementById('out-push').innerText = (document.getElementById('goalPush').value || "80") + " reps";
         window.scrollTo({top: document.getElementById('output').offsetTop - 20, behavior: 'smooth'});
     }
-    function save() { const l = document.getElementById('log-in').value; if(l){ const d = document.createElement('div'); d.style.padding='20px'; d.style.borderBottom='1px solid #EEE'; d.innerText=`${new Date().toLocaleDateString()}: ${l}`; document.getElementById('log-out').prepend(d); document.getElementById('log-in').value=''; } }
+    
+    function save() { 
+        const text = document.getElementById('log-in').value; 
+        if(text){ 
+            const date = new Date().toLocaleDateString();
+            logEntries.push({ date: date, note: text });
+            
+            const d = document.createElement('div'); 
+            d.style.padding='20px'; d.style.borderBottom='1px solid #EEE'; 
+            d.innerText=`${date}: ${text}`; 
+            document.getElementById('log-out').prepend(d); 
+            document.getElementById('log-in').value=''; 
+        } 
+    }
+
+    function exportCSV() {
+        if (logEntries.length === 0) return alert("No log entries to export.");
+        
+        let csvContent = "data:text/csv;charset=utf-8,Date,Note\n";
+        logEntries.forEach(entry => {
+            csvContent += `${entry.date},"${entry.note.replace(/"/g, '""')}"\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "SABERHAWKS77_Performance_Log.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
 </script>
 </body>
 </html>
